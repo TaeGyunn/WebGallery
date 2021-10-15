@@ -2,7 +2,7 @@
 웹 전시회
 
 ## 프론트
-김성원
+● 김성원
 
 <b>사용스택</b>
 
@@ -10,4 +10,4 @@
 ![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=CSS3&logoColor=white)
 
 ## 백엔드
-이태균
+● 이태균
