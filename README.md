@@ -10,7 +10,8 @@
 
 ## 사용스택
 - 프론트
-  
+  - HTML
+  - CSS
 - 백엔드
   - JAVA11
   - Spring Boot
