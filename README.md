@@ -13,10 +13,15 @@
 ● 프론트
   
 ● 백엔드
+  
   ○ JAVA11
+  
   ○ Spring Boot
+  
   ○ JPA
+  
   ○ H2
+  
 
 ## ER Diagram
   
