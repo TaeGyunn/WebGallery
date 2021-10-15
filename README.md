@@ -3,7 +3,7 @@
   
 웹 전시회
 
-## FRONT & BACK
+## Frontend & Backend
 김성원
 <br>  
 이태균
