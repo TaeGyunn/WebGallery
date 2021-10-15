@@ -1,6 +1,6 @@
 <div align=center>
   
-# :milky_way: WebGallery :milky_way:
+# WebGallery
   
 웹 전시회
 
