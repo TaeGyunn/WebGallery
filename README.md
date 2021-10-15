@@ -1,4 +1,6 @@
+
 # :milky_way: WebGallery :milky_way:
+<div align=center>
 웹 전시회
 
 ## 프론트
