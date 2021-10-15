@@ -12,7 +12,7 @@
 - 프론트
   - HTML
   - CSS
-  - JavaScript
+  - Java Script
 - 백엔드
   - JAVA11
   - Spring Boot
