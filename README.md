@@ -12,15 +12,14 @@
 ## 사용스택
 ● 프론트
   
-● 백엔드
+● 백엔드 
+    ○ JAVA11
   
-  ○ JAVA11
+    ○ Spring Boot
   
-  ○ Spring Boot
+    ○ JPA
   
-  ○ JPA
-  
-  ○ H2
+    ○ H2
   
 
 ## ER Diagram
