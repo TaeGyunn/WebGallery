@@ -1,4 +1,4 @@
-# WebGallery
+# WebGallery :milky_way:
 웹 전시회
 
 ## 프론트
