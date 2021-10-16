@@ -5,10 +5,11 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Entity
 @Getter
-public class Author{
+public class Author implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
