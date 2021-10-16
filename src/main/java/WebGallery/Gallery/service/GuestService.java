@@ -12,6 +12,7 @@ public class GuestService {
 
     private final GuestRepository guestRepository;
 
+    @Transactional(readOnly = true)
     public boolean checkEmailDuplication(String email){
         return guestRepository.existsByEmail(email);
     }
