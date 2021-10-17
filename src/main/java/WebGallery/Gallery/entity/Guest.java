@@ -2,16 +2,23 @@ package WebGallery.Gallery.entity;
 
 import WebGallery.Gallery.dto.Role;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
 public class Guest {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gno;       // no
 
     @NotEmpty
@@ -29,6 +36,17 @@ public class Guest {
     @NotEmpty
     private String email;   // email
 
-    @Enumerated(EnumType.STRING)
-    private Role role;      // role
+    @NotNull
+    private Integer role;    // role
+
+    public Guest(String name, String id, String pw, String nick, String email, Integer role){
+        this.name = name;
+        this.id = id;
+        this.pw = pw;
+        this.nick = nick;
+        this.email = email;
+        this.role = role;
+    }
+
+
 }

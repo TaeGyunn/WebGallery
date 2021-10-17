@@ -1,6 +1,7 @@
 package WebGallery.Gallery.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Query;
 import javax.validation.constraints.Email;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
+@Setter
 public class GuestJoinDTO {
 
     @NotBlank(message = "아이디를 입력해주세요")
@@ -28,5 +30,8 @@ public class GuestJoinDTO {
     @NotBlank(message = "이메일 주소를 입력해주세요.")
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
+
+    @NotBlank
+    private Integer role;
 
 }

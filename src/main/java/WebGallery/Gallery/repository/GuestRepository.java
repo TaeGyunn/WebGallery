@@ -7,10 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
+        // 중복확인
         boolean existsByEmail(String email);
+        boolean existsById(Long id);
+        boolean existsByNick(String nick);
+
+        Optional<Guest> findById(String id);
 
 }
