@@ -18,6 +18,8 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
         boolean existsById(Long id);
         boolean existsByNick(String nick);
 
-        Optional<Guest> findById(String id);
+        Guest findById(String id);
+        Guest findByNick(String nick);
+
 
 }

@@ -31,7 +31,4 @@ public class GuestJoinDTO {
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
-    @NotBlank
-    private Integer role;
-
 }

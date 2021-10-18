@@ -1,6 +1,7 @@
 package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.GuestJoinDTO;
+import WebGallery.Gallery.dto.LoginDTO;
 import WebGallery.Gallery.dto.Role;
 import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
@@ -12,9 +13,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +25,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GuestService implements UserDetailsService {
+public class GuestService {
 
     private final GuestRepository guestRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public boolean checkEmailDuplication(String email){
@@ -40,33 +44,48 @@ public class GuestService implements UserDetailsService {
     @Transactional
     public Long join(GuestJoinDTO guestJoinDTO) {
 
+        String encodedPassword = passwordEncoder.encode(guestJoinDTO.getPw());
         Guest guest = new Guest(
                 guestJoinDTO.getName(),
                 guestJoinDTO.getId(),
-                guestJoinDTO.getPw(),
+                encodedPassword,
                 guestJoinDTO.getNick(),
                 guestJoinDTO.getEmail(),
-                guestJoinDTO.getRole());
-        
+                Role.GUEST);
         guestRepository.save(guest);
         return guest.getGno();
     }
 
+    @Transactional
+    public String Login(LoginDTO loginDTO){
 
+        Guest guest = guestRepository.findById(loginDTO.getId());
+        if(guest != null) {
 
-    @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException{
-        log.info(" loadUserByUsername ");
-        Optional<Guest> userEntityWrapper = guestRepository.findById(id);
-        Guest guest = userEntityWrapper.get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if(guest.getRole() == 1){
-            authorities.add(new SimpleGrantedAuthority(Role.GUEST.getValue()));
-        }else if(guest.getRole() == 2){
-            authorities.add(new SimpleGrantedAuthority(Role.AUTHOR.getValue()));
+            if (passwordEncoder.matches(loginDTO.getPw(), guest.getPw())) {
+                return guest.getNick();
+            } else {
+                log.info("올바르지 않은 패스워드");
+            }
         }
+        log.info("올바르지 않은 아이디");
+        return null;
+    }
 
-        return new User(guest.getId(), guest.getPw(), authorities);
+    @Transactional(readOnly = true)
+    public Guest findGuestNick(String nick){
+        Guest guest = guestRepository.findByNick(nick);
+        return guest;
+    }
+
+
+    public String logout(HttpSession session) {
+        if(session != null){
+            session.invalidate();
+            return "true";
+        }else{
+            log.info("로그인 후 로그아웃 해주세요");
+            return "false";
+        }
     }
 }
