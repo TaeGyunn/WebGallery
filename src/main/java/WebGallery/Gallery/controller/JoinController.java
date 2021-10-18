@@ -47,7 +47,7 @@ public class JoinController {
     // 회원가입 폼
     @GetMapping("/guestJoin")
     public String guestJoinForm(){
-        return "/";
+        return "/join";
     }
 
     // 회원가입
@@ -57,12 +57,12 @@ public class JoinController {
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
 
-        return "";
+        return "/";
     }
 
     // 로그인 폼
     @GetMapping("/login")
-    public String loginForm(){ return "/";}
+    public String loginForm(){ return "/front/guest/login";}
 
     // 로그인
     @PostMapping("/login")
@@ -83,11 +83,12 @@ public class JoinController {
             session.setAttribute("loggedIn",loginGuestNick);
             session.setAttribute("role",guest.getRole());
             log.info("로그인 성공");
+            return "/";
         }
 
         //로그인 실패
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
-        return "/";
+        return "/login";
     }
 
     @GetMapping("/logout")
