@@ -27,7 +27,6 @@ public class GuestServiceTest {
     GuestService guestService;
 
     @Test
-    @Rollback(value = false)
     public void 회원가입(){
 
         //given
