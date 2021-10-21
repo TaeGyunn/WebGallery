@@ -14,7 +14,7 @@ public class GalleryController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session){
-        log.info("check");
+        log.info("W'Gallery");
         return "/front/main/index";
     }
 
