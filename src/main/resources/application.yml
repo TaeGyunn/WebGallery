@@ -8,7 +8,6 @@ spring:
     view:
       suffix: .html
 
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -21,3 +20,7 @@ logging:
   level:
     org.hibernate.SQL : debug
     org.hibernate.type : trace
+
+file:
+  upload:
+    location: /Users/taeku/Desktop/images/

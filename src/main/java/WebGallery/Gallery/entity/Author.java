@@ -24,4 +24,12 @@ public class Author implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Role role;      // role
+
+    public Author(Guest guest, String sns, String comment, String thumb, Role role){
+        this.guest = guest;
+        this.sns = sns;
+        this.comment = comment;
+        this.thumb = thumb;
+        this.role = role;
+    }
 }
