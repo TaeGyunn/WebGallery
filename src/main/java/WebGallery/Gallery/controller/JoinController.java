@@ -61,7 +61,7 @@ public class JoinController {
     }
 
     // 로그인 폼
-    @GetMapping("/login")
+    @GetMapping("/loginform")
     public String loginForm(){ return "/front/guest/login";}
 
     // 로그인
@@ -90,7 +90,8 @@ public class JoinController {
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
         return "/login";
     }
-
+    
+    // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session){
         String logout = guestService.logout(session);
@@ -100,5 +101,7 @@ public class JoinController {
         }
         return "redirect:/";
     }
+
+
 
 }
