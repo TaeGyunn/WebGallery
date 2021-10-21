@@ -4,9 +4,9 @@ import WebGallery.Gallery.entity.A_Tumb;
 import WebGallery.Gallery.entity.Photo;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,8 @@ import java.util.UUID;
 @Slf4j
 public class FileStore {
 
-    private String fileDir = "/Users/taeku/Desktop/images/";
+    @Value("${file.upload.location}")
+    private String fileDir;
 
     public String getFullPath(String fileName){
         return fileDir + fileName;
