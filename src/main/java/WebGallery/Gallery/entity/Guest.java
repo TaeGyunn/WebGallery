@@ -61,5 +61,8 @@ public class Guest {
         this.role = role;
     }
 
+    public void ChangeRole(Role role){
+        this.role = role;
+    }
 
 }

@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class A_Tumb implements Serializable {
+public class A_Tumb {
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Long gno;
+
+    @MapsId
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "gno")
     private Author author;                   // 작가
 

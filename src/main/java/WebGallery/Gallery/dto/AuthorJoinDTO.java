@@ -20,6 +20,13 @@ public class AuthorJoinDTO {
     private String comment;
     
     @NotEmpty(message = "썸네일을 추가해주세요")
-    private MultipartFile tumb;
+    private MultipartFile thumb;
+
+    public AuthorJoinDTO(Long guestNo, String sns, String comment, MultipartFile thumb){
+        this.guestNo = guestNo;
+        this.sns = sns;
+        this.comment = comment;
+        this.thumb = thumb;
+    }
     
 }

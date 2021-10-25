@@ -30,18 +30,20 @@ public class AuthorService {
 
         try {
             Guest guest = guestRepository.findByGno(authorJoinDTO.getGuestNo());
-            String stodName = fileStore.saveThumbFile(authorJoinDTO.getTumb()).getStod_name();
+            String stodName = fileStore.saveThumbFile(authorJoinDTO.getThumb()).getStod_name();
 
             Author author = new Author(
                     guest,
                     authorJoinDTO.getSns(),
                     authorJoinDTO.getComment(),
-                    stodName,
-                    Role.AUTHOR
+                    stodName
             );
 
             Author save = authorRepository.save(author);
+
             if(save != null){
+                guest.ChangeRole(Role.AUTHOR);
+                guestRepository.save(guest);
                 check = 1;
                 log.info("Author Save Success");
             }
