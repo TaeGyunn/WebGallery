@@ -2,6 +2,7 @@ package WebGallery.Gallery.entity;
 
 import WebGallery.Gallery.dto.Role;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Author{
 
     @Id
@@ -27,18 +29,14 @@ public class Author{
     @NotEmpty
     private String thumb;   // 썸네일 서버명 이름
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Work> works = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "authors", cascade = CascadeType.ALL)
-//    private List<Work> works = new ArrayList<>();
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "author")
-//    private A_Tumb author;
-//
     public Author(Guest guest, String sns, String comment, String thumb){
         this.guest = guest;
         this.sns = sns;
         this.comment = comment;
         this.thumb = thumb;
     }
+
 }

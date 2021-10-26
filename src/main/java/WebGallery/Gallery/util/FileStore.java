@@ -1,6 +1,7 @@
 package WebGallery.Gallery.util;
 
-import WebGallery.Gallery.entity.A_Tumb;
+import WebGallery.Gallery.entity.A_thumb;
+import WebGallery.Gallery.entity.Photo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class FileStore {
         return fileDir + fileName;
     }
 
-    public A_Tumb saveThumbFile(MultipartFile multipartFile) throws IOException{
+    public A_thumb saveThumbFile(MultipartFile multipartFile) throws IOException{
 
         if(!multipartFile.isEmpty()){
             String originalFileName = multipartFile.getOriginalFilename();
@@ -36,7 +37,7 @@ public class FileStore {
             String saveFileName = uuid + "." + extension;
 
             multipartFile.transferTo(new File(getFullPath(saveFileName)));
-            return new A_Tumb(
+            return new A_thumb(
                     originalFileName,
                     saveFileName,
                     LocalDateTime.now()
@@ -45,26 +46,24 @@ public class FileStore {
         return null;
     }
 
-//    public Photo saveWorkFile(MultipartFile multipartFile, Work work) throws  IOException{
-//
-//        if(!multipartFile.isEmpty()){
-//            String originalFileName = multipartFile.getOriginalFilename();
-//
-//            int delimter = originalFileName.lastIndexOf(".");
-//            String extension = originalFileName.substring(delimter);
-//
-//            String uuid = UUID.randomUUID().toString();
-//            String saveFileName = uuid + "." + extension;
-//
-//            multipartFile.transferTo(new File(getFullPath(saveFileName)));
-//
-//            return new Photo(
-//                    work,
-//                    originalFileName,
-//                    saveFileName,
-//                    LocalDateTime.now()
-//            );
-//        }
-//        return null;
-//    }
+    public Photo saveWorkFile(MultipartFile multipartFile) throws  IOException{
+
+        if(!multipartFile.isEmpty()){
+            String originalFileName = multipartFile.getOriginalFilename();
+
+            int delimter = originalFileName.lastIndexOf(".");
+            String extension = originalFileName.substring(delimter);
+
+            String uuid = UUID.randomUUID().toString();
+            String saveFileName = uuid + "." + extension;
+
+            multipartFile.transferTo(new File(getFullPath(saveFileName)));
+            return new Photo(
+                    originalFileName,
+                    saveFileName,
+                    LocalDateTime.now()
+            );
+        }
+        return null;
+    }
 }

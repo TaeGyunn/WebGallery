@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class A_Tumb {
+public class A_thumb {
 
     @Id
     private Long gno;
@@ -26,15 +26,18 @@ public class A_Tumb {
     @NotNull
     private String stod_name;           // 서버파일명
 
-    @NotEmpty
     private LocalDateTime cdt;          // 생성일자
 
     private LocalDateTime mdt;          // 수정일자
 
-    public A_Tumb(String ori_name, String stod_name, LocalDateTime cdt){
+    public A_thumb(String ori_name, String stod_name, LocalDateTime cdt){
         this.ori_name = ori_name;
         this.stod_name = stod_name;
         this.cdt = cdt;
+    }
+
+    public void saveAuthor(Author author){
+        this.author = author;
     }
 
 }

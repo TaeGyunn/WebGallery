@@ -10,7 +10,7 @@ public class InsertWorkDTO {
 
     private Long guest;           // 게스트
     
-    private String content;     // 내용
+    private String comment;     // 내용
 
     private String thema;       // 테마
 
@@ -18,4 +18,11 @@ public class InsertWorkDTO {
 
     private MultipartFile file;
 
+    public InsertWorkDTO(Long guest, String comment, String thema, String name, MultipartFile file) {
+        this.guest = guest;
+        this.comment = comment;
+        this.thema = thema;
+        this.name = name;
+        this.file = file;
+    }
 }
