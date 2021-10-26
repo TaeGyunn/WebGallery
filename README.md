@@ -17,7 +17,7 @@
   - JAVA11
   - Spring Boot
   - JPA
-  - H2
+  - MariaDB
   
 ## ER Diagram
   
