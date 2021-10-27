@@ -17,11 +17,11 @@
   - JAVA11
   - Spring Boot
   - JPA
-  - H2
+  - MariaDB
   
 ## ER Diagram
   
-![Gallery_ERD](https://user-images.githubusercontent.com/84495814/137609603-10f5ec96-5c9d-4ae9-b21d-3cda0f7e3f02.png)
+![Gallery_ERD](https://user-images.githubusercontent.com/84495814/138840866-23870e37-a1f4-4e46-ae85-9d6f397b87b1.png)
 
 
 
