@@ -5,6 +5,7 @@ import WebGallery.Gallery.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -20,6 +21,14 @@ public class workController {
         log.info(insertWorkDTO.toString());
 
         int check = workService.InsertWork(insertWorkDTO);
+
+        return "";
+    }
+
+    @DeleteMapping("/deleteWork")
+    public String deleteWork(Long workNo){
+        log.info("workNo : "+workNo);
+
 
         return "";
     }

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class InsertWorkDTO {
@@ -18,11 +20,14 @@ public class InsertWorkDTO {
 
     private MultipartFile file;
 
-    public InsertWorkDTO(Long guest, String comment, String thema, String name, MultipartFile file) {
+    private List<String> tags;
+
+    public InsertWorkDTO(Long guest, String comment, String thema, String name, MultipartFile file, List<String> tags) {
         this.guest = guest;
         this.comment = comment;
         this.thema = thema;
         this.name = name;
         this.file = file;
+        this.tags = tags;
     }
 }
