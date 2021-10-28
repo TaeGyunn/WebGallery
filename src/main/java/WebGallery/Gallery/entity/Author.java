@@ -39,4 +39,14 @@ public class Author{
         this.thumb = thumb;
     }
 
+    public void changeSns(String sns){
+        this.sns = sns;
+    }
+    public void changeComment(String comment){
+        this.comment = comment;
+    }
+    public void changeThumb(String thumb){
+        this.thumb = thumb;
+    }
+
 }

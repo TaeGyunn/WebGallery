@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class AuthorJoinDTO {
 
-    private Long guestNo;
+    private Long gno;
 
     private String sns;
     
@@ -22,8 +19,8 @@ public class AuthorJoinDTO {
     @NotEmpty(message = "썸네일을 추가해주세요")
     private MultipartFile thumb;
 
-    public AuthorJoinDTO(Long guestNo, String sns, String comment, MultipartFile thumb){
-        this.guestNo = guestNo;
+    public AuthorJoinDTO(Long gno, String sns, String comment, MultipartFile thumb){
+        this.gno = gno;
         this.sns = sns;
         this.comment = comment;
         this.thumb = thumb;

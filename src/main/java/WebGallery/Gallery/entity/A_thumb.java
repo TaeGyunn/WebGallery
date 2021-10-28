@@ -39,5 +39,8 @@ public class A_thumb {
     public void saveAuthor(Author author){
         this.author = author;
     }
+    public void changeStod_name(String stod_name){
+        this.stod_name = stod_name;
+    }
 
 }

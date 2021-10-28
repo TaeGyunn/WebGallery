@@ -1,6 +1,7 @@
 package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.AuthorJoinDTO;
+import WebGallery.Gallery.dto.AuthorModifyDTO;
 import WebGallery.Gallery.dto.Role;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Author;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class AuthorService {
 
@@ -26,13 +28,12 @@ public class AuthorService {
     private final A_TumbRepository a_tumbRepository;
     private final FileStore fileStore;
 
-    @Transactional
     public Integer authorJoin(AuthorJoinDTO authorJoinDTO){
 
         int check = 0;
 
         try {
-            Guest guest = guestRepository.findByGno(authorJoinDTO.getGuestNo());
+            Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
             A_thumb a_thumb = fileStore.saveThumbFile(authorJoinDTO.getThumb());
             String stodName = a_thumb.getStod_name();
 
@@ -48,7 +49,7 @@ public class AuthorService {
             if(save != null){
                 a_thumb.saveAuthor(author);
                 a_tumbRepository.save(a_thumb);
-                guest.ChangeRole(Role.AUTHOR);
+                guest.changeRole(Role.AUTHOR);
                 guestRepository.save(guest);
                 check = 1;
                 log.info("Author Save Success");
@@ -57,6 +58,61 @@ public class AuthorService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return check;
+    }
+
+    public void authorDelete(Long gno){
+
+        try {
+            Author author = authorRepository.findByGno(gno);
+            authorRepository.delete(author);
+            log.info("author delete success");
+            Guest guest = guestRepository.findByGno(gno);
+            guest.changeRole(Role.GUEST);
+            guestRepository.save(guest);
+            log.info("Role Change");
+        } catch (IllegalArgumentException exception){
+            exception.printStackTrace();
+        }
+
+    }
+
+    public Integer authorModify(AuthorModifyDTO authorModifyDTO){
+
+        Author author = authorRepository.findByGno(authorModifyDTO.getGno());
+        int check = 0;
+        String oldStod_name = "";
+        try {
+            if (author.getSns() != authorModifyDTO.getSns()) {
+                author.changeSns(authorModifyDTO.getSns());
+                check = 1;
+            }
+            if (author.getComment() != authorModifyDTO.getComment()) {
+                author.changeComment(authorModifyDTO.getComment());
+                check = 1;
+            }
+
+            A_thumb a_thumb = fileStore.saveThumbFile(authorModifyDTO.getThumb());
+            String stodName = a_thumb.getStod_name();
+
+            if (author.getThumb() != stodName) {
+                oldStod_name = author.getThumb();
+                author.changeThumb(stodName);
+                check = 2;
+            }
+            if (check == 1 || check == 2) {
+                authorRepository.save(author);
+                if (check == 2) {
+                    A_thumb aThumb = a_tumbRepository.findByStod_name(oldStod_name);
+                    aThumb.changeStod_name(stodName);
+                    a_tumbRepository.save(aThumb);
+                }
+                return check;
+            }
+        }catch (IllegalArgumentException | IOException exception){
+            exception.printStackTrace();
+        }
+
         return check;
     }
 

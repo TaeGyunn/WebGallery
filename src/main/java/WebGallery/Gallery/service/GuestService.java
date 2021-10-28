@@ -1,6 +1,7 @@
 package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.GuestJoinDTO;
+import WebGallery.Gallery.dto.GuestModifyDTO;
 import WebGallery.Gallery.dto.LoginDTO;
 import WebGallery.Gallery.dto.Role;
 import WebGallery.Gallery.entity.Guest;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class GuestService {
 
@@ -41,7 +43,6 @@ public class GuestService {
     @Transactional(readOnly = true)
     public boolean checkNickDuplication(String nick) {return guestRepository.existsByNick(nick);}
 
-    @Transactional
     public Long join(GuestJoinDTO guestJoinDTO) {
 
         String encodedPassword = passwordEncoder.encode(guestJoinDTO.getPw());
@@ -56,7 +57,7 @@ public class GuestService {
         return guest.getGno();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public String Login(LoginDTO loginDTO){
 
         Guest guest = guestRepository.findById(loginDTO.getId());
@@ -88,4 +89,45 @@ public class GuestService {
             return "false";
         }
     }
+
+    public void deleteGuest(Long gno){
+        try {
+            Guest guest = guestRepository.findByGno(gno);
+            guestRepository.delete(guest);
+            log.info("guest delete success");
+        }catch (IllegalArgumentException exception){
+            exception.printStackTrace();
+        }
+    }
+
+    public Integer modifyGuest(GuestModifyDTO guestModifyDTO){
+
+        log.info(guestModifyDTO.toString());
+        int check = 0;
+        try {
+            Guest guest = guestRepository.findByGno(guestModifyDTO.getGno());
+
+            if (guest.getNick() != guestModifyDTO.getNick()) {
+                guest.changeNick(guestModifyDTO.getNick());
+                check = 1;
+            }
+            if (guest.getPw() != guestModifyDTO.getPw()) {
+                guest.changePw(guestModifyDTO.getPw());
+                check = 1;
+            }
+            if (guest.getEmail() != guestModifyDTO.getEmail()) {
+                guest.changeEmail(guestModifyDTO.getEmail());
+                check = 1;
+            }
+            if (check == 1) {
+                guestRepository.save(guest);
+            } else {
+                log.info("guest 수정사항 없음");
+            }
+        }catch (IllegalArgumentException exception){
+            exception.printStackTrace();
+        }
+        return check;
+    }
+
 }

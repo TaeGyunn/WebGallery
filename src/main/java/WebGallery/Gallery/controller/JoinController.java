@@ -45,7 +45,7 @@ public class JoinController {
     }
 
     // 회원가입 폼
-    @GetMapping("/guestJoin")
+    @GetMapping("/guestJoinForm")
     public String guestJoinForm(){
         return "/join";
     }
@@ -61,7 +61,7 @@ public class JoinController {
     }
 
     // 로그인 폼
-    @GetMapping("/loginform")
+    @GetMapping("/loginForm")
     public String loginForm(){ return "/front/guest/login";}
 
     // 로그인

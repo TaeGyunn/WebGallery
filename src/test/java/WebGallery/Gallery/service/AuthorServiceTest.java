@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +38,7 @@ class AuthorServiceTest {
         try {
             thumb = new MockMultipartFile("content","sample_images_01.png","multipart/mixed", new FileInputStream("/Users/taeku/Desktop/샘플이미지_12가지_모음/sample_images_01.png"));
             AuthorJoinDTO authorJoinDTO = new AuthorJoinDTO(8L, "sexual", "안녕하세요", thumb );
-            Guest guest = guestRepository.findByGno(authorJoinDTO.getGuestNo());
+            Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
             A_thumb a_thumb = fileStore.saveThumbFile(authorJoinDTO.getThumb());
             String stodName = a_thumb.getStod_name();
 
@@ -54,7 +53,7 @@ class AuthorServiceTest {
             a_thumb.saveAuthor(saveauthor);
             a_tumbRepository.save(a_thumb);
 
-            guest.ChangeRole(Role.AUTHOR);
+            guest.changeRole(Role.AUTHOR);
             guestRepository.save(guest);
 
 

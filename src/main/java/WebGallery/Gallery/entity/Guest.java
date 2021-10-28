@@ -61,8 +61,17 @@ public class Guest {
         this.role = role;
     }
 
-    public void ChangeRole(Role role){
+    public void changeRole(Role role){
         this.role = role;
+    }
+    public void changeNick(String nick){
+        this.nick = nick;
+    }
+    public void changePw(String pw){
+        this.pw = pw;
+    }
+    public void changeEmail(String email){
+        this.email = email;
     }
 
 }
