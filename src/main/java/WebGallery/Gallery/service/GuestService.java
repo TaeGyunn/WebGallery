@@ -107,15 +107,15 @@ public class GuestService {
         try {
             Guest guest = guestRepository.findByGno(guestModifyDTO.getGno());
 
-            if (guest.getNick() != guestModifyDTO.getNick()) {
+            if (!guest.getNick().equals(guestModifyDTO.getNick())) {
                 guest.changeNick(guestModifyDTO.getNick());
                 check = 1;
             }
-            if (guest.getPw() != guestModifyDTO.getPw()) {
+            if (!guest.getPw().equals(guestModifyDTO.getPw())) {
                 guest.changePw(guestModifyDTO.getPw());
                 check = 1;
             }
-            if (guest.getEmail() != guestModifyDTO.getEmail()) {
+            if (!guest.getEmail().equals(guestModifyDTO.getEmail())) {
                 guest.changeEmail(guestModifyDTO.getEmail());
                 check = 1;
             }

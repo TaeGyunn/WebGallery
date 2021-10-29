@@ -21,4 +21,10 @@ public class GuestModifyDTO {
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
+    public GuestModifyDTO(Long gno, String nick, String pw, String email) {
+        this.gno = gno;
+        this.nick = nick;
+        this.pw = pw;
+        this.email = email;
+    }
 }
