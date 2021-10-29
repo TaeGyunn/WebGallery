@@ -1,10 +1,12 @@
 package WebGallery.Gallery.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Work_tag {
 

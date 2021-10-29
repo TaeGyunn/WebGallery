@@ -1,6 +1,7 @@
 package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.InsertWorkDTO;
+import WebGallery.Gallery.dto.ModifyWorkDTO;
 import WebGallery.Gallery.entity.*;
 import WebGallery.Gallery.repository.*;
 import WebGallery.Gallery.util.FileStore;
@@ -47,13 +48,18 @@ public class WorkService {
             Work works = workRepository.save(work);
 
             for(int i=0; i<insertWorkDTO.getTags().size(); i++){
-                Tag tag = new Tag(insertWorkDTO.getTags().get(i));
-                tagRepository.save(tag);
-                Work_tag work_tag = new Work_tag(works, tag);
-                work_tagRepository.save(work_tag);
-                if(i == insertWorkDTO.getTags().size()-1){
-                    check = 1;
+                Tag tag = new Tag();
+                if(!tagRepository.existsByName(insertWorkDTO.getTags().get(i))) {
+                    tag = new Tag(insertWorkDTO.getTags().get(i));
+                    tagRepository.save(tag);
+                }else{
+                    tag = tagRepository.findByName(insertWorkDTO.getTags().get(i));
                 }
+                    Work_tag work_tag = new Work_tag(works, tag);
+                    work_tagRepository.save(work_tag);
+                    if (i == insertWorkDTO.getTags().size() - 1) {
+                        check = 1;
+                    }
             }
 
         } catch (IOException e) {
@@ -82,5 +88,60 @@ public class WorkService {
         //work 제거
         workRepository.delete(work);
 
+    }
+
+    public Integer modifyWork(ModifyWorkDTO modifyWorkDTO){
+
+        int check = 0;
+        try {
+            Work work = workRepository.findByWno(modifyWorkDTO.getWno());
+            Photo savedPhoto = photoRepository.findByPno(work.getPhoto().getPno());
+            Photo notSavePhoto = fileStore.saveWorkFile(modifyWorkDTO.getFile());
+
+            if (!work.getComment().equals(modifyWorkDTO.getComment())) {
+                work.changeComment(modifyWorkDTO.getComment());
+                check = 1;
+            }
+            if (!work.getThema().equals(modifyWorkDTO.getThema())) {
+                work.changeTheam(modifyWorkDTO.getThema());
+                check = 1;
+            }
+            if (!work.getName().equals(modifyWorkDTO.getName())) {
+                work.changeName(modifyWorkDTO.getName());
+                check = 1;
+            }
+            if (!savedPhoto.getOri_name().equals(notSavePhoto.getOri_name())) {
+                notSavePhoto = photoRepository.save(notSavePhoto);
+                photoRepository.delete(savedPhoto);
+                work.changePhoto(notSavePhoto);
+                check = 1;
+            }
+            if(check == 1){
+                workRepository.save(work);
+            }
+            
+            // 태그 비교 (태그 싹다 지우고 다시 추가)
+            List<Work_tag> work_tags = new ArrayList<>();
+            work_tags = work_tagRepository.findByWork(work);
+            for(int i=0; i<work_tags.size(); i++){
+                work_tagRepository.delete(work_tags.get(i));
+            }
+
+            for (int i = 0; i < modifyWorkDTO.getTags().size(); i++) {
+                if(!tagRepository.existsByName(modifyWorkDTO.getTags().get(i))){
+                    Tag tag = new Tag(modifyWorkDTO.getTags().get(i));
+                    tagRepository.save(tag);
+                    Work_tag work_tag = new Work_tag(work, tag);
+                    work_tagRepository.save(work_tag);
+                }
+            }
+
+
+
+        }catch (IOException | IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+        return check;
     }
 }

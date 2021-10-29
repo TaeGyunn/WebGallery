@@ -36,7 +36,7 @@ public class Work {
     private Photo photo;                       // 사진
 
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL)
-    private List<Work_tag> work_tags = new ArrayList<>();
+    private final List<Work_tag> work_tags = new ArrayList<>();
 
 
     public Work(Author author,String comment ,String thema, String name, Photo photo){
@@ -44,6 +44,19 @@ public class Work {
         this.comment = comment;
         this.thema = thema;
         this.name = name;
+        this.photo = photo;
+    }
+
+    public void changeComment(String comment){
+        this.comment = comment;
+    }
+    public void changeTheam(String thema){
+        this.thema = thema;
+    }
+    public void changeName(String name){
+        this.name = name;
+    }
+    public void changePhoto(Photo photo){
         this.photo = photo;
     }
 
