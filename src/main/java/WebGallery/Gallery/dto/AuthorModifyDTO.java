@@ -17,4 +17,11 @@ public class AuthorModifyDTO {
     private String comment;
 
     private MultipartFile thumb;
+
+    public AuthorModifyDTO(Long gno, String sns, String comment, MultipartFile thumb) {
+        this.gno = gno;
+        this.sns = sns;
+        this.comment = comment;
+        this.thumb = thumb;
+    }
 }

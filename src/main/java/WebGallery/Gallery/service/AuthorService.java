@@ -35,7 +35,7 @@ public class AuthorService {
         try {
             Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
             A_thumb a_thumb = fileStore.saveThumbFile(authorJoinDTO.getThumb());
-            String stodName = a_thumb.getStod_name();
+            String stodName = a_thumb.getStodname();
 
             Author author = new Author(
                     guest,
@@ -81,21 +81,21 @@ public class AuthorService {
 
         Author author = authorRepository.findByGno(authorModifyDTO.getGno());
         int check = 0;
-        String oldStod_name = "";
+        String oldStod_name = "1";
         try {
-            if (author.getSns() != authorModifyDTO.getSns()) {
+            if (!author.getSns().equals(authorModifyDTO.getSns())) {
                 author.changeSns(authorModifyDTO.getSns());
                 check = 1;
             }
-            if (author.getComment() != authorModifyDTO.getComment()) {
+            if (!author.getComment().equals(authorModifyDTO.getComment())) {
                 author.changeComment(authorModifyDTO.getComment());
                 check = 1;
             }
 
             A_thumb a_thumb = fileStore.saveThumbFile(authorModifyDTO.getThumb());
-            String stodName = a_thumb.getStod_name();
+            String stodName = a_thumb.getStodname();
 
-            if (author.getThumb() != stodName) {
+            if (!author.getThumb().equals(stodName)) {
                 oldStod_name = author.getThumb();
                 author.changeThumb(stodName);
                 check = 2;
@@ -103,7 +103,7 @@ public class AuthorService {
             if (check == 1 || check == 2) {
                 authorRepository.save(author);
                 if (check == 2) {
-                    A_thumb aThumb = a_tumbRepository.findByStod_name(oldStod_name);
+                    A_thumb aThumb = a_tumbRepository.findByStodname(oldStod_name);
                     aThumb.changeStod_name(stodName);
                     a_tumbRepository.save(aThumb);
                 }
