@@ -50,6 +50,21 @@ public class JoinController {
         return "/join";
     }
 
+    // 로그인 폼
+    @GetMapping("/loginForm")
+    public String loginForm(){ return "/front/guest/login";}
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        String logout = guestService.logout(session);
+        if(logout.equals("true")){
+            log.info("로그아웃 성공");
+            return "redirect:/login";
+        }
+        return "redirect:/";
+    }
+
     // 회원가입
     @PostMapping("/guestJoin")
     public String guestJoin(@Valid GuestJoinDTO guestJoinDTO){
@@ -59,10 +74,6 @@ public class JoinController {
 
         return "/";
     }
-
-    // 로그인 폼
-    @GetMapping("/loginForm")
-    public String loginForm(){ return "/front/guest/login";}
 
     // 로그인
     @PostMapping("/login")
@@ -90,17 +101,7 @@ public class JoinController {
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
         return "/login";
     }
-    
-    // 로그아웃
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        String logout = guestService.logout(session);
-        if(logout.equals("true")){
-            log.info("로그아웃 성공");
-            return "redirect:/login";
-        }
-        return "redirect:/";
-    }
+
 
 
 
