@@ -25,11 +25,6 @@ public class GuestController {
         return "";
     }
 
-    @DeleteMapping("/deleteGuest")
-    public String deleteGuest(Long gno){
-        guestService.deleteGuest(gno);
-        return "";
-    }
 
     @GetMapping("/modifyGuestForm")
     public String modifyGuestForm(){
@@ -47,6 +42,12 @@ public class GuestController {
             log.info("modify fail");
             return "";
         }
+        return "";
+    }
+
+    @DeleteMapping("/deleteGuest")
+    public String deleteGuest(Long gno){
+        guestService.deleteGuest(gno);
         return "";
     }
 
