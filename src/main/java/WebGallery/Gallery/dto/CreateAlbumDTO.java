@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class CreateAlbumDTO {
 
+    // branch2
     private String name;
 }
