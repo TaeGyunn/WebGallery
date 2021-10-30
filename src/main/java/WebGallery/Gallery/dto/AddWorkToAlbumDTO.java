@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class AddWorkToAlbumDTO {
 
-    //branch3
     private Long ano;   //albumNo
 
     private List<Long> wnos;   //workNo
