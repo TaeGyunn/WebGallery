@@ -22,6 +22,17 @@ public class workController {
     public String insertWorkForm(){
         return "";
     }
+
+    @GetMapping("/deleteWorkForm")
+    public String deleteWorkForm(){
+        return "";
+    }
+
+    @GetMapping("/modifyWorkForm")
+    public String modifyWorkForm(){
+        return "";
+    }
+
     @PostMapping("/insertWork")
     public String insertWork(InsertWorkDTO insertWorkDTO){
 
@@ -35,10 +46,12 @@ public class workController {
         return "";
     }
 
-    @GetMapping("/deleteWorkForm")
-    public String deleteWorkForm(){
+    @PutMapping("/modifyWork")
+    public String modifyWork(ModifyWorkDTO modifyWorkDTO){
+
         return "";
     }
+
     @DeleteMapping("/deleteWork")
     public String deleteWork(Long workNo){
         log.info("workNo : "+workNo);
@@ -48,14 +61,5 @@ public class workController {
         return "";
     }
 
-    @GetMapping("/modifyWorkForm")
-    public String modifyWorkForm(){
-        return "";
-    }
-    @PutMapping("/modifyWork")
-    public String modifyWork(ModifyWorkDTO modifyWorkDTO){
-
-        return "";
-    }
 
 }

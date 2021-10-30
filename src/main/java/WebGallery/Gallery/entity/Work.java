@@ -38,6 +38,9 @@ public class Work {
     @OneToMany(mappedBy = "work", cascade = CascadeType.ALL)
     private final List<Work_tag> work_tags = new ArrayList<>();
 
+    @OneToMany(mappedBy = "work", cascade = CascadeType.ALL)
+    private final List<A_work> a_works = new ArrayList<>();
+
 
     public Work(Author author,String comment ,String thema, String name, Photo photo){
         this.author = author;
