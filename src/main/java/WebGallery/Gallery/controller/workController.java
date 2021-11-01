@@ -6,10 +6,7 @@ import WebGallery.Gallery.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,8 +49,8 @@ public class workController {
         return "";
     }
 
-    @DeleteMapping("/deleteWork")
-    public String deleteWork(Long workNo){
+    @DeleteMapping("/deleteWork/{workNo}")
+    public String deleteWork(@PathVariable(value = "workNo") Long workNo){
         log.info("workNo : "+workNo);
 
         workService.deleteWork(workNo);
