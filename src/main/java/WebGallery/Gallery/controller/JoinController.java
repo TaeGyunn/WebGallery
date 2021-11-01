@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +31,7 @@ public class JoinController {
         return ResponseEntity.ok(guestService.checkIdDuplication(id));
     }
 
-    // 이메일 중복 확인
+    // 이메일 중복 확인s
     @GetMapping("/guest-emails/{email}/exists")
     public ResponseEntity<Boolean> checkEmailDuplication(@PathVariable String email){
         return ResponseEntity.ok(guestService.checkEmailDuplication(email));
@@ -62,6 +61,7 @@ public class JoinController {
             log.info("로그아웃 성공");
             return "redirect:/login";
         }
+
         return "redirect:/";
     }
 
@@ -94,15 +94,12 @@ public class JoinController {
             session.setAttribute("loggedIn",loginGuestNick);
             session.setAttribute("role",guest.getRole());
             log.info("로그인 성공");
-            return "/";
+            return "redirect:";
         }
 
         //로그인 실패
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
         return "/login";
     }
-
-
-
 
 }

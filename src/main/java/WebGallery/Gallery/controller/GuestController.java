@@ -6,10 +6,7 @@ import WebGallery.Gallery.service.GuestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -45,8 +42,8 @@ public class GuestController {
         return "";
     }
 
-    @DeleteMapping("/deleteGuest")
-    public String deleteGuest(Long gno){
+    @DeleteMapping("/deleteGuest/{gno}")
+    public String deleteGuest(@PathVariable(value = "gno") Long gno){
         guestService.deleteGuest(gno);
         return "";
     }

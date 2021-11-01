@@ -6,10 +6,7 @@ import WebGallery.Gallery.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -54,8 +51,8 @@ public class AuthorController {
         return "";
     }
 
-    @DeleteMapping("/authorDelete")
-    public String authorDelete(Long gno){
+    @DeleteMapping("/authorDelete/{gno}")
+    public String authorDelete(@PathVariable(value = "gno") Long gno){
 
         authorService.authorDelete(gno);
 
