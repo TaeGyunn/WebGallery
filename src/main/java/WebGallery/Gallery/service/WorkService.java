@@ -2,18 +2,21 @@ package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.InsertWorkDTO;
 import WebGallery.Gallery.dto.ModifyWorkDTO;
+import WebGallery.Gallery.dto.PageWorkDTO;
 import WebGallery.Gallery.entity.*;
 import WebGallery.Gallery.repository.*;
 import WebGallery.Gallery.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleState;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +24,12 @@ import java.util.List;
 @Slf4j
 public class WorkService {
 
-    private AuthorRepository authorRepository;
-    private WorkRepository workRepository;
-    private PhotoRepository photoRepository;
-    private TagRepository tagRepository;
-    private Work_tagRepository work_tagRepository;
-    private FileStore fileStore;
+    private final AuthorRepository authorRepository;
+    private final WorkRepository workRepository;
+    private final PhotoRepository photoRepository;
+    private final TagRepository tagRepository;
+    private final Work_tagRepository work_tagRepository;
+    private final FileStore fileStore;
 
     public Integer InsertWork(InsertWorkDTO insertWorkDTO){
 
@@ -143,5 +146,11 @@ public class WorkService {
         }
 
         return check;
+    }
+
+    public List<PageWorkDTO> workPage(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page -1, size, Sort.Direction.DESC, "author");
+        return workRepository.findAll(pageable).stream().map(PageWorkDTO::new).collect(Collectors.toList());
+
     }
 }

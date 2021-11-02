@@ -14,11 +14,11 @@ public class A_work {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long awno;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ano")
     private Album album;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wno")
     private Work work;
 

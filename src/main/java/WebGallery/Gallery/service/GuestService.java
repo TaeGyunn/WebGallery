@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,15 +34,28 @@ public class GuestService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public boolean checkEmailDuplication(String email){
+    public boolean checkEmailDuplication(String email) {
         return guestRepository.existsByEmail(email);
     }
 
     @Transactional(readOnly = true)
-    public boolean checkIdDuplication(Long id) {return guestRepository.existsById(id);}
+    public boolean checkIdDuplication(Long id) {
+        return guestRepository.existsById(id);
+    }
 
     @Transactional(readOnly = true)
-    public boolean checkNickDuplication(String nick) {return guestRepository.existsByNick(nick);}
+    public boolean checkNickDuplication(String nick) {
+        return guestRepository.existsByNick(nick);
+    }
+
+    public boolean checkEmailAndName(String email, String name){
+        log.info("check");
+        Guest guest = guestRepository.findByEmail(email);
+        if(guest.getName().equals(name)){
+            return true;
+        }
+        return false;
+    }
 
     public Long join(GuestJoinDTO guestJoinDTO) {
 
