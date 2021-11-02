@@ -14,11 +14,11 @@ public class Work_tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wtno;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wno")
     private Work work;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tno")
     private Tag tag;
 

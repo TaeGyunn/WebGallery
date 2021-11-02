@@ -2,18 +2,28 @@ package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.InsertWorkDTO;
 import WebGallery.Gallery.dto.ModifyWorkDTO;
+import WebGallery.Gallery.dto.PageWorkDTO;
+import WebGallery.Gallery.entity.Work;
+import WebGallery.Gallery.repository.WorkRepository;
 import WebGallery.Gallery.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 public class workController {
 
-    private WorkService workService;
+    private final WorkService workService;
+    private final WorkRepository workRepository;
 
     @GetMapping("/insertWorkForm")
     public String insertWorkForm(){
@@ -30,6 +40,16 @@ public class workController {
         return "";
     }
 
+    @GetMapping("/workPage/{page}/{size}")
+    public List<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
+                               @PathVariable(value = "size") Integer size,
+                               Pageable pageable){
+
+        List<PageWorkDTO> works = workService.workPage(page, size);
+
+        return works;
+    }
+
     @PostMapping("/insertWork")
     public String insertWork(InsertWorkDTO insertWorkDTO){
 
@@ -42,6 +62,9 @@ public class workController {
 
         return "";
     }
+
+
+
 
     @PutMapping("/modifyWork")
     public String modifyWork(ModifyWorkDTO modifyWorkDTO){

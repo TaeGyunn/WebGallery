@@ -2,6 +2,7 @@ package WebGallery.Gallery.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ public class Work {
     @NotEmpty
     private String name;                        // 작업물 이름
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="pno")
     private Photo photo;                       // 사진
 
@@ -45,6 +46,15 @@ public class Work {
     public Work(Author author,String comment ,String thema, String name, Photo photo){
         this.author = author;
         this.comment = comment;
+        this.thema = thema;
+        this.name = name;
+        this.photo = photo;
+    }
+
+    public Work(Long wno, String comment, Integer likes ,String thema, String name, Photo photo){
+        this.wno = wno;
+        this.comment = comment;
+        this.likes = likes;
         this.thema = thema;
         this.name = name;
         this.photo = photo;

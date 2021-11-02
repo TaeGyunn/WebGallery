@@ -10,6 +10,23 @@ spring:
 #    username : gallery
 #    password : 48654865
 
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: cjstkzlxl98@naver.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout : 5000
+          timeout : 5000
+          writetimeout: 5000
+          ssl:
+            enable: true
+            required: true
+            trust:  smtp.naver.com
+
   mvc:
     view:
       suffix: .html

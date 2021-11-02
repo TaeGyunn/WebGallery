@@ -6,12 +6,17 @@ import WebGallery.Gallery.dto.Role;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.entity.Guest;
+import WebGallery.Gallery.entity.Work;
 import WebGallery.Gallery.repository.A_TumbRepository;
 import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,6 +119,14 @@ public class AuthorService {
         }
 
         return check;
+    }
+
+    public Page<Author> showWork(String nick, int page){
+
+        Pageable pageable = PageRequest.of(page -1, 5, Sort.Direction.DESC, "guest");
+        Guest guest = guestRepository.findByNick(nick);
+
+        return authorRepository.findByGuest(guest, pageable);
     }
 
 
