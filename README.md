@@ -21,7 +21,8 @@
   
 ## ER Diagram
   
-![Gallery+ERD](https://user-images.githubusercontent.com/84495814/140073370-0ad54ac9-6b00-44c0-b019-cb0c7bf2f1f6.png)
+![InkedGallery+ERD_LI](https://user-images.githubusercontent.com/84495814/140073836-1499ae05-ea6a-40d8-b256-18ab6a04c780.jpg)
+
 
 
 
