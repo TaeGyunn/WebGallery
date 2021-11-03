@@ -41,11 +41,11 @@ public class workController {
     }
 
     @GetMapping("/workPage/{page}/{size}")
-    public List<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
+    public Page<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
                                @PathVariable(value = "size") Integer size,
                                Pageable pageable){
 
-        List<PageWorkDTO> works = workService.workPage(page, size);
+        Page<PageWorkDTO> works = workService.workPage(page, size);
 
         return works;
     }

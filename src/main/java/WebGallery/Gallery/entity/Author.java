@@ -3,6 +3,8 @@ package WebGallery.Gallery.entity;
 import WebGallery.Gallery.dto.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,7 +31,7 @@ public class Author{
     @NotEmpty
     private String thumb;   // 썸네일 서버명 이름
 
-
+    @BatchSize(size=100)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Work> works = new ArrayList<>();
 

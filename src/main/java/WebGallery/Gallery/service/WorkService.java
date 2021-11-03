@@ -148,9 +148,16 @@ public class WorkService {
         return check;
     }
 
-    public List<PageWorkDTO> workPage(Integer page, Integer size){
+    public Page<PageWorkDTO> workPage(Integer page, Integer size){
         Pageable pageable = PageRequest.of(page -1, size, Sort.Direction.DESC, "author");
-        return workRepository.findAll(pageable).stream().map(PageWorkDTO::new).collect(Collectors.toList());
+
+        List<PageWorkDTO> pageWorkDTOS = workRepository.findAllWithAuthor().stream().map(PageWorkDTO::new).collect(Collectors.toList());
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), pageWorkDTOS.size());
+        final Page<PageWorkDTO> Result = new PageImpl<>(pageWorkDTOS.subList(start, end), pageable, pageWorkDTOS.size());
+
+        return Result;
+
 
     }
 }
