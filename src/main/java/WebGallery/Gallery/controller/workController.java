@@ -11,10 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.Message;
 import java.util.List;
 
 @RestController
@@ -23,7 +26,6 @@ import java.util.List;
 public class workController {
 
     private final WorkService workService;
-    private final WorkRepository workRepository;
 
     @GetMapping("/insertWorkForm")
     public String insertWorkForm(){
@@ -39,17 +41,40 @@ public class workController {
     public String modifyWorkForm(){
         return "";
     }
-
+    
+    //작업물 전체 페이징
     @GetMapping("/workPage/{page}/{size}")
-    public List<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
+    public Page<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
                                @PathVariable(value = "size") Integer size,
                                Pageable pageable){
 
-        List<PageWorkDTO> works = workService.workPage(page, size);
+        Page<PageWorkDTO> works = workService.workPage(page, size);
 
         return works;
     }
+    
+    //테마별 아이템 페이징
+    @GetMapping("/workThemaPage/{page}/{size}/{thema}")
+    public ResponseEntity<Page<PageWorkDTO>> getThemaWorks(@PathVariable(value = "page") Integer page,
+                                           @PathVariable(value = "size") Integer size,
+                                           @PathVariable(value = "thema") String thema){
 
+        Page<PageWorkDTO> works = workService.workThemaPage(page,size,thema);
+        return ResponseEntity.ok(works);
+    }
+    
+    
+    // 작업물 좋아요
+    @GetMapping("/likeWork/{guestNo}/{workNo}")
+    public ResponseEntity likeWork(@PathVariable("guestNo") Long gno,
+                                   @PathVariable("workNo") Long wno){
+
+        workService.likeWork(gno, wno);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    //작업물 추가
     @PostMapping("/insertWork")
     public String insertWork(InsertWorkDTO insertWorkDTO){
 
@@ -62,16 +87,15 @@ public class workController {
 
         return "";
     }
-
-
-
-
+    
+    //작업물 수정
     @PutMapping("/modifyWork")
     public String modifyWork(ModifyWorkDTO modifyWorkDTO){
 
         return "";
     }
-
+    
+    //작업물 삭제
     @DeleteMapping("/deleteWork/{workNo}")
     public String deleteWork(@PathVariable(value = "workNo") Long workNo){
         log.info("workNo : "+workNo);

@@ -1,8 +1,6 @@
 package WebGallery.Gallery.service;
 
-import WebGallery.Gallery.dto.AuthorJoinDTO;
-import WebGallery.Gallery.dto.AuthorModifyDTO;
-import WebGallery.Gallery.dto.Role;
+import WebGallery.Gallery.dto.*;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.entity.Guest;
@@ -10,6 +8,7 @@ import WebGallery.Gallery.entity.Work;
 import WebGallery.Gallery.repository.A_TumbRepository;
 import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.repository.GuestRepository;
+import WebGallery.Gallery.repository.WorkRepository;
 import WebGallery.Gallery.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final GuestRepository guestRepository;
+    private final WorkRepository workRepository;
     private final A_TumbRepository a_tumbRepository;
     private final FileStore fileStore;
 
@@ -121,12 +123,17 @@ public class AuthorService {
         return check;
     }
 
-    public Page<Author> showWork(String nick, int page){
+    public List<PageAuthorDTO> showWork(String nick, int page){
 
         Pageable pageable = PageRequest.of(page -1, 5, Sort.Direction.DESC, "guest");
         Guest guest = guestRepository.findByNick(nick);
+//        Page<Author> a = authorRepository.findByGno(guest.getGno(),pageable);
+        List<Author> a = authorRepository.findAllWithWork();
 
-        return authorRepository.findByGuest(guest, pageable);
+        List<PageAuthorDTO> authorPage = a.stream().map(PageAuthorDTO::new).collect(Collectors.toList());
+
+        return authorPage;
+
     }
 
 

@@ -1,4 +1,4 @@
-package WebGallery.Gallery.service;
+package WebGallery.Gallery.service.impl;
 
 import WebGallery.Gallery.domain.UserDetailImpl;
 import WebGallery.Gallery.entity.Guest;

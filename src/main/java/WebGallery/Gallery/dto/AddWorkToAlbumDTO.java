@@ -14,4 +14,9 @@ public class AddWorkToAlbumDTO {
     private Long ano;   //albumNo
 
     private List<Long> wnos;   //workNo
+
+    public AddWorkToAlbumDTO(Long ano, List<Long> wnos){
+        this.ano = ano;
+        this.wnos = wnos;
+    }
 }

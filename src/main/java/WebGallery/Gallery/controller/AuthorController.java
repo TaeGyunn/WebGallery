@@ -2,14 +2,18 @@ package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.AuthorJoinDTO;
 import WebGallery.Gallery.dto.AuthorModifyDTO;
+import WebGallery.Gallery.dto.PageAuthorDTO;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,15 +30,16 @@ public class AuthorController {
 
     @GetMapping("/authorModifyForm")
     public String authorModifyForm(){return "";}
-
+    
+    //작가 닉네임 검색
     @GetMapping("/author_work/{page}/{nick}")
-    public Page<Author> showWork(@PathVariable(value = "page") int page,
-                                 @PathVariable(value = "nick") String nick){
+    public ResponseEntity<List<PageAuthorDTO>> showWork(@PathVariable(value = "page") int page,
+                                                        @PathVariable(value = "nick") String nick){
 
-        return authorService.showWork(nick, page);
-
+        return ResponseEntity.ok(authorService.showWork(nick, page));
     }
-
+    
+    //작가 가입
     @PostMapping("/authorJoin")
     public String authorJoin(AuthorJoinDTO authorJoinDTO){
 
@@ -48,7 +53,8 @@ public class AuthorController {
         }
         return "";
     }
-
+    
+    //작가수정
     @PutMapping("/authorModify")
     public String authorModify(AuthorModifyDTO authorModifyDTO){
 
@@ -61,7 +67,8 @@ public class AuthorController {
         }
         return "";
     }
-
+    
+    //작가 삭제
     @DeleteMapping("/authorDelete/{gno}")
     public String authorDelete(@PathVariable(value = "gno") Long gno){
 

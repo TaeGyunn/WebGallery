@@ -2,21 +2,25 @@ package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.AddWorkToAlbumDTO;
 import WebGallery.Gallery.dto.CreateAlbumDTO;
+import WebGallery.Gallery.dto.PageAlbumDTO;
+import WebGallery.Gallery.dto.PageAuthorDTO;
+import WebGallery.Gallery.entity.Album;
 import WebGallery.Gallery.service.AlbumService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class AlbumController {
 
-    private AlbumService albumService;
+    private final AlbumService albumService;
 
     @GetMapping("/createAlbumForm")
     public String createAlbumForm(){
@@ -33,6 +37,14 @@ public class AlbumController {
         return "";
     }
     
+    //앨범리스트 가져오기
+    @GetMapping("/showAlbumList/{gno}")
+    public ResponseEntity<List<PageAlbumDTO>> showAlbumList(@PathVariable(name = "gno") Long gno){
+        List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
+        return ResponseEntity.ok(albumList);
+    }
+
+    // 앨범 생성
     @PostMapping("/createAlbum")
     public String createAlbum(CreateAlbumDTO createAlbumDTO){
 
@@ -44,7 +56,8 @@ public class AlbumController {
         }
         return "";
     }
-
+    
+    //앨범에 작업물 추가
     @PostMapping("/addWorkToAlbum")
     public String addWorkToAlbum(AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
@@ -55,5 +68,23 @@ public class AlbumController {
         }
         return "";
     }
+
+    // 앨범 삭제
+    @DeleteMapping("/deleteAlbum/{ano}")
+    public ResponseEntity deleteAlbum(@PathVariable(value = "ano") Long ano){
+
+        albumService.deleteAlbum(ano);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    //앨범에 작업물 삭제
+    @DeleteMapping("/deleteWorkToAlbum/{ano}/{wno}")
+    public ResponseEntity deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
+                                            @PathVariable(value="wno") Long wno){
+
+        albumService.deleteWorkToAlbum(ano, wno);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }

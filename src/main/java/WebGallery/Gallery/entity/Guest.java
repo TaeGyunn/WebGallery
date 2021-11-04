@@ -10,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -41,6 +39,9 @@ public class Guest {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;    // role
+
+    @OneToMany(mappedBy = "guest")
+    private List<Album> albumList = new ArrayList<>();
 
     public Guest(String name, String id, String pw, String nick, String email, Role role){
         this.name = name;

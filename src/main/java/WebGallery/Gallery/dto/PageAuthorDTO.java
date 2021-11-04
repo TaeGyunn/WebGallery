@@ -20,8 +20,7 @@ public class PageAuthorDTO {
 
     private String thumb;
 
-
-    private List<PageWorkDTO> workDTOS;
+    private List<PageAuthorWorkDTO> pageAuthorWorkDTOS;
 
     public PageAuthorDTO(Author author){
         this.gno = author.getGuest().getGno();
@@ -31,9 +30,9 @@ public class PageAuthorDTO {
 
         PersistenceUnitUtil utill = BeanRegistry.lookup(PersistenceUnitUtil.class);
         if(utill.isLoaded(author, "works")){ //FETCH JOIN
-            this.workDTOS = author.getWorks().stream().map(PageWorkDTO::new).collect(Collectors.toList());
+            this.pageAuthorWorkDTOS = author.getWorks().stream().map(PageAuthorWorkDTO::new).collect(Collectors.toList());
         }else{
-            this.workDTOS = Collections.emptyList();
+            this.pageAuthorWorkDTOS = Collections.emptyList();
         }
     }
 
