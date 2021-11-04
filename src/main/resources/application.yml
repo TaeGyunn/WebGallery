@@ -6,14 +6,14 @@ spring:
 #    password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
     #Server
-    url : jdbc:mariadb://gallery.cxmiwafmcind.ap-northeast-2.rds.amazonaws.com:3306/board?serverTimezone=UTC&characterEncoding=UTF-8
+    url : jdbc:mariadb://gallery.cxmiwafmcind.ap-northeast-2.rds.amazonaws.com:3306/gallery_server?serverTimezone=UTC&characterEncoding=UTF-8
     username : gallery
     password : 48654865
 
   mail:
     host: smtp.naver.com
     port: 465
-    username: cjstkzlxl98@naver.com
+    username:
     password:
     properties:
       mail:
