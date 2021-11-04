@@ -30,14 +30,16 @@ public class AuthorController {
 
     @GetMapping("/authorModifyForm")
     public String authorModifyForm(){return "";}
-
+    
+    //작가 닉네임 검색
     @GetMapping("/author_work/{page}/{nick}")
     public ResponseEntity<List<PageAuthorDTO>> showWork(@PathVariable(value = "page") int page,
                                                         @PathVariable(value = "nick") String nick){
 
         return ResponseEntity.ok(authorService.showWork(nick, page));
     }
-
+    
+    //작가 가입
     @PostMapping("/authorJoin")
     public String authorJoin(AuthorJoinDTO authorJoinDTO){
 
@@ -51,7 +53,8 @@ public class AuthorController {
         }
         return "";
     }
-
+    
+    //작가수정
     @PutMapping("/authorModify")
     public String authorModify(AuthorModifyDTO authorModifyDTO){
 
@@ -64,7 +67,8 @@ public class AuthorController {
         }
         return "";
     }
-
+    
+    //작가 삭제
     @DeleteMapping("/authorDelete/{gno}")
     public String authorDelete(@PathVariable(value = "gno") Long gno){
 

@@ -2,16 +2,23 @@ package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.AddWorkToAlbumDTO;
 import WebGallery.Gallery.dto.CreateAlbumDTO;
+import WebGallery.Gallery.dto.PageAlbumDTO;
+import WebGallery.Gallery.dto.PageAuthorDTO;
 import WebGallery.Gallery.entity.A_work;
 import WebGallery.Gallery.entity.Album;
+import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.entity.Work;
 import WebGallery.Gallery.repository.A_workRepository;
 import WebGallery.Gallery.repository.AlbumRepository;
+import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +26,24 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AlbumService {
 
-    private AlbumRepository albumRepository;
-    private A_workRepository a_workRepository;
-    private WorkRepository workRepository;
+    private final AlbumRepository albumRepository;
+    private final GuestRepository guestRepository;
+    private final A_workRepository a_workRepository;
+    private final WorkRepository workRepository;
 
+    //앨범리스트 가져오기
+    public List<PageAlbumDTO> showAlbumList(Long gno){
+        Guest guest = guestRepository.findByGno(gno);
+        return albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+    }
+    
+    //앨범 생성
     public Integer createAlbum(CreateAlbumDTO createAlbum){
 
         int check = 0;
-
+        Guest guest = guestRepository.findByGno(createAlbum.getGno());
         if(!albumRepository.existsByName(createAlbum.getName())){
-            Album album = new Album(createAlbum.getName());
+            Album album = new Album(createAlbum.getName(), guest);
             albumRepository.save(album);
             check = 1;
             return check;
@@ -37,7 +52,8 @@ public class AlbumService {
         }
         return check;
     }
-
+    
+    //앨범에 작업물 추가
     public Integer addWorkToAlbum(AddWorkToAlbumDTO addWorkToAlbumDTO){
 
         int check = 0;
@@ -54,5 +70,36 @@ public class AlbumService {
     }
 
 
+    // 앨범에 작업물 삭제
+    public void deleteWorkToAlbum(Long ano, Long wno){
 
+        try {
+            Album album = albumRepository.findByAno(ano);
+            Work work = workRepository.findByWno(wno);
+            A_work a_work = new A_work(album, work);
+            a_workRepository.delete(a_work);
+            log.info("앨범에 작업물 삭제 완료");
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    // 앨범 삭제
+    public void deleteAlbum(Long ano) {
+
+        try {
+            Album album = albumRepository.findByAno(ano);
+            List<A_work> list = a_workRepository.findByAlbum(album);
+            if (list != null) {
+                for (int i = 0; i < list.size(); i++) {
+                    a_workRepository.delete(list.get(i));
+                }
+                log.info("a_work deletes");
+            }
+            albumRepository.delete(album);
+            log.info("album delete");
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
 }

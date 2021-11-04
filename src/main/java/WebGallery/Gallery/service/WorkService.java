@@ -8,7 +8,6 @@ import WebGallery.Gallery.repository.*;
 import WebGallery.Gallery.util.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.LifecycleState;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,8 @@ public class WorkService {
     private final PhotoRepository photoRepository;
     private final TagRepository tagRepository;
     private final Work_tagRepository work_tagRepository;
+    private final GuestRepository guestRepository;
+    private final LikeRepository likeRepository;
     private final FileStore fileStore;
 
     public Integer InsertWork(InsertWorkDTO insertWorkDTO){
@@ -149,15 +150,46 @@ public class WorkService {
     }
 
     public Page<PageWorkDTO> workPage(Integer page, Integer size){
-        Pageable pageable = PageRequest.of(page -1, size, Sort.Direction.DESC, "author");
 
-        List<PageWorkDTO> pageWorkDTOS = workRepository.findAllWithAuthor().stream().map(PageWorkDTO::new).collect(Collectors.toList());
-        final int start = (int)pageable.getOffset();
+            Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "author");
+            List<PageWorkDTO> pageWorkDTOS = workRepository.findAllWithAuthor().stream().map(PageWorkDTO::new).collect(Collectors.toList());
+            final int start = (int) pageable.getOffset();
+            final int end = Math.min((start + pageable.getPageSize()), pageWorkDTOS.size());
+            final Page<PageWorkDTO> Result = new PageImpl<>(pageWorkDTOS.subList(start, end), pageable, pageWorkDTOS.size());
+
+            return Result;
+        }
+
+    public Page<PageWorkDTO> workThemaPage(Integer page, Integer size, String thema){
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "likes");
+        List<PageWorkDTO> pageWorkDTOS = workRepository.findByThemaWithAuthor(thema).stream().map(PageWorkDTO::new).collect(Collectors.toList());
+        final int start = (int) pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), pageWorkDTOS.size());
         final Page<PageWorkDTO> Result = new PageImpl<>(pageWorkDTOS.subList(start, end), pageable, pageWorkDTOS.size());
 
         return Result;
+    }
 
+
+    public void likeWork(Long gno, Long wno){
+
+        Guest guest = guestRepository.findByGno(gno);
+        Work work = workRepository.findByWno(wno);
+        boolean check = likeRepository.existsByGuestAndWork(guest, work);
+
+        if(check){
+            Likes likes = likeRepository.findByGuestAndWork(guest,work);
+            likeRepository.delete(likes);
+
+            work.changeLike(work.getLikes()-1);
+            workRepository.save(work);
+
+        }else{
+            Likes likes = new Likes(work, guest);
+            likeRepository.save(likes);
+            work.changeLike(work.getLikes() + 1);
+            workRepository.save(work);
+        }
 
     }
 }

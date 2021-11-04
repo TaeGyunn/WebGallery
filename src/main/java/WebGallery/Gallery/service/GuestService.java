@@ -93,6 +93,17 @@ public class GuestService {
         return guest;
     }
 
+    @Transactional(readOnly = true)
+    public String findGuestId(String email, String name){
+        Guest guest = guestRepository.findByEmail(email);
+        if(guest.getName().equals(name)){
+            return guest.getId();
+        }else{
+            log.info("정보를 다시 입력해주십시오");
+            return null;
+        }
+    }
+
 
     public String logout(HttpSession session) {
         if(session != null){

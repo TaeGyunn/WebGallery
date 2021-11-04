@@ -1,5 +1,6 @@
 package WebGallery.Gallery.dto;
 
+import WebGallery.Gallery.entity.A_work;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.entity.Photo;
 import WebGallery.Gallery.entity.Work;
@@ -37,5 +38,14 @@ public class PageWorkDTO {
         if(util.isLoaded(work, "author")){
             this.pageAuthorDTO = Optional.ofNullable(work.getAuthor()).map(PageAuthorDTO::new).orElse(null);
         }
+    }
+
+    public PageWorkDTO(A_work a_work){
+        this.wno = a_work.getWork().getWno();
+        this.likes = a_work.getWork().getLikes();
+        this.thema = a_work.getWork().getThema();
+        this.name = a_work.getWork().getName();
+        this.comment = a_work.getWork().getComment();
+        this.photo = a_work.getWork().getPhoto();
     }
 }

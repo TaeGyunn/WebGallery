@@ -73,5 +73,6 @@ public class Work {
     public void changePhoto(Photo photo){
         this.photo = photo;
     }
+    public void changeLike(Integer like) {this.likes = like;}
 
 }

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MailController {
 
-    private MailService mailService;
-
+    private final MailService mailService;
+    
+    //메일보내기(삭제 예정)
     @PostMapping("/mail")
     public void sendMail(MailDTO mailDTO){
         log.info(mailDTO.toString());

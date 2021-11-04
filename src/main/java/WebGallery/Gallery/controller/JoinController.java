@@ -2,8 +2,10 @@ package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.GuestJoinDTO;
 import WebGallery.Gallery.dto.LoginDTO;
+import WebGallery.Gallery.dto.MailDTO;
 import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.service.GuestService;
+import WebGallery.Gallery.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ import javax.validation.Valid;
 public class JoinController {
 
     private final GuestService guestService;
+    private final MailService mailService;
 
     // 아이디 중복 확인
     @GetMapping("/guest-id/{id}/exists")
@@ -28,7 +33,7 @@ public class JoinController {
         return ResponseEntity.ok(guestService.checkIdDuplication(id));
     }
 
-    // 이메일 중복 확인s
+    // 이메일 중복 확인
     @GetMapping("/guest-emails/{email}/exists")
     public ResponseEntity<Boolean> checkEmailDuplication(@PathVariable String email){
         return ResponseEntity.ok(guestService.checkEmailDuplication(email));
@@ -60,6 +65,42 @@ public class JoinController {
         }
 
         return "redirect:/";
+    }
+    
+    //이메일 이름 일치 확인
+    @GetMapping("/check/findpw/{email}/{name}")
+    public Map<String, Boolean> pw_find(@PathVariable(value = "email") String email,
+                                        @PathVariable(value = "name") String name){
+
+        Map<String, Boolean> json = new HashMap<>();
+        log.info("email : "+ email);
+        log.info("name :"+ name);
+
+        json.put("check", guestService.checkEmailAndName(email, name));
+        return json;
+    }
+
+    //id 찾기
+    @GetMapping("/check/findid/{email}/{name}")
+    public Map<String, String> id_find(@PathVariable(value = "email") String email,
+                                        @PathVariable(value = "name") String name){
+
+        Map<String, String> json = new HashMap<>();
+        String id = guestService.findGuestId(email, name);
+        if(id == null){
+            json.put("id", null);
+        }else{
+            json.put("id",id);
+        }
+        return json;
+    }
+
+
+    //비번 찾기 메일
+    @PostMapping("/check/findpw/sendmail")
+    public void sendMail(String email, String name){
+        MailDTO mailDTO = mailService.createMailAndChangePassword(email, name);
+        mailService.sendMail(mailDTO);
     }
 
     // 회원가입
