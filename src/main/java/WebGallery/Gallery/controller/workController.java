@@ -76,33 +76,35 @@ public class workController {
     
     //작업물 추가
     @PostMapping("/insertWork")
-    public String insertWork(InsertWorkDTO insertWorkDTO){
+    public ResponseEntity insertWork(InsertWorkDTO insertWorkDTO){
 
         log.info(insertWorkDTO.toString());
         if(insertWorkDTO.getTags().size() > 3){
             log.info("tag는 3개 까지만 가능합니다.");
-            return "";
+            return new ResponseEntity(HttpStatus.OK);
         }
         int check = workService.InsertWork(insertWorkDTO);
 
-        return "";
+        return new ResponseEntity(HttpStatus.OK);
     }
     
     //작업물 수정
     @PutMapping("/modifyWork")
-    public String modifyWork(ModifyWorkDTO modifyWorkDTO){
+    public ResponseEntity modifyWork(ModifyWorkDTO modifyWorkDTO){
 
-        return "";
+        workService.modifyWork(modifyWorkDTO);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
     
     //작업물 삭제
     @DeleteMapping("/deleteWork/{workNo}")
-    public String deleteWork(@PathVariable(value = "workNo") Long workNo){
+    public ResponseEntity deleteWork(@PathVariable(value = "workNo") Long workNo){
         log.info("workNo : "+workNo);
 
         workService.deleteWork(workNo);
 
-        return "";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
