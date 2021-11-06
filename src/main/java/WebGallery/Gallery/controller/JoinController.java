@@ -3,11 +3,14 @@ package WebGallery.Gallery.controller;
 import WebGallery.Gallery.dto.GuestJoinDTO;
 import WebGallery.Gallery.dto.LoginDTO;
 import WebGallery.Gallery.dto.MailDTO;
+import WebGallery.Gallery.entity.Admin;
 import WebGallery.Gallery.entity.Guest;
+import WebGallery.Gallery.service.AdminService;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,6 +28,7 @@ import java.util.Map;
 public class JoinController {
 
     private final GuestService guestService;
+    private final AdminService adminService;
     private final MailService mailService;
 
     // 아이디 중복 확인
@@ -138,6 +142,26 @@ public class JoinController {
         //로그인 실패
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
         return "/login";
+    }
+
+    @PostMapping("/adminLogin")
+    public ResponseEntity adminLogin(@Valid LoginDTO loginDTO, BindingResult bindingResult,
+                          @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request){
+
+        log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
+        
+        if(bindingResult.hasFieldErrors()){
+            log.info("로그인 바인딩 에러");
+        }
+
+        //로그인 성공
+        Admin admin = adminService.Login(loginDTO);
+        HttpSession session = request.getSession();
+        session.setAttribute("loggedIn",admin.getNick());
+        session.setAttribute("role",admin.getRole());
+        log.info("관리자 로그인 성공");
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
