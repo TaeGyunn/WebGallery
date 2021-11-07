@@ -61,16 +61,20 @@ public class JoinController {
 
     // 로그아웃
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public ResponseEntity<Map<String,String>> logout(HttpSession session){
         String logout = guestService.logout(session);
+        Map<String, String> map = new HashMap<>();
         if(logout.equals("true")){
             log.info("로그아웃 성공");
-            return "redirect:/login";
+            map.put("로그아웃","성공");
+        }else{
+            log.info("로그인이 되어있지 않습니다.");
+            map.put("로그아웃","실패");
         }
+        return ResponseEntity.ok(map);
 
-        return "redirect:/";
     }
-    
+
     //이메일 이름 일치 확인
     @GetMapping("/check/findpw/{email}/{name}")
     public Map<String, Boolean> pw_find(@PathVariable(value = "email") String email,
@@ -109,17 +113,17 @@ public class JoinController {
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public String guestJoin(@Valid GuestJoinDTO guestJoinDTO){
+    public ResponseEntity guestJoin(@Valid GuestJoinDTO guestJoinDTO){
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
 
-        return "/";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     // 로그인
     @PostMapping("/login")
-    public String login(@Valid LoginDTO loginDTO, BindingResult bindingResult,
+    public ResponseEntity<Map<String ,String>> login(@Valid LoginDTO loginDTO, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/")String redirectURL, HttpServletRequest request){
 
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
@@ -127,7 +131,7 @@ public class JoinController {
         if(bindingResult.hasFieldErrors()){
             log.info("로그인 바인딩 에러");
         }
-        
+        Map<String, String > map = new HashMap<>();
         //로그인 성공
         String loginGuestNick = guestService.Login(loginDTO);
         Guest guest = guestService.findGuestNick(loginGuestNick);
@@ -136,14 +140,17 @@ public class JoinController {
             session.setAttribute("loggedIn",loginGuestNick);
             session.setAttribute("role",guest.getRole());
             log.info("로그인 성공");
-            return "redirect:";
+            map.put("로그인","성공");
+            return ResponseEntity.ok(map);
         }
 
         //로그인 실패
         bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
-        return "/login";
+        map.put("로그인","실패");
+        return ResponseEntity.ok(map);
     }
 
+    //관리자 로그인
     @PostMapping("/adminLogin")
     public ResponseEntity adminLogin(@Valid LoginDTO loginDTO, BindingResult bindingResult,
                           @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request){

@@ -10,6 +10,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Admin findByNick(String nick);
     Admin findById(String id);
+    Admin findByAdno(Long adno);
 
 
 }
