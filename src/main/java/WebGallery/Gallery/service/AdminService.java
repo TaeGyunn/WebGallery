@@ -9,6 +9,10 @@ import WebGallery.Gallery.repository.AdminRepository;
 import WebGallery.Gallery.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +59,30 @@ public class AdminService {
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }
+    }
 
+    public void deleteNotice(Long adno){
+
+        try{
+            Admin admin = adminRepository.findByAdno(adno);
+            Notice notice = noticeRepository.findByAdmin(admin);
+            noticeRepository.delete(notice);
+            log.info("공지사항 삭제");
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Notice> getNotice(Integer page, Integer size){
+        try{
+            Pageable pageable = PageRequest.of(page-1, size, Sort.Direction.DESC, "nno");
+           Page<Notice> notices = noticeRepository.findAll(pageable);
+            return notices;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
