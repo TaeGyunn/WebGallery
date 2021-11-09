@@ -1,12 +1,14 @@
 package WebGallery.Gallery.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Notice {
 
     @Id
@@ -14,6 +16,7 @@ public class Notice {
     private Long nno;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adno")
     private Admin admin;
 
     private String title;

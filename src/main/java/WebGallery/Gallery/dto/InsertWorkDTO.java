@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class InsertWorkDTO {
 
-    private Long guest;           // 게스트
+    private Long gno;           // 게스트
     
     private String comment;     // 내용
 
@@ -22,8 +22,8 @@ public class InsertWorkDTO {
 
     private List<String> tags;
 
-    public InsertWorkDTO(Long guest, String comment, String thema, String name, MultipartFile file, List<String> tags) {
-        this.guest = guest;
+    public InsertWorkDTO(Long gno, String comment, String thema, String name, MultipartFile file, List<String> tags) {
+        this.gno = gno;
         this.comment = comment;
         this.thema = thema;
         this.name = name;

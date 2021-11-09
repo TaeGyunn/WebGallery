@@ -14,12 +14,14 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/admin")
 @Slf4j
 public class AdminController {
 
     private final AdminService adminService;
 
-    @GetMapping("/getAllNotice/{page}/{size}")
+    //공지사항 불러오기기
+   @GetMapping("/getAllNotice/{page}/{size}")
     public ResponseEntity<Page<Notice>> getNotice(@PathVariable(value = "page") Integer page,
                                     @PathVariable(value = "size") Integer size){
 
@@ -31,6 +33,7 @@ public class AdminController {
         return ResponseEntity.ok(notices);
     }
 
+    // 공지사항 작성
     @PostMapping("/Notice")
     public ResponseEntity createNotice(CreateNoticeDTO createNoticeDTO){
 
@@ -39,9 +42,10 @@ public class AdminController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @DeleteMapping("/deleteNotice/{no}")
-    public ResponseEntity deleteNotice(@PathVariable(value = "no") Long adno){
+    
+    //공지사항 삭제
+    @DeleteMapping("/deleteNotice/{adno}")
+    public ResponseEntity deleteNotice(@PathVariable(value = "adno") Long adno){
 
         adminService.deleteNotice(adno);
 

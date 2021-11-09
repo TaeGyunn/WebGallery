@@ -80,12 +80,12 @@ public class JoinController {
     public Map<String, Boolean> pw_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
 
-        Map<String, Boolean> json = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
         log.info("email : "+ email);
         log.info("name :"+ name);
 
-        json.put("check", guestService.checkEmailAndName(email, name));
-        return json;
+        map.put("check", guestService.checkEmailAndName(email, name));
+        return map;
     }
 
     //id 찾기
@@ -106,9 +106,11 @@ public class JoinController {
 
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
-    public void sendMail(String email, String name){
+    public ResponseEntity sendMail(String email, String name){
         MailDTO mailDTO = mailService.createMailAndChangePassword(email, name);
         mailService.sendMail(mailDTO);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     // 회원가입
@@ -170,5 +172,11 @@ public class JoinController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+//    // 비밀번호 재 등록
+//    public ResponseEntity<Map<String, String> reAddPw(String pw){
+//
+//
+//    }
 
 }

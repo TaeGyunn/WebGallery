@@ -40,7 +40,7 @@ public class WorkService {
             Photo photo = fileStore.saveWorkFile(insertWorkDTO.getFile());
             photo = photoRepository.save(photo);
 
-            Author author = authorRepository.findByGno(insertWorkDTO.getGuest());
+            Author author = authorRepository.findByGno(insertWorkDTO.getGno());
 
             Work work = new Work(
                     author,

@@ -3,18 +3,25 @@ package WebGallery.Gallery.controller;
 import WebGallery.Gallery.dto.GuestModifyDTO;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.MailService;
+import WebGallery.Gallery.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/guest")
 @Slf4j
 public class GuestController {
 
     private final GuestService guestService;
+    private final WorkService workService;
 
     @GetMapping("/deleteGuestForm")
     public String deleteGuestForm(){
@@ -29,27 +36,41 @@ public class GuestController {
         return "";
     }
 
+    // 작업물 좋아요
+    @GetMapping("/likeWork/{gno}/{wno}")
+    public ResponseEntity likeWork(@PathVariable("gno") Long gno,
+                                   @PathVariable("wno") Long wno){
+
+        workService.likeWork(gno, wno);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     
     //게스트 수정
     @PutMapping("/modifyGuest")
-    public String modifyGuest(@Valid GuestModifyDTO guestModifyDTO){
+    public ResponseEntity<Map<String,String>> modifyGuest(@Valid GuestModifyDTO guestModifyDTO){
         // 아직 프론트가 json으로 할지 말지 안정해져서 매개변수 간단하게 넣음
 
+        Map<String, String> map = new HashMap<>();
         int check = guestService.modifyGuest(guestModifyDTO);
         if(check == 0){
             log.info("modify fail");
-            return "";
+            map.put("수정", "실패");
+            return ResponseEntity.ok(map);
+
         }
-        return "";
+        map.put("수정","성공");
+        return ResponseEntity.ok(map);
+
     }
     
     //게스트 삭제
     @DeleteMapping("/deleteGuest/{gno}")
-    public String deleteGuest(@PathVariable(value = "gno") Long gno){
+    public ResponseEntity deleteGuest(@PathVariable(value = "gno") Long gno){
         guestService.deleteGuest(gno);
-        return "";
+
+        return new ResponseEntity(HttpStatus.OK);
     }
-
-
 
 }

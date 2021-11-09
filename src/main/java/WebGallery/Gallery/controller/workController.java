@@ -3,22 +3,14 @@ package WebGallery.Gallery.controller;
 import WebGallery.Gallery.dto.InsertWorkDTO;
 import WebGallery.Gallery.dto.ModifyWorkDTO;
 import WebGallery.Gallery.dto.PageWorkDTO;
-import WebGallery.Gallery.entity.Work;
-import WebGallery.Gallery.repository.WorkRepository;
 import WebGallery.Gallery.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.Message;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,13 +36,12 @@ public class workController {
     
     //작업물 전체 페이징
     @GetMapping("/workPage/{page}/{size}")
-    public Page<PageWorkDTO> getWorks(@PathVariable(value = "page") Integer page,
-                               @PathVariable(value = "size") Integer size,
-                               Pageable pageable){
+    public ResponseEntity<Page<PageWorkDTO>> getWorks(@PathVariable(value = "page") Integer page,
+                               @PathVariable(value = "size") Integer size){
 
         Page<PageWorkDTO> works = workService.workPage(page, size);
 
-        return works;
+        return ResponseEntity.ok(works);
     }
     
     //테마별 아이템 페이징
@@ -62,20 +53,10 @@ public class workController {
         Page<PageWorkDTO> works = workService.workThemaPage(page,size,thema);
         return ResponseEntity.ok(works);
     }
-    
-    
-    // 작업물 좋아요
-    @GetMapping("/likeWork/{guestNo}/{workNo}")
-    public ResponseEntity likeWork(@PathVariable("guestNo") Long gno,
-                                   @PathVariable("workNo") Long wno){
 
-        workService.likeWork(gno, wno);
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
     
     //작업물 추가
-    @PostMapping("/insertWork")
+    @PostMapping("/author/insertWork")
     public ResponseEntity insertWork(InsertWorkDTO insertWorkDTO){
 
         log.info(insertWorkDTO.toString());
@@ -89,7 +70,7 @@ public class workController {
     }
     
     //작업물 수정
-    @PutMapping("/modifyWork")
+    @PutMapping("/author/modifyWork")
     public ResponseEntity modifyWork(ModifyWorkDTO modifyWorkDTO){
 
         workService.modifyWork(modifyWorkDTO);

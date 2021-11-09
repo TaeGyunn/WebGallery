@@ -9,14 +9,18 @@ import WebGallery.Gallery.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/author")
 @Slf4j
 public class AuthorController {
 
@@ -41,40 +45,46 @@ public class AuthorController {
     
     //작가 가입
     @PostMapping("/authorJoin")
-    public String authorJoin(AuthorJoinDTO authorJoinDTO){
+    public ResponseEntity<Map<String, String>> authorJoin(AuthorJoinDTO authorJoinDTO){
 
         log.info(authorJoinDTO.toString());
+        Map<String, String> map = new HashMap<>();
+
         int check = authorService.authorJoin(authorJoinDTO);
 
         //성공
         if(check == 1){
-
-            return "";
+            map.put("가입", "성공");
+            return ResponseEntity.ok(map);
         }
-        return "";
+        map.put("가입", "실패");
+        return ResponseEntity.ok(map);
     }
     
     //작가수정
     @PutMapping("/authorModify")
-    public String authorModify(AuthorModifyDTO authorModifyDTO){
+    public ResponseEntity<Map<String, String>> authorModify(AuthorModifyDTO authorModifyDTO){
 
         log.info(authorModifyDTO.toString());
+        Map<String, String > map = new HashMap<>();
         int check = authorService.authorModify(authorModifyDTO);
 
         if(check == 0){
             log.info("modify fail");
-            return "";
+            map.put("작가 수정", "실패");
+            return ResponseEntity.ok(map);
         }
-        return "";
+        map.put("작가 수정", "성공");
+        return ResponseEntity.ok(map);
     }
     
     //작가 삭제
     @DeleteMapping("/authorDelete/{gno}")
-    public String authorDelete(@PathVariable(value = "gno") Long gno){
+    public ResponseEntity authorDelete(@PathVariable(value = "gno") Long gno){
 
         authorService.authorDelete(gno);
 
-        return "";
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
