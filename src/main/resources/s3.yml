@@ -1,0 +1,7 @@
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+    s3:
+      bucket: gallery-s3
