@@ -1,7 +1,7 @@
 cloud:
   aws:
     credentials:
-      accessKey: test
+      accessKey: test1
       secretKey:
     s3:
       bucket: gallery-s3
