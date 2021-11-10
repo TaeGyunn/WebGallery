@@ -37,4 +37,6 @@ out/
 .vscode/
 
 ### properties ###
-/src/main/java/resources/s3.yml
+/src/main/resources/awsS3.yml
+/src/main/resources/mail.yml
+/src/main/resources/db.yml
