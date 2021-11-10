@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### properties ###
-s3.yml
+/src/main/java/resources/s3.yml
