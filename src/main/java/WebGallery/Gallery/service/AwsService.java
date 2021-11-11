@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class AwsService {
@@ -33,7 +35,14 @@ public class AwsService {
             omd.setHeader("filename", files[i].getOriginalFilename());
             s3Client.putObject(new PutObjectRequest(bucketName+bucketKey, files[i].getOriginalFilename(),
                     files[i].getInputStream(),omd));
+            log.info(bucketName+bucketKey);
+            log.info(files[i].getOriginalFilename());
         }
+
+    }
+
+    public String getPhotoPath(String path){
+        return s3Client.getUrl(bucketName, path).toString();
     }
 
 
