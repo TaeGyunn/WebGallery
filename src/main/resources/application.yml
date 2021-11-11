@@ -3,6 +3,8 @@ spring:
 #    url: jdbc:mariadb://localhost:3306/gallery?characterEncoding=UTF-8&serverTimezone=UTC
 #    username: gallery
 #    password: 1234
+#    driver-class-name: org.mariadb.jdbc.Driver
+
 
   mvc:
     view:

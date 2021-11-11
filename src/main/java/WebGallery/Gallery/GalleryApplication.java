@@ -7,17 +7,17 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 @SpringBootApplication
 public class GalleryApplication {
 
-//	private static final String PROPERTIES =
-//			"spring.config.location="
-//			+"classpath:/application.properties"
-//			+",classpath:/security.yml";
+	private static final String PROPERTIES =
+			"spring.config.location="
+			+"classpath:/application.properties"
+			+",classpath:/security.yml";
 
 	public static void main(String[] args) {
-		SpringApplication.run(GalleryApplication.class, args);
+//		SpringApplication.run(GalleryApplication.class, args);
 
-//		new SpringApplicationBuilder(GalleryApplication.class)
-//				.properties(PROPERTIES)
-//				.run(args);
+		new SpringApplicationBuilder(GalleryApplication.class)
+				.properties(PROPERTIES)
+				.run(args);
 	}
 
 }
