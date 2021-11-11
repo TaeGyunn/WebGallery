@@ -13,10 +13,11 @@ public class GalleryApplication {
 			+",classpath:/security.yml";
 
 	public static void main(String[] args) {
-//		SpringApplication.run(GalleryApplication.class, args);
-		new SpringApplicationBuilder(GalleryApplication.class)
-				.properties(PROPERTIES)
-				.run(args);
+		SpringApplication.run(GalleryApplication.class, args);
+
+//		new SpringApplicationBuilder(GalleryApplication.class)
+//				.properties(PROPERTIES)
+//				.run(args);
 	}
 
 }
