@@ -18,6 +18,7 @@ public class GalleryApplication {
 		new SpringApplicationBuilder(GalleryApplication.class)
 				.properties(PROPERTIES)
 				.run(args);
+
 	}
 
 }
