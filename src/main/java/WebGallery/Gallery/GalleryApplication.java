@@ -10,7 +10,7 @@ public class GalleryApplication {
 	private static final String PROPERTIES =
 			"spring.config.location="
 			+"classpath:/application.properties"
-			+",classpath:/security.yml";
+			+",classpath:/application-security.yml";
 
 	public static void main(String[] args) {
 //		SpringApplication.run(GalleryApplication.class, args);
