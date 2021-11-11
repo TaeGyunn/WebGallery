@@ -20,7 +20,7 @@ public class AwsService {
     
     private final AmazonS3 s3Client;
     
-    @Value("${aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucketName;  //s3 버켓경로
 
     public void uploadMultipartFile(MultipartFile[] files, String bucketKey) throws IOException{
