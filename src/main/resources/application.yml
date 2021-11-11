@@ -1,31 +1,8 @@
 spring:
-  datasource:
+#  datasource:
 #    url: jdbc:mariadb://localhost:3306/gallery?characterEncoding=UTF-8&serverTimezone=UTC
 #    username: gallery
 #    password: 1234
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://gallery.cxmiwafmcind.ap-northeast-2.rds.amazonaws.com:3306/gallery_server?serverTimezone=UTC&characterEncoding=UTF-8
-    username: gallery
-    password: 48654865
-
-
-
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: cjstkzlxl98
-    password:
-    properties:
-      mail:
-        smtp:
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-          ssl:
-            enable: true
-            required: true
-            trust: smtp.naver.com
 
   mvc:
     view:
@@ -47,14 +24,5 @@ logging:
 file:
   upload:
     location: /Users/taeku/Desktop/images/
-
-
-cloud:
-  aws:
-    credentials:
-      accessKey: A
-      secretKey: N
-    s3:
-      bucket: gallery-s3
 
 
