@@ -36,7 +36,7 @@ public class AwsService {
     @Value("${cloud.aws.s3.bucket}")
     private final String bucketName;  //s3 버켓경로
 
-    //파일 업로드Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to          identify the bean that should be consumed
+    //파일 업로드
     public A_thumb uploadFileToA_thumb(MultipartFile file) throws IOException{
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();

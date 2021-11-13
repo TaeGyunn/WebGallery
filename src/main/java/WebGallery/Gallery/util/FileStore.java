@@ -3,6 +3,7 @@ package WebGallery.Gallery.util;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Photo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
-@Data
+@NoArgsConstructor
 @Slf4j
 public class FileStore {
 
