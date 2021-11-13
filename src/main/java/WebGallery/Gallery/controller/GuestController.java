@@ -1,16 +1,20 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.GuestModifyDTO;
+import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.MailService;
 import WebGallery.Gallery.service.WorkService;
+import WebGallery.Gallery.util.AwsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,10 +26,23 @@ public class GuestController {
 
     private final GuestService guestService;
     private final WorkService workService;
+    private final AwsService awsService;
 
     @GetMapping("/deleteGuestForm")
     public String deleteGuestForm(){
         return "";
+    }
+
+    @PostMapping("/test")
+    public String test(MultipartFile file){
+        try {
+            A_thumb aThumb = awsService.uploadFileToA_thumb(file);
+            String url = awsService.getFileUrl(aThumb.getStodname());
+            return url;
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    return null;
     }
 
 

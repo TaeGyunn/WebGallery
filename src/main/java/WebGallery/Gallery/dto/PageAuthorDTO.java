@@ -3,6 +3,7 @@ package WebGallery.Gallery.dto;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.util.BeanRegistry;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.PersistenceUnitUtil;
 import java.util.Collections;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@NoArgsConstructor
+
 public class PageAuthorDTO {
 
     private Long gno;

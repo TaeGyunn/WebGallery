@@ -1,13 +1,14 @@
 package WebGallery.Gallery.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class LoginDTO {
 
     @NotBlank(message = "아이디를 입력해주세요")

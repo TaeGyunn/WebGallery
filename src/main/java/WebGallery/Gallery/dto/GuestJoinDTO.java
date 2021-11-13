@@ -1,6 +1,7 @@
 package WebGallery.Gallery.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Query;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class GuestJoinDTO {
 
     @NotBlank(message = "아이디를 입력해주세요")

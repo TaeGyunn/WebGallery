@@ -13,6 +13,8 @@ import javax.persistence.PersistenceUnitUtil;
 import java.util.Optional;
 
 @Getter
+@NoArgsConstructor
+
 public class PageWorkDTO {
 
     private Long wno;

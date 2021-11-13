@@ -18,52 +18,21 @@ import java.util.UUID;
 @Slf4j
 public class FileStore {
 
-    @Value("${file.upload.location}")
-    private String fileDir;
+    public A_thumb saveThumbFile(String original, String server) throws IOException{
 
-    public String getFullPath(String fileName){
-        return fileDir + fileName;
-    }
-
-    public A_thumb saveThumbFile(MultipartFile multipartFile) throws IOException{
-
-        if(!multipartFile.isEmpty()){
-            String originalFileName = multipartFile.getOriginalFilename();
-
-            int delimter = originalFileName.lastIndexOf(".");
-            String extension = originalFileName.substring(delimter);
-
-            String uuid = UUID.randomUUID().toString();
-            String saveFileName = uuid + "." + extension;
-
-            multipartFile.transferTo(new File(getFullPath(saveFileName)));
-            return new A_thumb(
-                    originalFileName,
-                    saveFileName,
+        return new A_thumb(
+                    original,
+                    server,
                     LocalDateTime.now()
             );
-        }
-        return null;
     }
 
-    public Photo saveWorkFile(MultipartFile multipartFile) throws  IOException{
+    public Photo saveWorkFile(String original, String server) throws  IOException{
 
-        if(!multipartFile.isEmpty()){
-            String originalFileName = multipartFile.getOriginalFilename();
-
-            int delimter = originalFileName.lastIndexOf(".");
-            String extension = originalFileName.substring(delimter);
-
-            String uuid = UUID.randomUUID().toString();
-            String saveFileName = uuid + "." + extension;
-
-            multipartFile.transferTo(new File(getFullPath(saveFileName)));
-            return new Photo(
-                    originalFileName,
-                    saveFileName,
-                    LocalDateTime.now()
-            );
-        }
-        return null;
+        return new Photo(
+                original,
+                server,
+                LocalDateTime.now()
+        );
     }
 }

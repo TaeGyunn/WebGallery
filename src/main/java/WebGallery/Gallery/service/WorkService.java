@@ -5,7 +5,7 @@ import WebGallery.Gallery.dto.ModifyWorkDTO;
 import WebGallery.Gallery.dto.PageWorkDTO;
 import WebGallery.Gallery.entity.*;
 import WebGallery.Gallery.repository.*;
-import WebGallery.Gallery.util.FileStore;
+import WebGallery.Gallery.util.AwsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -30,14 +30,15 @@ public class WorkService {
     private final Work_tagRepository work_tagRepository;
     private final GuestRepository guestRepository;
     private final LikeRepository likeRepository;
-    private final FileStore fileStore;
+    private final AwsService awsService;
 
     public Integer InsertWork(InsertWorkDTO insertWorkDTO){
 
         int check = 0;
 
         try {
-            Photo photo = fileStore.saveWorkFile(insertWorkDTO.getFile());
+
+            Photo photo = awsService.uploadFileToPhoto(insertWorkDTO.getFile());
             photo = photoRepository.save(photo);
 
             Author author = authorRepository.findByGno(insertWorkDTO.getGno());
@@ -100,8 +101,11 @@ public class WorkService {
         try {
             Work work = workRepository.findByWno(modifyWorkDTO.getWno());
             Photo savedPhoto = photoRepository.findByPno(work.getPhoto().getPno());
-            Photo notSavePhoto = fileStore.saveWorkFile(modifyWorkDTO.getFile());
-
+            Photo notSavePhoto = new Photo();
+            if(modifyWorkDTO.getFile() != null) {
+                awsService.delete(savedPhoto.getStod_name());
+                notSavePhoto = awsService.uploadFileToPhoto(modifyWorkDTO.getFile());
+            }
             if (!work.getComment().equals(modifyWorkDTO.getComment())) {
                 work.changeComment(modifyWorkDTO.getComment());
                 check = 1;

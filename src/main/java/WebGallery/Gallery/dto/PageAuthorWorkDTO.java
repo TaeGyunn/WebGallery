@@ -4,11 +4,14 @@ import WebGallery.Gallery.entity.Photo;
 import WebGallery.Gallery.entity.Work;
 import WebGallery.Gallery.util.BeanRegistry;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.PersistenceUnitUtil;
 import java.util.Optional;
 
 @Getter
+@NoArgsConstructor
+
 public class PageAuthorWorkDTO {
     private Long wno;
     private Integer likes;

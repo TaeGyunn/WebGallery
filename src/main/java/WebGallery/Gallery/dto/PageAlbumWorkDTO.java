@@ -4,9 +4,12 @@ import WebGallery.Gallery.entity.A_work;
 import WebGallery.Gallery.entity.Album;
 import WebGallery.Gallery.entity.Work;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 @Getter
+@NoArgsConstructor
+
 public class PageAlbumWorkDTO {
 
     private Long awno;

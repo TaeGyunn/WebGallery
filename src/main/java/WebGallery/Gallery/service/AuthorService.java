@@ -4,15 +4,12 @@ import WebGallery.Gallery.dto.*;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.entity.Guest;
-import WebGallery.Gallery.entity.Work;
 import WebGallery.Gallery.repository.A_TumbRepository;
 import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.repository.GuestRepository;
-import WebGallery.Gallery.repository.WorkRepository;
-import WebGallery.Gallery.util.FileStore;
+import WebGallery.Gallery.util.AwsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,9 +28,8 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final GuestRepository guestRepository;
-    private final WorkRepository workRepository;
+    private final AwsService awsService;
     private final A_TumbRepository a_tumbRepository;
-    private final FileStore fileStore;
 
     public Integer authorJoin(AuthorJoinDTO authorJoinDTO){
 
@@ -41,7 +37,8 @@ public class AuthorService {
 
         try {
             Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
-            A_thumb a_thumb = fileStore.saveThumbFile(authorJoinDTO.getThumb());
+
+            A_thumb a_thumb = awsService.uploadFileToA_thumb(authorJoinDTO.getThumb());
             String stodName = a_thumb.getStodname();
 
             Author author = new Author(
@@ -89,6 +86,7 @@ public class AuthorService {
         Author author = authorRepository.findByGno(authorModifyDTO.getGno());
         int check = 0;
         String oldStod_name = "1";
+        A_thumb a_thumb = new A_thumb();
         try {
             if (!author.getSns().equals(authorModifyDTO.getSns())) {
                 author.changeSns(authorModifyDTO.getSns());
@@ -99,7 +97,11 @@ public class AuthorService {
                 check = 1;
             }
 
-            A_thumb a_thumb = fileStore.saveThumbFile(authorModifyDTO.getThumb());
+            if(authorModifyDTO.getThumb() != null){
+                A_thumb thumb = a_tumbRepository.findByAuthor(author);
+                awsService.delete(thumb.getStodname());
+                a_thumb = awsService.uploadFileToA_thumb(authorModifyDTO.getThumb());
+            }
             String stodName = a_thumb.getStodname();
 
             if (!author.getThumb().equals(stodName)) {
