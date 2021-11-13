@@ -36,7 +36,7 @@ public class AwsService {
     @Value("${cloud.aws.s3.bucket}")
     private final String bucketName;  //s3 버켓경로
 
-    //파일 업로드
+    //파일 업로드Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to          identify the bean that should be consumed
     public A_thumb uploadFileToA_thumb(MultipartFile file) throws IOException{
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -44,7 +44,7 @@ public class AwsService {
         objectMetadata.setContentType(file.getContentType());
 
         try(InputStream inputStream = file.getInputStream()){
-            s3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream,objectMetadata)
+            this.s3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream,objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         }catch(IOException e){
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다."));
@@ -61,7 +61,7 @@ public class AwsService {
         objectMetadata.setContentType(file.getContentType());
 
         try(InputStream inputStream = file.getInputStream()){
-            s3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream,objectMetadata)
+            this.s3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream,objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         }catch(IOException e){
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다."));
@@ -100,7 +100,4 @@ public class AwsService {
             e.printStackTrace();
         }
     }
-
-
-
 }
