@@ -2,9 +2,7 @@ package WebGallery.Gallery.util;
 
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Photo;
-import WebGallery.Gallery.util.FileStore;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -12,14 +10,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -32,7 +27,7 @@ import java.util.UUID;
 public class AwsService {
     
     private final AmazonS3 s3Client;
-    private final FileStore fileStore;
+//    private final FileStore fileStore;
     
     @Value("${cloud.aws.s3.bucket}")
     private final String bucketName;  //s3 버켓경로
