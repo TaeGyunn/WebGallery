@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
@@ -50,7 +51,12 @@ public class AwsService {
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다."));
         }
 
-        return fileStore.saveThumbFile(file.getOriginalFilename(), fileName);
+        A_thumb aThumb =  new A_thumb(
+                file.getOriginalFilename(),
+                fileName,
+                LocalDateTime.now()
+        );
+        return aThumb;
 
     }
 
@@ -66,8 +72,12 @@ public class AwsService {
         }catch(IOException e){
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다."));
         }
-
-        return fileStore.saveWorkFile(file.getOriginalFilename(), fileName);
+        Photo photo = new Photo(
+                file.getOriginalFilename(),
+                fileName,
+                LocalDateTime.now()
+        );
+        return photo;
 
     }
 
