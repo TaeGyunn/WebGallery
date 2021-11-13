@@ -26,25 +26,11 @@ public class GuestController {
 
     private final GuestService guestService;
     private final WorkService workService;
-    private final AwsService awsService;
 
     @GetMapping("/deleteGuestForm")
     public String deleteGuestForm(){
         return "";
     }
-
-    @PostMapping("/test")
-    public String test(MultipartFile file){
-        try {
-            A_thumb aThumb = awsService.uploadFileToA_thumb(file);
-            String url = awsService.getFileUrl(aThumb.getStodname());
-            return url;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    return null;
-    }
-
 
     @GetMapping("/modifyGuestForm")
     public String modifyGuestForm(){
