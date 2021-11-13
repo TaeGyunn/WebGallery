@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Component
-@NoArgsConstructor
 @Slf4j
 public class FileStore {
 
