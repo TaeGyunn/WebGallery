@@ -34,7 +34,7 @@ public class AwsService {
     private final FileStore fileStore;
     
     @Value("${cloud.aws.s3.bucket}")
-    private String bucketName;  //s3 버켓경로
+    private final String bucketName;  //s3 버켓경로
 
     //파일 업로드
     public A_thumb uploadFileToA_thumb(MultipartFile file) throws IOException{
