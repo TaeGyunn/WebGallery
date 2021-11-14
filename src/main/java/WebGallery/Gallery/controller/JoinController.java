@@ -37,12 +37,12 @@ public class JoinController {
     private final AwsService awsService;
 
     @PostMapping("/test")
-    public String test(MultipartFile file){
+    public ResponseEntity<String> test(MultipartFile file){
         log.info("test : " + file.toString());
         try {
             A_thumb aThumb = awsService.uploadFileToA_thumb(file);
             String url = awsService.getFileUrl(aThumb.getStodname());
-            return url;
+            return ResponseEntity.ok(url);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class JoinController {
 
     // 아이디 중복 확인
     @GetMapping("/guest-id/{id}/exists")
-    public ResponseEntity<Boolean> checkIdDuplication(@PathVariable Long id){
+    public ResponseEntity<Boolean> checkIdDuplication(@PathVariable String id){
         return ResponseEntity.ok(guestService.checkIdDuplication(id));
     }
 

@@ -39,7 +39,7 @@ public class GuestService {
     }
 
     @Transactional(readOnly = true)
-    public boolean checkIdDuplication(Long id) {
+    public boolean checkIdDuplication(String id) {
         return guestRepository.existsById(id);
     }
 

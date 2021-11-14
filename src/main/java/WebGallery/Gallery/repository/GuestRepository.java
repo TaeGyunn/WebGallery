@@ -15,7 +15,7 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
 
         // 중복확인
         boolean existsByEmail(String email);
-        boolean existsById(Long id);
+        boolean existsById(String id);
         boolean existsByNick(String nick);
 
         Guest findById(String id);
