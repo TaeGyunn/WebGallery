@@ -38,6 +38,7 @@ public class JoinController {
 
     @PostMapping("/test")
     public String test(MultipartFile file){
+        log.info("test : " + file.toString());
         try {
             A_thumb aThumb = awsService.uploadFileToA_thumb(file);
             String url = awsService.getFileUrl(aThumb.getStodname());
