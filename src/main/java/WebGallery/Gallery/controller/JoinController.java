@@ -134,7 +134,7 @@ public class JoinController {
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
+    public ResponseEntity guestJoin(@RequestBody GuestJoinDTO guestJoinDTO) throws Exception{
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
