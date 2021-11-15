@@ -17,15 +17,11 @@ public class AuthorJoinDTO {
     private String sns;
     
     private String comment;
-    
-    @NotEmpty(message = "썸네일을 추가해주세요")
-    private MultipartFile thumb;
 
-    public AuthorJoinDTO(Long gno, String sns, String comment, MultipartFile thumb){
+    public AuthorJoinDTO(Long gno, String sns, String comment){
         this.gno = gno;
         this.sns = sns;
         this.comment = comment;
-        this.thumb = thumb;
     }
     
 }

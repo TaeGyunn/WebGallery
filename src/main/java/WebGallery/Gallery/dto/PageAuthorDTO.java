@@ -23,6 +23,8 @@ public class PageAuthorDTO {
 
     private String thumb;
 
+    private String url;
+
     private List<PageAuthorWorkDTO> pageAuthorWorkDTOS;
 
     public PageAuthorDTO(Author author){
@@ -37,6 +39,10 @@ public class PageAuthorDTO {
         }else{
             this.pageAuthorWorkDTOS = Collections.emptyList();
         }
+    }
+
+    public void setUrl(String url){
+        this.url = url;
     }
 
 }

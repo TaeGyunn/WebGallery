@@ -20,16 +20,14 @@ public class InsertWorkDTO {
 
     private String name;        // 이름
 
-    private MultipartFile file;
 
     private List<String> tags;
 
-    public InsertWorkDTO(Long gno, String comment, String thema, String name, MultipartFile file, List<String> tags) {
+    public InsertWorkDTO(Long gno, String comment, String thema, String name, List<String> tags) {
         this.gno = gno;
         this.comment = comment;
         this.thema = thema;
         this.name = name;
-        this.file = file;
         this.tags = tags;
     }
 }

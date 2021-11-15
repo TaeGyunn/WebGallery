@@ -24,6 +24,7 @@ public class PageWorkDTO {
     private String comment;
     private Photo photo;
     private Long gno;
+    private String url;
 
     private PageAuthorDTO pageAuthorDTO;
 
@@ -49,5 +50,9 @@ public class PageWorkDTO {
         this.name = a_work.getWork().getName();
         this.comment = a_work.getWork().getComment();
         this.photo = a_work.getWork().getPhoto();
+    }
+
+    public void setUrl(String url){
+        this.url = url;
     }
 }

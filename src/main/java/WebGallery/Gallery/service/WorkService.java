@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ public class WorkService {
     private final LikeRepository likeRepository;
     private final AwsService awsService;
 
-    public Integer InsertWork(InsertWorkDTO insertWorkDTO){
+    public Integer InsertWork(InsertWorkDTO insertWorkDTO, MultipartFile photos){
 
         int check = 0;
 
         try {
 
-            Photo photo = awsService.uploadFileToPhoto(insertWorkDTO.getFile());
+            Photo photo = awsService.uploadFileToPhoto(photos);
             photo = photoRepository.save(photo);
 
             Author author = authorRepository.findByGno(insertWorkDTO.getGno());
@@ -95,16 +96,16 @@ public class WorkService {
 
     }
 
-    public Integer modifyWork(ModifyWorkDTO modifyWorkDTO){
+    public Integer modifyWork(ModifyWorkDTO modifyWorkDTO, MultipartFile photos){
 
         int check = 0;
         try {
             Work work = workRepository.findByWno(modifyWorkDTO.getWno());
             Photo savedPhoto = photoRepository.findByPno(work.getPhoto().getPno());
             Photo notSavePhoto = new Photo();
-            if(modifyWorkDTO.getFile() != null) {
+            if(photos != null) {
                 awsService.delete(savedPhoto.getStod_name());
-                notSavePhoto = awsService.uploadFileToPhoto(modifyWorkDTO.getFile());
+                notSavePhoto = awsService.uploadFileToPhoto(photos);
             }
             if (!work.getComment().equals(modifyWorkDTO.getComment())) {
                 work.changeComment(modifyWorkDTO.getComment());
@@ -157,6 +158,9 @@ public class WorkService {
 
             Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "author");
             List<PageWorkDTO> pageWorkDTOS = workRepository.findAllWithAuthor().stream().map(PageWorkDTO::new).collect(Collectors.toList());
+            for (PageWorkDTO pageWorkDTO : pageWorkDTOS) {
+                pageWorkDTO.setUrl(awsService.getFileUrl(pageWorkDTO.getPhoto().getStod_name()));
+            }
             final int start = (int) pageable.getOffset();
             final int end = Math.min((start + pageable.getPageSize()), pageWorkDTOS.size());
             final Page<PageWorkDTO> Result = new PageImpl<>(pageWorkDTOS.subList(start, end), pageable, pageWorkDTOS.size());
@@ -167,6 +171,9 @@ public class WorkService {
     public Page<PageWorkDTO> workThemaPage(Integer page, Integer size, String thema){
         Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "likes");
         List<PageWorkDTO> pageWorkDTOS = workRepository.findByThemaWithAuthor(thema).stream().map(PageWorkDTO::new).collect(Collectors.toList());
+        for (PageWorkDTO pageWorkDTO : pageWorkDTOS) {
+            pageWorkDTO.setUrl(awsService.getFileUrl(pageWorkDTO.getPhoto().getStod_name()));
+        }
         final int start = (int) pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), pageWorkDTOS.size());
         final Page<PageWorkDTO> Result = new PageImpl<>(pageWorkDTOS.subList(start, end), pageable, pageWorkDTOS.size());

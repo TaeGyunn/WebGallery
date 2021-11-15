@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +46,13 @@ public class AuthorController {
     
     //작가 가입
     @PostMapping("/authorJoin")
-    public ResponseEntity<Map<String, String>> authorJoin(AuthorJoinDTO authorJoinDTO){
+    public ResponseEntity<Map<String, String>> authorJoin(@RequestPart("join") AuthorJoinDTO authorJoinDTO,
+                                                          @RequestPart("thumb") MultipartFile thumb){
 
         log.info(authorJoinDTO.toString());
         Map<String, String> map = new HashMap<>();
 
-        int check = authorService.authorJoin(authorJoinDTO);
+        int check = authorService.authorJoin(authorJoinDTO, thumb);
 
         //성공
         if(check == 1){
@@ -63,11 +65,12 @@ public class AuthorController {
     
     //작가수정
     @PutMapping("/authorModify")
-    public ResponseEntity<Map<String, String>> authorModify(AuthorModifyDTO authorModifyDTO){
+    public ResponseEntity<Map<String, String>> authorModify(@RequestPart("modify") AuthorModifyDTO authorModifyDTO,
+                                                            @RequestPart("thumb") MultipartFile thumb){
 
         log.info(authorModifyDTO.toString());
         Map<String, String > map = new HashMap<>();
-        int check = authorService.authorModify(authorModifyDTO);
+        int check = authorService.authorModify(authorModifyDTO, thumb);
 
         if(check == 0){
             log.info("modify fail");

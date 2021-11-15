@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +32,14 @@ public class AuthorService {
     private final AwsService awsService;
     private final A_TumbRepository a_tumbRepository;
 
-    public Integer authorJoin(AuthorJoinDTO authorJoinDTO){
+    public Integer authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
 
         int check = 0;
 
         try {
             Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
 
-            A_thumb a_thumb = awsService.uploadFileToA_thumb(authorJoinDTO.getThumb());
+            A_thumb a_thumb = awsService.uploadFileToA_thumb(thumb);
             String stodName = a_thumb.getStodname();
 
             Author author = new Author(
@@ -81,7 +82,7 @@ public class AuthorService {
 
     }
 
-    public Integer authorModify(AuthorModifyDTO authorModifyDTO){
+    public Integer authorModify(AuthorModifyDTO authorModifyDTO, MultipartFile thumbs){
 
         Author author = authorRepository.findByGno(authorModifyDTO.getGno());
         int check = 0;
@@ -97,10 +98,10 @@ public class AuthorService {
                 check = 1;
             }
 
-            if(authorModifyDTO.getThumb() != null){
+            if(thumbs != null){
                 A_thumb thumb = a_tumbRepository.findByAuthor(author);
                 awsService.delete(thumb.getStodname());
-                a_thumb = awsService.uploadFileToA_thumb(authorModifyDTO.getThumb());
+                a_thumb = awsService.uploadFileToA_thumb(thumbs);
             }
             String stodName = a_thumb.getStodname();
 
@@ -133,6 +134,10 @@ public class AuthorService {
         List<Author> a = authorRepository.findAllWithWork();
 
         List<PageAuthorDTO> authorPage = a.stream().map(PageAuthorDTO::new).collect(Collectors.toList());
+
+        for (PageAuthorDTO pageAuthorDTO : authorPage) {
+            pageAuthorDTO.setUrl(awsService.getFileUrl(pageAuthorDTO.getThumb()));
+        }
 
         return authorPage;
 

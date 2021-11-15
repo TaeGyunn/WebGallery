@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,23 +58,25 @@ public class workController {
     
     //작업물 추가
     @PostMapping("/author/insertWork")
-    public ResponseEntity insertWork(InsertWorkDTO insertWorkDTO){
+    public ResponseEntity insertWork(@RequestPart("insert") InsertWorkDTO insertWorkDTO,
+                                     @RequestPart("photo") MultipartFile photo){
 
         log.info(insertWorkDTO.toString());
         if(insertWorkDTO.getTags().size() > 3){
             log.info("tag는 3개 까지만 가능합니다.");
             return new ResponseEntity(HttpStatus.OK);
         }
-        int check = workService.InsertWork(insertWorkDTO);
+        int check = workService.InsertWork(insertWorkDTO, photo);
 
         return new ResponseEntity(HttpStatus.OK);
     }
     
     //작업물 수정
     @PutMapping("/author/modifyWork")
-    public ResponseEntity modifyWork(ModifyWorkDTO modifyWorkDTO){
+    public ResponseEntity modifyWork(@RequestPart("modify") ModifyWorkDTO modifyWorkDTO,
+                                     @RequestPart("photo") MultipartFile photo){
 
-        workService.modifyWork(modifyWorkDTO);
+        workService.modifyWork(modifyWorkDTO,photo);
 
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -19,16 +19,14 @@ public class ModifyWorkDTO {
 
     private String name;
 
-    private MultipartFile file;
 
     private List<String> tags;
 
-    public ModifyWorkDTO(Long wno, String comment, String thema, String name, MultipartFile file, List<String> tags) {
+    public ModifyWorkDTO(Long wno, String comment, String thema, String name, List<String> tags) {
         this.wno = wno;
         this.comment = comment;
         this.thema = thema;
         this.name = name;
-        this.file = file;
         this.tags = tags;
     }
 }
