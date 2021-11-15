@@ -132,20 +132,15 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Map<String ,String>> login(@Validated @RequestBody LoginDTO loginDTO, BindingResult bindingResult,
-                        @RequestParam(defaultValue = "/")String redirectURL, HttpServletRequest request){
-
+    public ResponseEntity<Map<String ,String>> login(@Validated @RequestBody LoginDTO loginDTO, HttpSession session){
+        log.info("================check===========");
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
 
-        if(bindingResult.hasFieldErrors()){
-            log.info("로그인 바인딩 에러");
-        }
         Map<String, String > map = new HashMap<>();
         //로그인 성공
         String loginGuestNick = guestService.Login(loginDTO);
         Guest guest = guestService.findGuestNick(loginGuestNick);
         if(loginGuestNick != null){
-            HttpSession session = request.getSession();
             session.setAttribute("loggedIn",loginGuestNick);
             session.setAttribute("role",guest.getRole());
             log.info("로그인 성공");
@@ -154,7 +149,6 @@ public class JoinController {
         }
 
         //로그인 실패
-        bindingResult.reject("loginFail", "올바르지 않은 아이디 혹은 비밀번호 입니다.");
         map.put("로그인","실패");
         return ResponseEntity.ok(map);
     }
