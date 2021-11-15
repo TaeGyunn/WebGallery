@@ -149,8 +149,7 @@ public class JoinController {
         }
 
         //로그인 실패
-        map.put("로그인","실패");
-        return ResponseEntity.ok(map);
+        return null;
     }
 
     //관리자 로그인
