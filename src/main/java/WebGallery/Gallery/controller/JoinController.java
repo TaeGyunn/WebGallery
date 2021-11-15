@@ -37,18 +37,6 @@ public class JoinController {
     private final MailService mailService;
     private final AwsService awsService;
 
-    @PostMapping("/test")
-    public ResponseEntity<String> test(@RequestPart(value = "file") MultipartFile file){
-        log.info("test : " + file.toString());
-        try {
-            A_thumb aThumb = awsService.uploadFileToA_thumb(file);
-            String url = awsService.getFileUrl(aThumb.getStodname());
-            return ResponseEntity.ok(url);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     // 아이디 중복 확인
     @GetMapping("/guest-id/{id}/exists")

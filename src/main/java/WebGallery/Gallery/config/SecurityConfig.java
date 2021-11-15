@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/denied")
         ;
+        http.csrf().disable();
     }
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
