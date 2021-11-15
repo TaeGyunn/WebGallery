@@ -48,7 +48,7 @@ public class AlbumController {
 
     // 앨범 생성
     @PostMapping("/guest/createAlbum")
-    public ResponseEntity<Map<String, String>> createAlbum(CreateAlbumDTO createAlbumDTO){
+    public ResponseEntity<Map<String, String>> createAlbum(@RequestBody  CreateAlbumDTO createAlbumDTO){
 
         int check = 0;
         check = albumService.createAlbum(createAlbumDTO);
@@ -64,7 +64,7 @@ public class AlbumController {
     
     //앨범에 작업물 추가
     @PostMapping("/addWorkToAlbum")
-    public ResponseEntity<Map<String, String>> addWorkToAlbum(AddWorkToAlbumDTO addWorkToAlbumDTO){
+    public ResponseEntity<Map<String, String>> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
         Map<String, String > map = new HashMap<>();
         check = albumService.addWorkToAlbum(addWorkToAlbumDTO);

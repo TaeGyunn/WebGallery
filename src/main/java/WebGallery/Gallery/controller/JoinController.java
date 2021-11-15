@@ -132,7 +132,7 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Map<String ,String>> login(@Valid LoginDTO loginDTO, BindingResult bindingResult,
+    public ResponseEntity<Map<String ,String>> login(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/")String redirectURL, HttpServletRequest request){
 
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
@@ -161,7 +161,7 @@ public class JoinController {
 
     //관리자 로그인
     @PostMapping("/adminLogin")
-    public ResponseEntity adminLogin(@Valid LoginDTO loginDTO, BindingResult bindingResult,
+    public ResponseEntity adminLogin(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult,
                           @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request){
 
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());

@@ -5,6 +5,7 @@ import WebGallery.Gallery.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,7 +17,7 @@ public class MailController {
     
     //메일보내기(삭제 예정)
     @PostMapping("/mail")
-    public void sendMail(MailDTO mailDTO){
+    public void sendMail(@RequestBody  MailDTO mailDTO){
         log.info(mailDTO.toString());
         mailService.sendMail(mailDTO);
     }

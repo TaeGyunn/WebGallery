@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedPage("/denied")
         ;
-        http.csrf().disable();
+        http.csrf().ignoringAntMatchers("/guestJoin");
     }
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

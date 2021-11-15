@@ -35,7 +35,7 @@ public class AdminController {
 
     // 공지사항 작성
     @PostMapping("/Notice")
-    public ResponseEntity createNotice(CreateNoticeDTO createNoticeDTO){
+    public ResponseEntity createNotice(@RequestBody CreateNoticeDTO createNoticeDTO){
 
         log.info(createNoticeDTO.toString());
         adminService.createNotice(createNoticeDTO);

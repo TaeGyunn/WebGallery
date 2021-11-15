@@ -52,7 +52,7 @@ public class GuestController {
     
     //게스트 수정
     @PutMapping("/modifyGuest")
-    public ResponseEntity<Map<String,String>> modifyGuest(@Valid GuestModifyDTO guestModifyDTO){
+    public ResponseEntity<Map<String,String>> modifyGuest(@Valid @RequestBody GuestModifyDTO guestModifyDTO){
         // 아직 프론트가 json으로 할지 말지 안정해져서 매개변수 간단하게 넣음
 
         Map<String, String> map = new HashMap<>();
