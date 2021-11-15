@@ -38,7 +38,7 @@ public class JoinController {
     private final AwsService awsService;
 
     @PostMapping("/test")
-    public ResponseEntity<String> test(MultipartFile file){
+    public ResponseEntity<String> test(@RequestBody MultipartFile file){
         log.info("test : " + file.toString());
         try {
             A_thumb aThumb = awsService.uploadFileToA_thumb(file);
@@ -134,7 +134,7 @@ public class JoinController {
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity guestJoin(@RequestBody GuestJoinDTO guestJoinDTO) throws Exception{
+    public ResponseEntity guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
