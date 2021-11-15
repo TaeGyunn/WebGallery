@@ -133,7 +133,7 @@ public class JoinController {
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity guestJoin(@RequestBody @Valid GuestJoinDTO guestJoinDTO){
+    public ResponseEntity guestJoin(@Valid @RequestBody GuestJoinDTO guestJoinDTO){
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
