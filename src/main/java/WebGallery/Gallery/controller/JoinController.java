@@ -38,7 +38,7 @@ public class JoinController {
     private final AwsService awsService;
 
     @PostMapping("/test")
-    public ResponseEntity<String> test(@RequestBody MultipartFile file){
+    public ResponseEntity<String> test(@RequestPart MultipartFile file){
         log.info("test : " + file.toString());
         try {
             A_thumb aThumb = awsService.uploadFileToA_thumb(file);
