@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -133,7 +134,7 @@ public class JoinController {
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity guestJoin(@Valid @RequestBody GuestJoinDTO guestJoinDTO){
+    public ResponseEntity guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
