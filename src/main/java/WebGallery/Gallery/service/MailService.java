@@ -22,7 +22,7 @@ public class MailService {
     private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.mail.username}")
-    private final String FROM_ADDRESS;
+    private String FROM_ADDRESS;
 
 
 
