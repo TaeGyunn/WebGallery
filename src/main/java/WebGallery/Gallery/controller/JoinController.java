@@ -110,19 +110,6 @@ public class JoinController {
         }
         return json;
     }
-    
-    //이미지 테스트
-    @PostMapping("/imgtest")
-    public ResponseEntity imgtest(@RequestBody MultipartFile file){
-
-        try {
-            awsService.uploadFileToA_thumb(file);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
 
     //비번 찾기 메일
@@ -146,7 +133,7 @@ public class JoinController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String ,String>> login(@Validated @RequestBody LoginDTO loginDTO, HttpSession session){
-        log.info("================check===========");
+        log.info("==============login=================");
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
 
         Map<String, String > map = new HashMap<>();
@@ -186,10 +173,5 @@ public class JoinController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    // 비밀번호 재 등록
-//    public ResponseEntity<Map<String, String> reAddPw(String pw){
-//
-//
-//    }
 
 }

@@ -12,6 +12,7 @@ import WebGallery.Gallery.repository.A_workRepository;
 import WebGallery.Gallery.repository.AlbumRepository;
 import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.repository.WorkRepository;
+import WebGallery.Gallery.util.AwsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,17 @@ public class AlbumService {
     private final GuestRepository guestRepository;
     private final A_workRepository a_workRepository;
     private final WorkRepository workRepository;
+    private final AwsService awsService;
 
     //앨범리스트 가져오기
     public List<PageAlbumDTO> showAlbumList(Long gno){
         Guest guest = guestRepository.findByGno(gno);
-        return albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+        List<PageAlbumDTO> albums = albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+        for(int i=0; i<albums.size(); i++){
+            String url = awsService.getFileUrl(albums.get(i).getA_works().get(i).getPageWorkDTO().getPhoto().getStod_name());
+            albums.get(i).getA_works().get(i).getPageWorkDTO().setUrl(url);
+        }
+        return albums;
     }
     
     //앨범 생성
