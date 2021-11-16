@@ -1,5 +1,6 @@
 package WebGallery.Gallery.controller;
 
+import WebGallery.Gallery.dto.FindPwDTO;
 import WebGallery.Gallery.dto.GuestJoinDTO;
 import WebGallery.Gallery.dto.LoginDTO;
 import WebGallery.Gallery.dto.MailDTO;
@@ -109,12 +110,25 @@ public class JoinController {
         }
         return json;
     }
+    
+    //이미지 테스트
+    @PostMapping("/imgtest")
+    public ResponseEntity imgtest(@RequestBody MultipartFile file){
+
+        try {
+            awsService.uploadFileToA_thumb(file);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
-    public ResponseEntity sendMail(String email, String name){
-        MailDTO mailDTO = mailService.createMailAndChangePassword(email, name);
+    public ResponseEntity sendMail(@RequestBody FindPwDTO findPwDTO){
+        MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
         mailService.sendMail(mailDTO);
 
         return new ResponseEntity(HttpStatus.OK);
