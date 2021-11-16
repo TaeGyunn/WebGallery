@@ -62,10 +62,12 @@ public class MailService {
 
 
     public void sendMail(MailDTO mailDTO){
+        log.info("============sendmail test================");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDTO.getAddress());
         message.setSubject(mailDTO.getTitle());
         message.setText(mailDTO.getMessage());
+        log.info("============sendMail test2 ================");
         mailSender.send(message);
     }
 

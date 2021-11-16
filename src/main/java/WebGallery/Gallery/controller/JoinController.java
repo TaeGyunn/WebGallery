@@ -132,7 +132,7 @@ public class JoinController {
         log.info("================test1==========================");
         log.info("====test3===" + mailDTO.getAddress());
         mailService.sendMail(mailDTO);
-
+        log.info("============final test========");
         return new ResponseEntity(HttpStatus.OK);
     }
 
