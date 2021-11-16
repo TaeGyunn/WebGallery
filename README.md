@@ -13,7 +13,7 @@
   - Spring Security
   - JPA
   - MariaDB
-  - AWS(EC2, RDS, S3)
+  - AWS (EC2, RDS, S3)
   
 ## ER Diagram
   
