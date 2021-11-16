@@ -64,6 +64,7 @@ public class MailService {
     public void sendMail(MailDTO mailDTO){
         log.info("============sendmail test================");
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(FROM_ADDRESS);
         message.setTo(mailDTO.getAddress());
         message.setSubject(mailDTO.getTitle());
         message.setText(mailDTO.getMessage());
