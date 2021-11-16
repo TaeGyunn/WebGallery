@@ -3,21 +3,17 @@
   
 웹 전시회
 
-## Frontend & Backend
-김성원
-<br>  
+## Backend 
 이태균
 
 ## STACK
-- 프론트
-  - HTML
-  - CSS
-  - JavaScript
 - 백엔드
   - JAVA11
   - Spring Boot
+  - Spring Security
   - JPA
   - MariaDB
+  - AWS (EC2, RDS, S3)
   
 ## ER Diagram
   
