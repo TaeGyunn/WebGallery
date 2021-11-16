@@ -5,12 +5,14 @@ import WebGallery.Gallery.dto.MailDTO;
 import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MailService {
 
@@ -30,6 +32,7 @@ public class MailService {
         DTO.setTitle(findPwDTO.getName() + "님의 Gallery 임시비밀번호 안내 이메일 입니다.");
         DTO.setMessage("안녕하세요. Gallery 임시비밀번호 안내 관련 이메일 입니다." + "[" + findPwDTO.getName() + "]" +"님의 임시 비밀번호는 "
                 + str + " 입니다.");
+        log.info("======================test2=================================");
         updatePassword(str, findPwDTO.getEmail());
         return DTO;
     }

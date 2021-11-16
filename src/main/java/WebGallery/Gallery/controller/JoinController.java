@@ -129,6 +129,8 @@ public class JoinController {
     @PostMapping("/check/findpw/sendmail")
     public ResponseEntity sendMail(@RequestBody FindPwDTO findPwDTO){
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
+        log.info("================test1==========================");
+        log.info("====test3===" + mailDTO.getAddress());
         mailService.sendMail(mailDTO);
 
         return new ResponseEntity(HttpStatus.OK);
