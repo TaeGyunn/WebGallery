@@ -33,7 +33,6 @@ public class MailService {
         DTO.setTitle(findPwDTO.getName() + "님의 Gallery 임시비밀번호 안내 이메일 입니다.");
         DTO.setMessage("안녕하세요. Gallery 임시비밀번호 안내 관련 이메일 입니다." + "[" + findPwDTO.getName() + "]" +"님의 임시 비밀번호는 "
                 + str + " 입니다.");
-        log.info("======================test2=================================");
         updatePassword(str, findPwDTO.getEmail());
         return DTO;
     }
@@ -62,13 +61,11 @@ public class MailService {
 
 
     public void sendMail(MailDTO mailDTO){
-        log.info("============sendmail test================");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(FROM_ADDRESS);
         message.setTo(mailDTO.getAddress());
         message.setSubject(mailDTO.getTitle());
         message.setText(mailDTO.getMessage());
-        log.info("============sendMail test2 ================");
         mailSender.send(message);
     }
 
