@@ -6,6 +6,7 @@ import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +21,8 @@ public class MailService {
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    private static final String FROM_ADDRESS = "본인의 이메일 주소를 입력하세요!";
+    @Value("${spring.mail.username}")
+    private final String FROM_ADDRESS;
 
 
 
