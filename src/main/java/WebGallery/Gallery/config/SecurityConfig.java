@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().disable();
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
                 .antMatchers("/author/**").hasRole("AUTHOR")
