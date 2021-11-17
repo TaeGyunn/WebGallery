@@ -1,27 +1,30 @@
 package WebGallery.Gallery.controller;
 
-import WebGallery.Gallery.dto.FindPwDTO;
-import WebGallery.Gallery.dto.GuestJoinDTO;
-import WebGallery.Gallery.dto.LoginDTO;
-import WebGallery.Gallery.dto.MailDTO;
+import WebGallery.Gallery.dto.*;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.entity.Admin;
 import WebGallery.Gallery.entity.Guest;
+import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.service.AdminService;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.MailService;
 import WebGallery.Gallery.util.AwsService;
+import WebGallery.Gallery.util.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -34,9 +37,10 @@ import java.util.Map;
 public class JoinController {
 
     private final GuestService guestService;
+    private final GuestRepository guestRepository;
     private final AdminService adminService;
     private final MailService mailService;
-    private final AwsService awsService;
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
 
     // 아이디 중복 확인
@@ -57,30 +61,16 @@ public class JoinController {
         return ResponseEntity.ok(guestService.checkNickDuplication(nick));
     }
 
-    // 회원가입 폼
-    @GetMapping("/guestJoinForm")
-    public String guestJoinForm(){
-        return "/join";
-    }
-
-    // 로그인 폼
-    @GetMapping("/loginForm")
-    public String loginForm(){ return "/front/guest/login";}
-
     // 로그아웃
     @GetMapping("/logout")
-    public ResponseEntity<Map<String,String>> logout(HttpSession session){
-        String logout = guestService.logout(session);
-        Map<String, String> map = new HashMap<>();
-        if(logout.equals("true")){
-            log.info("로그아웃 성공");
-            map.put("로그아웃","성공");
-        }else{
-            log.info("로그인이 되어있지 않습니다.");
-            map.put("로그아웃","실패");
-        }
-        return ResponseEntity.ok(map);
-
+    public void logout(HttpServletResponse response, HttpSession session){
+        session.invalidate();
+        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
     //이메일 이름 일치 확인
@@ -111,12 +101,33 @@ public class JoinController {
         return json;
     }
 
+    @GetMapping("/info")    //새로고침 시 요청이 들어오는 경로 토큰 유효시 정보 꺼내서 주고 아니면 null
+    public GuestInfoDTO getInfo(){
+        Object details = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(details != null && !(details instanceof String)) return new GuestInfoDTO(details);
+        return null;
+    }
+
 
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
     public ResponseEntity sendMail(@RequestBody FindPwDTO findPwDTO){
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
         mailService.sendMail(mailDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    //비밀번호 변경
+    @PostMapping("/repw")
+    public ResponseEntity rePw(@RequestBody ChangePwDTO changePwDTO, HttpSession session){
+
+        log.info(changePwDTO.toString());
+        int check = 0 ;
+        String nick =  (String)session.getAttribute("LoginNick");
+        check = guestService.changePw(changePwDTO.getPw(), nick);
+        if(check == 0){
+            return null;
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -132,7 +143,9 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Map<String ,String>> login(@Validated @RequestBody LoginDTO loginDTO, HttpSession session){
+    public ResponseEntity<GuestInfoDTO> login(@Validated @RequestBody LoginDTO loginDTO,
+                                                     HttpSession session,
+                                                     HttpServletResponse response){
         log.info("==============login=================");
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
 
@@ -141,11 +154,19 @@ public class JoinController {
         String loginGuestNick = guestService.Login(loginDTO);
         Guest guest = guestService.findGuestNick(loginGuestNick);
         if(loginGuestNick != null){
-            session.setAttribute("loggedIn",loginGuestNick);
-            session.setAttribute("role",guest.getRole());
+            GuestInfoDTO guestInfoDTO = new GuestInfoDTO(loginGuestNick, guest.getGno());
+            String token = jwtAuthenticationProvider.createToken(loginGuestNick, guest.getRole());
+            response.setHeader("X-AUTH-TOKEN", token);
+
+            Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            response.addCookie(cookie);
+            session.setAttribute("LoginNick", loginGuestNick);
+            session.setAttribute("Logingno", guest.getGno());
             log.info("로그인 성공");
-            map.put("로그인","성공");
-            return ResponseEntity.ok(map);
+            return ResponseEntity.ok(guestInfoDTO);
         }
 
         //로그인 실패
@@ -172,6 +193,7 @@ public class JoinController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
 
 
 }

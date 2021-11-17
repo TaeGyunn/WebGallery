@@ -72,11 +72,11 @@ public class GuestService {
     }
 
     @Transactional(readOnly = true)
-    public String Login(LoginDTO loginDTO){
+    public String Login(LoginDTO loginDTO) throws UsernameNotFoundException{
 
         Guest guest = guestRepository.findById(loginDTO.getId());
-        if(guest != null) {
 
+        if(guest != null) {
             if (passwordEncoder.matches(loginDTO.getPw(), guest.getPw())) {
                 return guest.getNick();
             } else {
@@ -101,17 +101,6 @@ public class GuestService {
         }else{
             log.info("정보를 다시 입력해주십시오");
             return null;
-        }
-    }
-
-
-    public String logout(HttpSession session) {
-        if(session != null){
-            session.invalidate();
-            return "true";
-        }else{
-            log.info("로그인 후 로그아웃 해주세요");
-            return "false";
         }
     }
 
@@ -151,6 +140,19 @@ public class GuestService {
             }
         }catch (IllegalArgumentException exception){
             exception.printStackTrace();
+        }
+        return check;
+    }
+
+    public Integer changePw(String pw, String guestNick){
+        int check = 0;
+        try {
+            Guest guest = guestRepository.findByNick(guestNick);
+            guest.changePw(pw);
+            guestRepository.save(guest);
+            check = 1;
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
         }
         return check;
     }

@@ -1,6 +1,8 @@
 package WebGallery.Gallery.config;
 
 import WebGallery.Gallery.service.impl.UserDetailsServiceImpl;
+import WebGallery.Gallery.util.JwtAuthenticationFilter;
+import WebGallery.Gallery.util.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Override
     public void configure(WebSecurity web){
@@ -38,10 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginPage("/login") // 로그인 페이지 링크
 //                .defaultSuccessUrl("/") // 로그인 성공 후 리다이렉트 주소
                 .and()
-                .logout()
-                .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트 주소
-                .invalidateHttpSession(true) // 세션 날리기
-                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedPage("/denied")
         ;
         http.csrf().ignoringAntMatchers().disable().headers().frameOptions().disable();
