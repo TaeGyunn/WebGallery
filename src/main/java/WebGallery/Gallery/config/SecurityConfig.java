@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().headers().frameOptions().disable();
         http
                 .authorizeRequests()
                 .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
@@ -40,13 +41,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
                 .anyRequest().permitAll() // 누구나 접근 허용
                 .and()
-                .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().accessDeniedPage("/denied")
+//                .exceptionHandling().accessDeniedPage("/denied")
         ;
-        http.csrf().ignoringAntMatchers().disable().headers().frameOptions().disable();
     }
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
