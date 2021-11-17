@@ -117,19 +117,6 @@ public class JoinController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //비밀번호 변경
-    @PostMapping("/repw")
-    public ResponseEntity rePw(@RequestBody ChangePwDTO changePwDTO, HttpSession session){
-
-        log.info(changePwDTO.toString());
-        int check = 0 ;
-        String nick =  (String)session.getAttribute("LoginNick");
-        check = guestService.changePw(changePwDTO.getPw(), nick);
-        if(check == 0){
-            return null;
-        }
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     // 회원가입
     @PostMapping("/guestJoin")

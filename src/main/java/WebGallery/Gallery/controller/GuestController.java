@@ -1,5 +1,6 @@
 package WebGallery.Gallery.controller;
 
+import WebGallery.Gallery.dto.ChangePwDTO;
 import WebGallery.Gallery.dto.GuestModifyDTO;
 import WebGallery.Gallery.entity.A_thumb;
 import WebGallery.Gallery.service.GuestService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,13 +61,25 @@ public class GuestController {
         int check = guestService.modifyGuest(guestModifyDTO);
         if(check == 0){
             log.info("modify fail");
-            map.put("수정", "실패");
-            return ResponseEntity.ok(map);
+            return null;
 
         }
         map.put("수정","성공");
         return ResponseEntity.ok(map);
 
+    }
+    //비밀번호 변경
+    @PostMapping("/repw")
+    public ResponseEntity rePw(@RequestBody ChangePwDTO changePwDTO, HttpSession session){
+
+        log.info(changePwDTO.toString());
+        int check = 0 ;
+        String nick =  (String)session.getAttribute("LoginNick");
+        check = guestService.changePw(changePwDTO.getPw(), nick);
+        if(check == 0){
+            return null;
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
     
     //게스트 삭제
