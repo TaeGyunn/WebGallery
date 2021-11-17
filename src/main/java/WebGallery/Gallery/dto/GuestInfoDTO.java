@@ -16,11 +16,13 @@ public class GuestInfoDTO{
 
     private String nickname;
     private Long gno;
+    private Role role;
     private String f5;
 
-    public GuestInfoDTO(String nickname, Long gno){
+    public GuestInfoDTO(String nickname, Long gno, Role role){
         this.nickname = nickname;
         this.gno = gno;
+        this.role = role;
     }
 
     public GuestInfoDTO(Object details) {

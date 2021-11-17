@@ -8,4 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**")
+                .exposedHeaders("X-AUTH-TOKEN")
+                .allowCredentials(true)
+                .allowedOrigins("15.164.106.164:8080");
+    }
 }

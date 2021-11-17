@@ -121,7 +121,7 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Validated @RequestBody LoginDTO loginDTO,
+    public ResponseEntity<GuestInfoDTO> login(@Validated @RequestBody LoginDTO loginDTO,
                                                      HttpServletResponse response){
 
         Guest guest = guestRepository.findById(loginDTO.getId()).
@@ -129,8 +129,18 @@ public class JoinController {
         if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
+        String token = jwtTokenProvider.createToken(guest.getNick(), guest.getRole());
+        response.setHeader("X-AUTH-TOKEN", token);
 
-        return ResponseEntity.ok(jwtTokenProvider.createToken(guest.getNick(), guest.getRole()));
+        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+        GuestInfoDTO guestInfoDTO = new GuestInfoDTO(guest.getNick(), guest.getGno(),guest.getRole());
+
+        return ResponseEntity.ok(guestInfoDTO);
     }
 
 //    //관리자 로그인
