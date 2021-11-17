@@ -63,8 +63,8 @@ public class JoinController {
 
     // 로그아웃
     @GetMapping("/logout")
-    public void logout(HttpServletResponse response, HttpSession session){
-        session.invalidate();
+    public void logout(HttpServletResponse response){
+//        session.invalidate();
         Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
@@ -131,7 +131,6 @@ public class JoinController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<GuestInfoDTO> login(@Validated @RequestBody LoginDTO loginDTO,
-                                                     HttpSession session,
                                                      HttpServletResponse response){
         log.info("==============login=================");
         log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
@@ -150,8 +149,8 @@ public class JoinController {
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
             response.addCookie(cookie);
-            session.setAttribute("LoginNick", loginGuestNick);
-            session.setAttribute("Logingno", guest.getGno());
+//            session.setAttribute("LoginNick", loginGuestNick);
+//            session.setAttribute("Logingno", guest.getGno());
             log.info("로그인 성공");
             return ResponseEntity.ok(guestInfoDTO);
         }
@@ -160,26 +159,26 @@ public class JoinController {
         return null;
     }
 
-    //관리자 로그인
-    @PostMapping("/adminLogin")
-    public ResponseEntity adminLogin(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult,
-                          @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request){
-
-        log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
-        
-        if(bindingResult.hasFieldErrors()){
-            log.info("로그인 바인딩 에러");
-        }
-
-        //로그인 성공
-        Admin admin = adminService.Login(loginDTO);
-        HttpSession session = request.getSession();
-        session.setAttribute("loggedIn",admin.getNick());
-        session.setAttribute("role",admin.getRole());
-        log.info("관리자 로그인 성공");
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    //관리자 로그인
+//    @PostMapping("/adminLogin")
+//    public ResponseEntity adminLogin(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult,
+//                          @RequestParam(defaultValue = "/") String redirectURL, HttpServletRequest request){
+//
+//        log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
+//
+//        if(bindingResult.hasFieldErrors()){
+//            log.info("로그인 바인딩 에러");
+//        }
+//
+//        //로그인 성공
+//        Admin admin = adminService.Login(loginDTO);
+//        HttpSession session = request.getSession();
+//        session.setAttribute("loggedIn",admin.getNick());
+//        session.setAttribute("role",admin.getRole());
+//        log.info("관리자 로그인 성공");
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 
 
 
