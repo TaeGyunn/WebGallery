@@ -12,7 +12,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GuestInfoDTO implements UserDetails {
+public class GuestInfoDTO{
 
     private String nickname;
     private Long gno;
@@ -27,38 +27,4 @@ public class GuestInfoDTO implements UserDetails {
         this.f5 = details.toString();
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }
