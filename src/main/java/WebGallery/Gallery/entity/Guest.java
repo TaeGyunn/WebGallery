@@ -15,7 +15,7 @@ import java.util.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Guest {
+public class Guest implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,4 +75,41 @@ public class Guest {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> roles = new ArrayList<>();
+        SimpleGrantedAuthority simple = new SimpleGrantedAuthority(this.role.getValue());
+        roles.set(0, simple);
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return pw;
+    }
+
+    @Override
+    public String getUsername() {
+        return id;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

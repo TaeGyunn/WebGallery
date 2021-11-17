@@ -12,7 +12,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoginDTO implements UserDetails {
+public class LoginDTO {
 
     @NotBlank(message = "아이디를 입력해주세요")
     private String id;
@@ -20,38 +20,4 @@ public class LoginDTO implements UserDetails {
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String pw;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return pw;
-    }
-
-    @Override
-    public String getUsername() {
-        return id;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }
