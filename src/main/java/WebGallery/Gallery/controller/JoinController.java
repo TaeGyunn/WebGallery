@@ -40,7 +40,7 @@ public class JoinController {
     private final GuestRepository guestRepository;
     private final AdminService adminService;
     private final MailService mailService;
-    private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
 
 
     // 아이디 중복 확인
