@@ -2,7 +2,7 @@ package WebGallery.Gallery.config;
 
 import WebGallery.Gallery.service.impl.CustomUserDetailsServiceImpl;
 import WebGallery.Gallery.util.JwtAuthenticationFilter;
-import WebGallery.Gallery.util.JwtAuthenticationProvider;
+import WebGallery.Gallery.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
-    private  JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void configure(WebSecurity web){
@@ -34,16 +34,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
                 .antMatchers("/author/**").hasRole("AUTHOR")
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
                 .anyRequest().permitAll() // 누구나 접근 허용
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class)
 //                .exceptionHandling().accessDeniedPage("/denied")
         ;
     }
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean()throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
 }

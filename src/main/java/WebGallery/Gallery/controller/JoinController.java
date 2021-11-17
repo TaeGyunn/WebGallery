@@ -1,34 +1,23 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.*;
-import WebGallery.Gallery.entity.A_thumb;
-import WebGallery.Gallery.entity.Admin;
 import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.service.AdminService;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.MailService;
-import WebGallery.Gallery.util.AwsService;
-import WebGallery.Gallery.util.JwtAuthenticationProvider;
+import WebGallery.Gallery.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +31,7 @@ public class JoinController {
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
     private final MailService mailService;
-    private JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     // 아이디 중복 확인
@@ -132,28 +121,16 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public GuestInfoDTO login(@Validated @RequestBody LoginDTO loginDTO,
+    public ResponseEntity<String> login(@Validated @RequestBody LoginDTO loginDTO,
                                                      HttpServletResponse response){
 
-        Guest guest = guestRepository.findById(loginDTO.getId()).get();
+        Guest guest = guestRepository.findById(loginDTO.getId()).
+                orElseThrow(() -> new IllegalArgumentException("가입되지 않은 id 입니다."));
         if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        String token = jwtAuthenticationProvider.createToken(guest.getId(), guest.getRole());
-        response.setHeader("X-AUTH-TOKEN", token);
-
-        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        response.addCookie(cookie);
-
-        GuestInfoDTO guestInfoDTO = new GuestInfoDTO();
-        guestInfoDTO.setGno(guest.getGno());
-        guestInfoDTO.setNickname(guest.getNick());
-
-        return guestInfoDTO;
+        return ResponseEntity.ok(jwtTokenProvider.createToken(guest.getNick(), guest.getRole()));
     }
 
 //    //관리자 로그인

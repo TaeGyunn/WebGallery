@@ -1,35 +1,29 @@
 package WebGallery.Gallery.util;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@NoArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends GenericFilterBean {
 
-    private JwtAuthenticationProvider jwtAuthenticationProvider;
-
-    public JwtAuthenticationFilter(JwtAuthenticationProvider provider){
-        jwtAuthenticationProvider = provider;
-    }
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtAuthenticationProvider.resolveToken(request);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException{
 
-        if(token != null & jwtAuthenticationProvider.validateToken(token)){
-            Authentication authentication = jwtAuthenticationProvider.getAuthentication(token);
-
+        // 헤더에서 JWT를 받아옵니다.
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        if(token != null && jwtTokenProvider.validateToken(token)){
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        filterChain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 }
