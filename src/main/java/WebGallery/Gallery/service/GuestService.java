@@ -71,21 +71,6 @@ public class GuestService {
         return guest.getGno();
     }
 
-    @Transactional(readOnly = true)
-    public String Login(LoginDTO loginDTO) throws UsernameNotFoundException{
-
-        Guest guest = guestRepository.findById(loginDTO.getId());
-
-        if(guest != null) {
-            if (passwordEncoder.matches(loginDTO.getPw(), guest.getPw())) {
-                return guest.getNick();
-            } else {
-                log.info("올바르지 않은 패스워드");
-            }
-        }
-        log.info("올바르지 않은 아이디");
-        return null;
-    }
 
     @Transactional(readOnly = true)
     public Guest findGuestNick(String nick){

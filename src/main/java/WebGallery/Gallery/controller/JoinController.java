@@ -135,7 +135,7 @@ public class JoinController {
     public GuestInfoDTO login(@Validated @RequestBody LoginDTO loginDTO,
                                                      HttpServletResponse response){
 
-        Guest guest = guestRepository.findById(loginDTO.getId());
+        Guest guest = guestRepository.findById(loginDTO.getId()).get();
         if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }

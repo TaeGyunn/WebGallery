@@ -1,6 +1,6 @@
 package WebGallery.Gallery.config;
 
-import WebGallery.Gallery.service.impl.UserDetailsServiceImpl;
+import WebGallery.Gallery.service.impl.CustomUserDetailsServiceImpl;
 import WebGallery.Gallery.util.JwtAuthenticationFilter;
 import WebGallery.Gallery.util.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
     private  JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Override

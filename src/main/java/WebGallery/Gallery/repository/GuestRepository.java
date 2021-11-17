@@ -18,7 +18,7 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
         boolean existsById(String id);
         boolean existsByNick(String nick);
 
-        Guest findById(String id);
+        Optional<Guest> findById(String id);
         Guest findByNick(String nick);
         Guest findByGno(Long gno);
         Guest findByEmail(String email);
