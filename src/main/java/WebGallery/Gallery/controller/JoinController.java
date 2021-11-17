@@ -16,6 +16,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +39,7 @@ public class JoinController {
 
     private final GuestService guestService;
     private final GuestRepository guestRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
     private final MailService mailService;
     private JwtAuthenticationProvider jwtAuthenticationProvider;
@@ -130,33 +132,28 @@ public class JoinController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<GuestInfoDTO> login(@Validated @RequestBody LoginDTO loginDTO,
+    public GuestInfoDTO login(@Validated @RequestBody LoginDTO loginDTO,
                                                      HttpServletResponse response){
-        log.info("==============login=================");
-        log.info("login : {}, {}", loginDTO.getId(), loginDTO.getPw());
 
-        Map<String, String > map = new HashMap<>();
-        //로그인 성공
-        String loginGuestNick = guestService.Login(loginDTO);
-        Guest guest = guestService.findGuestNick(loginGuestNick);
-        if(loginGuestNick != null){
-            GuestInfoDTO guestInfoDTO = new GuestInfoDTO(loginGuestNick, guest.getGno());
-            String token = jwtAuthenticationProvider.createToken(loginGuestNick, guest.getRole());
-            response.setHeader("X-AUTH-TOKEN", token);
-
-            Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            response.addCookie(cookie);
-//            session.setAttribute("LoginNick", loginGuestNick);
-//            session.setAttribute("Logingno", guest.getGno());
-            log.info("로그인 성공");
-            return ResponseEntity.ok(guestInfoDTO);
+        Guest guest = guestRepository.findById(loginDTO.getId());
+        if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        //로그인 실패
-        return null;
+        String token = jwtAuthenticationProvider.createToken(guest.getId(), guest.getRole());
+        response.setHeader("X-AUTH-TOKEN", token);
+
+        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+        GuestInfoDTO guestInfoDTO = new GuestInfoDTO();
+        guestInfoDTO.setGno(guest.getGno());
+        guestInfoDTO.setNickname(guest.getNick());
+
+        return guestInfoDTO;
     }
 
 //    //관리자 로그인
