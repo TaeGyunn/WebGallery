@@ -24,7 +24,9 @@
   - Geust, Author CRUD
   - 패스워드 암호화(Bcrypt)
   - jwt token을 이용한 관리
-  - 이메일 통한 비밀번호 찾기 구현 
+  - 이메일 통한 비밀번호 찾기 구현
+    ![EMAIL](https://user-images.githubusercontent.com/84495814/142360961-bec86703-8498-4494-bcad-b80b4e2084f0.jpg)
+ 
 
 #### 작품 CRUD  
   - 작품 CRUD 
