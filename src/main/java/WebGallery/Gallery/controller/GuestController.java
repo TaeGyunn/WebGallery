@@ -54,19 +54,20 @@ public class GuestController {
     
     //게스트 수정
     @PutMapping("/modifyGuest")
-    public ResponseEntity<Map<String,String>> modifyGuest(@Valid @RequestBody GuestModifyDTO guestModifyDTO){
-        // 아직 프론트가 json으로 할지 말지 안정해져서 매개변수 간단하게 넣음
+    public ResponseEntity<Map<String,String>> modifyGuest(@Valid @RequestBody GuestModifyDTO guestModifyDTO,
+                                                          @RequestHeader Map<String, Object> header){
+        if(header.containsKey("X-AUTH-TOKEN")){
+            Map<String, String> map = new HashMap<>();
+            int check = guestService.modifyGuest(guestModifyDTO);
+            if(check == 0){
+                log.info("modify fail");
+                return null;
 
-        Map<String, String> map = new HashMap<>();
-        int check = guestService.modifyGuest(guestModifyDTO);
-        if(check == 0){
-            log.info("modify fail");
-            return null;
-
+            }
+            map.put("수정","성공");
+            return ResponseEntity.ok(map);
         }
-        map.put("수정","성공");
-        return ResponseEntity.ok(map);
-
+        return null;
     }
     //비밀번호 변경
     @PostMapping("/repw")

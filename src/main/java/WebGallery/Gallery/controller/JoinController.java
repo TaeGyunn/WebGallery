@@ -29,7 +29,6 @@ public class JoinController {
     private final GuestService guestService;
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AdminService adminService;
     private final MailService mailService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -55,7 +54,6 @@ public class JoinController {
     // 로그아웃
     @GetMapping("/logout")
     public void logout(HttpServletResponse response){
-//        session.invalidate();
         Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
