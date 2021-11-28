@@ -35,20 +35,27 @@ public class JoinController {
 
     // 아이디 중복 확인
     @GetMapping("/guest-id/{id}/exists")
-    public ResponseEntity<Boolean> checkIdDuplication(@PathVariable String id){
-        return ResponseEntity.ok(guestService.checkIdDuplication(id));
+    public ResponseEntity<Map<String, Boolean>> checkIdDuplication(@PathVariable String id){
+
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("duplicate", guestService.checkIdDuplication(id));
+        return ResponseEntity.ok(map);
     }
 
     // 이메일 중복 확인
     @GetMapping("/guest-emails/{email}/exists")
-    public ResponseEntity<Boolean> checkEmailDuplication(@PathVariable String email){
-        return ResponseEntity.ok(guestService.checkEmailDuplication(email));
+    public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@PathVariable String email){
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("duplicate", guestService.checkEmailDuplication(email));
+        return ResponseEntity.ok(map);
     }
 
     // 닉네임 중복 확인
     @GetMapping("/guest-nick/{nick}/exists")
-    public ResponseEntity<Boolean> checkNickDuplication(@PathVariable String nick){
-        return ResponseEntity.ok(guestService.checkNickDuplication(nick));
+    public ResponseEntity<Map<String, Boolean>> checkNickDuplication(@PathVariable String nick){
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("duplicate", guestService.checkNickDuplication(nick));
+        return ResponseEntity.ok(map);
     }
 
     // 로그아웃
