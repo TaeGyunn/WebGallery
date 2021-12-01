@@ -66,8 +66,8 @@ public class AuthorService {
         return check;
     }
 
-    public void authorDelete(Long gno){
-
+    public Integer authorDelete(Long gno){
+        int check = 0;
         try {
             Author author = authorRepository.findByGno(gno);
             authorRepository.delete(author);
@@ -76,9 +76,11 @@ public class AuthorService {
             guest.changeRole(Role.GUEST);
             guestRepository.save(guest);
             log.info("Role Change");
+            check = 1;
         } catch (IllegalArgumentException exception){
             exception.printStackTrace();
         }
+        return check;
 
     }
 

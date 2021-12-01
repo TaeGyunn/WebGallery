@@ -24,21 +24,6 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-    @GetMapping("/createAlbumForm")
-    public String createAlbumForm(){
-        return "";
-    }
-
-    @GetMapping("/addWorkToAlbumForm")
-    public String addWorkToAlbumForm(){
-        return "";
-    }
-
-    @GetMapping("/deleteAlbumForm")
-    public String deleteAlbumForm(){
-        return "";
-    }
-    
     //앨범리스트 가져오기
     @GetMapping("/guest/showAlbumList/{gno}")
     public ResponseEntity<List<PageAlbumDTO>> showAlbumList(@PathVariable(name = "gno") Long gno){
@@ -79,19 +64,23 @@ public class AlbumController {
 
     // 앨범 삭제
     @DeleteMapping("/guest/deleteAlbum/{ano}")
-    public ResponseEntity deleteAlbum(@PathVariable(value = "ano") Long ano){
+    public ResponseEntity<Map<String, String>> deleteAlbum(@PathVariable(value = "ano") Long ano){
 
         albumService.deleteAlbum(ano);
-        return new ResponseEntity(HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+        map.put("album", "delete");
+        return ResponseEntity.ok(map);
     }
 
     //앨범에 작업물 삭제
     @DeleteMapping("/guest/deleteWorkToAlbum/{ano}/{wno}")
-    public ResponseEntity deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
+    public ResponseEntity<Map<String, String>> deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
                                             @PathVariable(value="wno") Long wno){
 
         albumService.deleteWorkToAlbum(ano, wno);
-        return new ResponseEntity(HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+        map.put("album_work", "delete");
+        return ResponseEntity.ok(map);
     }
 
 

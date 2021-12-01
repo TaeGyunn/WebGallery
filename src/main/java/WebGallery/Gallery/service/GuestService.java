@@ -89,14 +89,17 @@ public class GuestService {
         }
     }
 
-    public void deleteGuest(Long gno){
+    public Integer deleteGuest(Long gno){
+        int check = 0;
         try {
             Guest guest = guestRepository.findByGno(gno);
             guestRepository.delete(guest);
             log.info("guest delete success");
+            check = 1;
         }catch (IllegalArgumentException exception){
             exception.printStackTrace();
         }
+        return check;
     }
 
     public Integer modifyGuest(GuestModifyDTO guestModifyDTO){

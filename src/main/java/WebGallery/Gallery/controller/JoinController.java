@@ -60,13 +60,16 @@ public class JoinController {
 
     // 로그아웃
     @GetMapping("/logout")
-    public void logout(HttpServletResponse response){
+    public Map<String, String> logout(HttpServletResponse response){
         Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
+        Map<String, String> map = new HashMap<>();
+        map.put("logout", "success");
+        return map;
     }
 
     //이메일 이름 일치 확인
@@ -107,21 +110,30 @@ public class JoinController {
 
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
-    public ResponseEntity sendMail(@RequestBody FindPwDTO findPwDTO){
+    public ResponseEntity<Map<String, String>> sendMail(@RequestBody FindPwDTO findPwDTO){
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
         mailService.sendMail(mailDTO);
-        return new ResponseEntity(HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+        map.put("mail", "success");
+
+        return ResponseEntity.ok(map);
     }
 
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
+    public ResponseEntity<Map<String, String>> guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
 
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
+        Map<String, String> map = new HashMap<>();
+        if(gno > 0){
+            map.put("join", "success");
+        }else{
+            map.put("join", "fail");
+        }
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.ok(map);
     }
 
     // 로그인

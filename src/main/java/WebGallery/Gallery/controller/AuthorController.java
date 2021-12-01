@@ -27,15 +27,6 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    @GetMapping("/authorJoinForm")
-    public String authorJoinForm(){return "/authorJoin";}
-
-    @GetMapping("/authorDeleteForm")    //삭제시 guest와 함께 삭제할지 아니면 author만 삭제할지 선택하는것도 좋을거같음
-    public String authorDeleteForm(){return "";}
-
-    @GetMapping("/authorModifyForm")
-    public String authorModifyForm(){return "";}
-    
     //작가 닉네임 검색
     @GetMapping("/author_work/{page}/{nick}")
     public ResponseEntity<List<PageAuthorDTO>> showWork(@PathVariable(value = "page") int page,
@@ -83,11 +74,16 @@ public class AuthorController {
     
     //작가 삭제
     @DeleteMapping("/authorDelete/{gno}")
-    public ResponseEntity authorDelete(@PathVariable(value = "gno") Long gno){
+    public ResponseEntity<Map<String, String>> authorDelete(@PathVariable(value = "gno") Long gno){
 
-        authorService.authorDelete(gno);
-
-        return new ResponseEntity(HttpStatus.OK);
+        int check = authorService.authorDelete(gno);
+        Map<String, String> map = new HashMap<>();
+        if(check == 0){
+            map.put("author delete", "fail");
+        }else{
+            map.put("author delete", "success");
+        }
+        return ResponseEntity.ok(map);
     }
 
 

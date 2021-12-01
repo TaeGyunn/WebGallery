@@ -29,17 +29,6 @@ public class GuestController {
     private final GuestService guestService;
     private final WorkService workService;
 
-    @GetMapping("/deleteGuestForm")
-    public String deleteGuestForm(){
-        return "";
-    }
-
-    @GetMapping("/modifyGuestForm")
-    public String modifyGuestForm(){
-        // 폼 넘겨줄떄 guest정보 넘겨주기 
-        // 폼 기본 값 설정위해서
-        return "";
-    }
 
     // 작업물 좋아요
     @GetMapping("/likeWork/{gno}/{wno}")
@@ -62,7 +51,6 @@ public class GuestController {
             if(check == 0){
                 log.info("modify fail");
                 return null;
-
             }
             map.put("수정","성공");
             return ResponseEntity.ok(map);
@@ -85,10 +73,15 @@ public class GuestController {
     
     //게스트 삭제
     @DeleteMapping("/deleteGuest/{gno}")
-    public ResponseEntity deleteGuest(@PathVariable(value = "gno") Long gno){
-        guestService.deleteGuest(gno);
-
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> deleteGuest(@PathVariable(value = "gno") Long gno){
+        int check = guestService.deleteGuest(gno);
+        Map<String, String> map = new HashMap<>();
+        if(check == 0){
+            map.put("delete", "fail");
+        }else{
+            map.put("delete", " success");
+        }
+        return ResponseEntity.ok(map);
     }
 
 }

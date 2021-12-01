@@ -20,21 +20,6 @@ public class workController {
 
     private final WorkService workService;
 
-    @GetMapping("/insertWorkForm")
-    public String insertWorkForm(){
-        return "";
-    }
-
-    @GetMapping("/deleteWorkForm")
-    public String deleteWorkForm(){
-        return "";
-    }
-
-    @GetMapping("/modifyWorkForm")
-    public String modifyWorkForm(){
-        return "";
-    }
-    
     //작업물 전체 페이징
     @GetMapping("/workPage/{page}/{size}")
     public ResponseEntity<Page<PageWorkDTO>> getWorks(@PathVariable(value = "page") Integer page,
@@ -67,7 +52,9 @@ public class workController {
             return new ResponseEntity(HttpStatus.OK);
         }
         int check = workService.InsertWork(insertWorkDTO, photo);
-
+        if(check == 0){
+            return null;
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
     
