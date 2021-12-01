@@ -20,6 +20,8 @@
 ![InkedGallery+ERD_LI](https://user-images.githubusercontent.com/84495814/140073836-1499ae05-ea6a-40d8-b256-18ab6a04c780.jpg)
 
 ## Function
+### 현재 안드로이드 앱 으로 프론트 구현중
+
 #### 로그인 / 회원가입
   - Geust, Author CRUD
   - 패스워드 암호화(Bcrypt)
