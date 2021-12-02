@@ -24,14 +24,12 @@ public class MailService {
     @Value("${spring.mail.username}")
     private String FROM_ADDRESS;
 
-
-
     public MailDTO createMailAndChangePassword(FindPwDTO findPwDTO){
         String str = getTempPassword();
         MailDTO DTO = new MailDTO();
         DTO.setAddress(findPwDTO.getEmail());
         DTO.setTitle(findPwDTO.getName() + "님의 Gallery 임시비밀번호 안내 이메일 입니다.");
-        DTO.setMessage("안녕하세요. Gallery 임시비밀번호 안내 관련 이메일 입니다." + "[" + findPwDTO.getName() + "]" +"님의 임시 비밀번호는 "
+        DTO.setMessage("안녕하세요. Gallery 임시비밀번호 안내 관련 이메일 입니다." + System.lineSeparator() +"[ " + findPwDTO.getName() + " ]" +"님의 임시 비밀번호는 "
                 + str + " 입니다.");
         updatePassword(str, findPwDTO.getEmail());
         return DTO;
