@@ -19,8 +19,10 @@
   
 ![InkedGallery+ERD_LI](https://user-images.githubusercontent.com/84495814/140073836-1499ae05-ea6a-40d8-b256-18ab6a04c780.jpg)
 
+## Front
+같이 하는 프론트분 개인사정으로 12월말 작업 예정
+
 ## Function
-### 현재 안드로이드 앱 으로 프론트 구현중
 
 #### 로그인 / 회원가입
   - Geust, Author CRUD
