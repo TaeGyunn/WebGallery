@@ -38,6 +38,7 @@ public class JoinController {
     public ResponseEntity<Map<String, Boolean>> checkIdDuplication(@PathVariable String id){
 
         Map<String, Boolean> map = new HashMap<>();
+        //true면 중복 false면 중복x
         map.put("duplicate", guestService.checkIdDuplication(id));
         return ResponseEntity.ok(map);
     }
@@ -154,7 +155,7 @@ public class JoinController {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         response.addCookie(cookie);
-
+        log.info(token.toString());
         GuestInfoDTO guestInfoDTO = new GuestInfoDTO(guest.getNick(), guest.getGno(),guest.getRole());
 
         return ResponseEntity.ok(guestInfoDTO);
