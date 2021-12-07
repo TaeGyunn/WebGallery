@@ -23,7 +23,4 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     }
 
-    private UserDetails createUserDetails(Guest guest){
-        return new Guest(guest.getId(), guest.getPw(), guest.getRole());
-    }
 }

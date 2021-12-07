@@ -164,10 +164,12 @@ public class GuestService {
 
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getId(),  loginDTO.getPw());
-
+                loginDTO.toAuthentication();
+        log.info("===================check1====================");
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        log.info("===================check2====================");
         UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
+        log.info("===================check3====================");
 
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
