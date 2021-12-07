@@ -41,7 +41,6 @@ public class JwTokenProvider2 {
     }
 
     public UserResponseDTO.TokenInfo generateToken(Authentication authentication){
-        log.info("==============token check 1==================");
         //권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
