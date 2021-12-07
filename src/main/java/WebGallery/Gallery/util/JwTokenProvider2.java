@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
 public class JwTokenProvider2 {
 
