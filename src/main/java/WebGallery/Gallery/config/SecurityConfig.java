@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
-    private final JwTokenProvider2 jwTokenProvider2;
+    private JwTokenProvider2 jwTokenProvider2;
 
     @Override
     public void configure(WebSecurity web){
