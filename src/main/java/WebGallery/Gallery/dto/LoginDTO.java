@@ -3,6 +3,7 @@ package WebGallery.Gallery.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,5 +20,9 @@ public class LoginDTO {
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String pw;
+
+    public UsernamePasswordAuthenticationToken toAuthentication() {
+        return new UsernamePasswordAuthenticationToken(id, pw);
+    }
 
 }
