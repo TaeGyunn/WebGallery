@@ -38,10 +38,11 @@ public class GuestService {
 
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwTokenProvider2 jwTokenProvider2;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RedisTemplate redisTemplate;
     private final Response response;
+    private JwTokenProvider2 jwTokenProvider2;
+
 
     @Transactional(readOnly = true)
     public boolean checkEmailDuplication(String email) {
