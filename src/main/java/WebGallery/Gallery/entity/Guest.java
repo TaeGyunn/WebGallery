@@ -86,11 +86,8 @@ public class Guest implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
-        log.info("test11");
         SimpleGrantedAuthority simple = new SimpleGrantedAuthority(this.role.getValue());
-        log.info("test22");
-        roles.set(0, simple);
-        log.info("test33");
+        roles.add(0, simple);
         return roles;
     }
 
