@@ -1,23 +1,20 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.*;
-import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
-import WebGallery.Gallery.service.AdminService;
 import WebGallery.Gallery.service.GuestService;
+import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.MailService;
-import WebGallery.Gallery.util.JwtTokenProvider;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +27,7 @@ public class JoinController {
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final Response response;
 
 
     // 아이디 중복 확인
@@ -57,20 +54,6 @@ public class JoinController {
         Map<String, Boolean> map = new HashMap<>();
         map.put("duplicate", guestService.checkNickDuplication(nick));
         return ResponseEntity.ok(map);
-    }
-
-    // 로그아웃
-    @GetMapping("/logout")
-    public Map<String, String> logout(HttpServletResponse response){
-        Cookie cookie = new Cookie("X-AUTH-TOKEN", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        Map<String, String> map = new HashMap<>();
-        map.put("logout", "success");
-        return map;
     }
 
     //이메일 이름 일치 확인
@@ -138,27 +121,54 @@ public class JoinController {
     }
 
     // 로그인
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO,
+//                                                     HttpServletResponse response){
+//
+//        Guest guest = guestRepository.findById(loginDTO.getId()).
+//                orElseThrow(() -> new IllegalArgumentException("가입되지 않은 id 입니다."));
+//
+//        if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
+//            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+//        }
+//        String token = jwtTokenProvider.createToken(guest.getNick(), guest.getRole());
+//        response.setHeader("X-AUTH-TOKEN", token);
+//
+//
+//
+//        GuestInfoDTO guestInfoDTO = new GuestInfoDTO(guest.getNick(), guest.getGno(),guest.getRole());
+//
+//        return ResponseEntity.ok(guestInfoDTO);
+//    }
+
+    // 로그인
     @PostMapping("/login")
-    public ResponseEntity<GuestInfoDTO> login(@Validated @RequestBody LoginDTO loginDTO,
-                                                     HttpServletResponse response){
+    public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO,
+                                   Errors errors){
+            if(errors.hasErrors()){
+                return response.invalidFields(Helper.refineErrors(errors));
+            }
+            return guestService.login(loginDTO);
 
-        Guest guest = guestRepository.findById(loginDTO.getId()).
-                orElseThrow(() -> new IllegalArgumentException("가입되지 않은 id 입니다."));
-        if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+    }
+
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@Validated LogoutDTO logout, Errors errors) {
+        // validation check
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
         }
-        String token = jwtTokenProvider.createToken(guest.getNick(), guest.getRole());
-        response.setHeader("X-AUTH-TOKEN", token);
+        return guestService.logout(logout);
+    }
 
-        Cookie cookie = new Cookie("X-AUTH-TOKEN", token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        response.addCookie(cookie);
-        log.info(token.toString());
-        GuestInfoDTO guestInfoDTO = new GuestInfoDTO(guest.getNick(), guest.getGno(),guest.getRole());
-
-        return ResponseEntity.ok(guestInfoDTO);
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@Validated ReissueDTO reissue, Errors errors) {
+        // validation check
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return guestService.reissue(reissue);
     }
 
 //    //관리자 로그인

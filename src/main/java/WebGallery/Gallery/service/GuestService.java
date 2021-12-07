@@ -1,13 +1,18 @@
 package WebGallery.Gallery.service;
 
-import WebGallery.Gallery.dto.GuestJoinDTO;
-import WebGallery.Gallery.dto.GuestModifyDTO;
-import WebGallery.Gallery.dto.LoginDTO;
-import WebGallery.Gallery.dto.Role;
+import WebGallery.Gallery.dto.*;
 import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
+import WebGallery.Gallery.util.JwTokenProvider2;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +38,10 @@ public class GuestService {
 
     private final GuestRepository guestRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwTokenProvider2 jwTokenProvider2;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final RedisTemplate redisTemplate;
+    private final Response response;
 
     @Transactional(readOnly = true)
     public boolean checkEmailDuplication(String email) {
@@ -145,4 +155,73 @@ public class GuestService {
         return check;
     }
 
+    public ResponseEntity<?> login(LoginDTO loginDTO) {
+
+        if(guestRepository.findById(loginDTO.getId()).orElse(null) == null){
+            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getId(),  loginDTO.getPw());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
+
+        redisTemplate.opsForValue()
+                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
+                        tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+
+
+        return response.success(tokenInfo, "로그인에 성공했습니다", HttpStatus.OK);
+
+    }
+
+    public ResponseEntity<?> reissue(ReissueDTO reissue) {
+        // 1. Refresh Token 검증
+        if (!jwTokenProvider2.validateToken(reissue.getRefreshToken())) {
+            return response.fail("Refresh Token 정보가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 2. Access Token 에서 User email 를 가져옵니다.
+        Authentication authentication = jwTokenProvider2.getAuthentication(reissue.getAccessToken());
+
+        // 3. Redis 에서 User email 을 기반으로 저장된 Refresh Token 값을 가져옵니다.
+        String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + authentication.getName());
+        if(!refreshToken.equals(reissue.getRefreshToken())) {
+            return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 4. 새로운 토큰 생성
+        UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
+
+        // 5. RefreshToken Redis 업데이트
+        redisTemplate.opsForValue()
+                .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
+
+        return response.success(tokenInfo, "Token 정보가 갱신되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> logout(LogoutDTO logout) {
+        // 1. Access Token 검증
+        if (!jwTokenProvider2.validateToken(logout.getAccessToken())) {
+            return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 2. Access Token 에서 User email 을 가져옵니다.
+        Authentication authentication = jwTokenProvider2.getAuthentication(logout.getAccessToken());
+
+        // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
+        if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+            // Refresh Token 삭제
+            redisTemplate.delete("RT:" + authentication.getName());
+        }
+
+        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
+        Long expiration = jwTokenProvider2.getExpiration(logout.getAccessToken());
+        redisTemplate.opsForValue()
+                .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return response.success("로그아웃 되었습니다.");
+    }
 }

@@ -1,6 +1,7 @@
 package WebGallery.Gallery.config;
 
 import WebGallery.Gallery.service.impl.CustomUserDetailsServiceImpl;
+import WebGallery.Gallery.util.JwTokenProvider2;
 import WebGallery.Gallery.util.JwtAuthenticationFilter;
 import WebGallery.Gallery.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwTokenProvider2 jwTokenProvider2;
 
     @Override
     public void configure(WebSecurity web){
@@ -44,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
                 .anyRequest().permitAll() // 누구나 접근 허용
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2),
                         UsernamePasswordAuthenticationFilter.class)
 //                .exceptionHandling().accessDeniedPage("/denied")
         ;

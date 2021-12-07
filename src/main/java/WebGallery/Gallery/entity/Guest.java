@@ -62,6 +62,12 @@ public class Guest implements UserDetails{
         this.role = role;
     }
 
+    public Guest(String id, String pw, Role role) {
+        this.id = id;
+        this.pw = pw;
+        this.role = role;
+    }
+
     public void changeRole(Role role){
         this.role = role;
     }
