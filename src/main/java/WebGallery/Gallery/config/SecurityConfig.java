@@ -3,7 +3,6 @@ package WebGallery.Gallery.config;
 import WebGallery.Gallery.service.impl.CustomUserDetailsServiceImpl;
 import WebGallery.Gallery.util.JwTokenProvider2;
 import WebGallery.Gallery.util.JwtAuthenticationFilter;
-import WebGallery.Gallery.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
