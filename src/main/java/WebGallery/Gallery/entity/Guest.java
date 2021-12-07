@@ -3,6 +3,7 @@ package WebGallery.Gallery.entity;
 import WebGallery.Gallery.dto.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Entity
 @Getter
+@Slf4j
 @NoArgsConstructor
 public class Guest implements UserDetails{
 
@@ -83,9 +85,12 @@ public class Guest implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> roles = new ArrayList<>();
+        List<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+        log.info("test11");
         SimpleGrantedAuthority simple = new SimpleGrantedAuthority(this.role.getValue());
+        log.info("test22");
         roles.set(0, simple);
+        log.info("test33");
         return roles;
     }
 
