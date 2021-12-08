@@ -7,6 +7,7 @@ import WebGallery.Gallery.service.MailService;
 import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
@@ -32,11 +33,14 @@ public class JoinController {
 
         //true면 중복 false면 중복x
         boolean check = guestService.checkIdDuplication(id);
+        Map<String, String> map = new HashMap<>();
 
         if(check == true){
-            return response.success("아이디가 중복입니다.");
+            map.put("duplication", "true");
+            return response.success(map,"아이디가 중복입니다.", HttpStatus.OK);
         }else{
-            return response.success("아이디 사용 가능합니다.");
+            map.put("duplication", "false");
+            return response.success(map,"아이디 사용 가능합니다.",HttpStatus.OK);
         }
 
     }
@@ -46,11 +50,14 @@ public class JoinController {
     public ResponseEntity<?> checkEmailDuplication(@PathVariable String email){
 
         boolean check = guestService.checkEmailDuplication(email);
+        Map<String, String> map = new HashMap<>();
 
         if(check == true){
-            return response.success("이메일이 중복입니다.");
+            map.put("duplication", "true");
+            return response.success(map,"이메일이 중복입니다.",HttpStatus.OK);
         }else{
-            return response.success("이메일 사용 가능합니다.");
+            map.put("duplication", "false");
+            return response.success(map,"이메일 사용 가능합니다.",HttpStatus.OK);
         }
     }
 
@@ -58,69 +65,85 @@ public class JoinController {
     @GetMapping("/guest-nick/{nick}/exists")
     public ResponseEntity<?> checkNickDuplication(@PathVariable String nick){
         boolean check = guestService.checkNickDuplication(nick);
+        Map<String, String> map = new HashMap<>();
 
         if(check == true){
-            return response.success("닉네임 중복입니다.");
+            map.put("duplication", "true");
+            return response.success(map,"닉네임 중복입니다.",HttpStatus.OK);
         }else{
-            return response.success("닉네임 사용 가능합니다.");
+            map.put("duplication", "false");
+            return response.success(map,"닉네임 사용 가능합니다.",HttpStatus.OK);
 
         }
     }
 
     //이메일 이름 일치 확인
     @GetMapping("/check/findpw/{email}/{name}")
-    public Map<String, Boolean> pw_find(@PathVariable(value = "email") String email,
+    public ResponseEntity<?> pw_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
 
-        Map<String, Boolean> map = new HashMap<>();
-        log.info("email : "+ email);
-        log.info("name :"+ name);
 
-        map.put("check", guestService.checkEmailAndName(email, name));
-        return map;
+        boolean check = guestService.checkEmailAndName(email, name);
+        Map<String, String> map = new HashMap<>();
+
+        if(check == true){
+            map.put("coincide", "true");
+            return response.success(map,"이메일과 이름이 일치합니다.",HttpStatus.OK);
+        }else{
+            map.put("coincide", "false");
+            return response.success(map,"이메일과 이름이 일치하지 않습니다.",HttpStatus.OK);
+        }
     }
 
     //id 찾기
     @GetMapping("/check/findid/{email}/{name}")
-    public Map<String, String> id_find(@PathVariable(value = "email") String email,
+    public ResponseEntity<?> id_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
 
-        Map<String, String> json = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         String id = guestService.findGuestId(email, name);
         if(id == null){
-            json.put("id", null);
+            map.put("id", null);
+            return response.success(map,"아이디가 존재하지 않습니다",HttpStatus.OK);
         }else{
-            json.put("id",id);
+            map.put("id",id);
+            return response.success(map,"아이디는 "+id+" 입니다.",HttpStatus.OK);
         }
-        return json;
     }
 
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
-    public ResponseEntity<Map<String, String>> sendMail(@RequestBody FindPwDTO findPwDTO){
+    public ResponseEntity<?> sendMail(@RequestBody FindPwDTO findPwDTO){
+
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
         mailService.sendMail(mailDTO);
         Map<String, String> map = new HashMap<>();
         map.put("mail", "success");
 
-        return ResponseEntity.ok(map);
+        return response.success(map,"메일 전송",HttpStatus.OK);
     }
 
 
     // 회원가입
     @PostMapping("/guestJoin")
-    public ResponseEntity<Map<String, String>> guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO){
+    public ResponseEntity<?> guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO,
+                                                         Errors errors){
 
+        if(errors.hasErrors()){
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
         log.info(guestJoinDTO.toString());
         Long gno = guestService.join(guestJoinDTO);
         Map<String, String> map = new HashMap<>();
+
         if(gno > 0){
             map.put("join", "success");
+            return response.success(map, "회원가입 성공", HttpStatus.OK);
         }else{
             map.put("join", "fail");
+            return response.success(map, "회원가입 실패", HttpStatus.OK);
         }
 
-        return ResponseEntity.ok(map);
     }
 
 
