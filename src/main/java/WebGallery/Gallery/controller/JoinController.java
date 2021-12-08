@@ -105,7 +105,7 @@ public class JoinController {
         Map<String, String> map = new HashMap<>();
         String id = guestService.findGuestId(email, name);
         if(id == null){
-            map.put("id", null);
+            map.put("id", "null");
             return response.success(map,"아이디가 존재하지 않습니다",HttpStatus.OK);
         }else{
             map.put("id",id);
