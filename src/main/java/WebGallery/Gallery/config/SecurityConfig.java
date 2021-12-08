@@ -6,6 +6,7 @@ import WebGallery.Gallery.util.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,8 +24,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
-    private JwTokenProvider2 jwTokenProvider2;
+//    private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwTokenProvider2 jwTokenProvider2;
+    private final RedisTemplate redisTemplate;
 
     @Override
     public void configure(WebSecurity web){
@@ -44,15 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
                 .anyRequest().permitAll() // 누구나 접근 허용
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2),
+                .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2,redisTemplate),
                         UsernamePasswordAuthenticationFilter.class)
 //                .exceptionHandling().accessDeniedPage("/denied")
         ;
     }
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
-    }
+//    @Autowired
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
+//    }
 
 
     @Bean

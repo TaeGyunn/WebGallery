@@ -29,7 +29,7 @@ public class JwTokenProvider2 {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
-    private Key key;
+    private final Key key;
 
 
     public JwTokenProvider2(@Value("${security.jwt.token.secret-key}") String secretKey){
@@ -89,7 +89,6 @@ public class JwTokenProvider2 {
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
-            log.info("===========check validate Token=============");
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
