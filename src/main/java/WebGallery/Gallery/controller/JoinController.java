@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -99,6 +98,9 @@ public class JoinController {
     @GetMapping("/check/findid/{email}/{name}")
     public ResponseEntity<?> id_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
+
+        log.info("email : "+ email);
+        log.info("name : "+ name);
 
         Map<String, String> map = new HashMap<>();
         String id = guestService.findGuestId(email, name);
