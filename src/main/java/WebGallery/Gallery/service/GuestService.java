@@ -48,10 +48,11 @@ public class GuestService {
         return guestRepository.existsByNick(nick);
     }
 
-    public boolean checkEmailAndName(String email, String name){
-        log.info("check");
+    @Transactional(readOnly = true)
+    public boolean checkEmailAndId(String email, String id){
+
         Guest guest = guestRepository.findByEmail(email);
-        if(guest.getName().equals(name)){
+        if(guest != null && guest.getId().equals(id)){
             return true;
         }
         return false;
@@ -71,12 +72,13 @@ public class GuestService {
         return guest.getGno();
     }
 
-
+    @Transactional(readOnly = true)
     public Guest findGuestNick(String nick){
         Guest guest = guestRepository.findByNick(nick);
         return guest;
     }
 
+    @Transactional(readOnly = true)
     public String findGuestId(String email, String name){
         Guest guest = guestRepository.findByEmail(email);
 

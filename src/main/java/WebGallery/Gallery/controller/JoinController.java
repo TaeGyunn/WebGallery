@@ -77,12 +77,11 @@ public class JoinController {
     }
 
     //이메일 이름 일치 확인
-    @GetMapping("/check/findpw/{email}/{name}")
+    @GetMapping("/check/findpw/{email}/{id}")
     public ResponseEntity<?> pw_find(@PathVariable(value = "email") String email,
-                                        @PathVariable(value = "name") String name){
+                                        @PathVariable(value = "id") String id){
 
-
-        boolean check = guestService.checkEmailAndName(email, name);
+        boolean check = guestService.checkEmailAndId(email, id);
         Map<String, String> map = new HashMap<>();
 
         if(check == true){
