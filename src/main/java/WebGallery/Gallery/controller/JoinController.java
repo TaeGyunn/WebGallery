@@ -24,8 +24,6 @@ import java.util.Map;
 public class JoinController {
 
     private final GuestService guestService;
-    private final GuestRepository guestRepository;
-    private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final Response response;
 

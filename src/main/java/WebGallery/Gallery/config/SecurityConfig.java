@@ -1,17 +1,11 @@
 package WebGallery.Gallery.config;
 
-import WebGallery.Gallery.service.impl.CustomUserDetailsServiceImpl;
 import WebGallery.Gallery.util.JwTokenProvider2;
 import WebGallery.Gallery.util.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
                 .antMatchers("/author/**").hasRole("AUTHOR")
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
+                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2,redisTemplate),
                         UsernamePasswordAuthenticationFilter.class)
