@@ -21,17 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
     private final JwTokenProvider2 jwTokenProvider2;
     private final RedisTemplate redisTemplate;
-
-    @Override
-    public void configure(WebSecurity web){
-        web.ignoring().antMatchers("/css/**", "/js/**","/img/**");
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
                 .antMatchers("/author/**").hasRole("AUTHOR")
                 .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
-                .anyRequest().permitAll() // 누구나 접근 허용
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2,redisTemplate),
                         UsernamePasswordAuthenticationFilter.class)
@@ -63,9 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception{
+//        return super.authenticationManagerBean();
+//    }
 }
