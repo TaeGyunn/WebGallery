@@ -72,13 +72,11 @@ public class GuestService {
     }
 
 
-    @Transactional(readOnly = true)
     public Guest findGuestNick(String nick){
         Guest guest = guestRepository.findByNick(nick);
         return guest;
     }
 
-    @Transactional(readOnly = true)
     public String findGuestId(String email, String name){
         Guest guest = guestRepository.findByEmail(email);
         if(guest.getName().equals(name)){
