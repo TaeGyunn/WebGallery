@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -90,22 +92,19 @@ public class GuestService {
         }
     }
 
-    public Integer deleteGuest(Long gno){
-        int check = 0;
-        try {
+    public ResponseEntity<?> deleteGuest(Long gno){
+
             Guest guest = guestRepository.findByGno(gno);
+            if(guest == null){
+                return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            }
             guestRepository.delete(guest);
-            log.info("guest delete success");
-            check = 1;
-        }catch (IllegalArgumentException exception){
-            exception.printStackTrace();
-        }
-        return check;
+
+            return response.success("게스트 삭제가 완료되었습니다");
     }
 
     public Integer modifyGuest(GuestModifyDTO guestModifyDTO){
 
-        log.info(guestModifyDTO.toString());
         int check = 0;
         try {
             Guest guest = guestRepository.findByGno(guestModifyDTO.getGno());
@@ -114,18 +113,13 @@ public class GuestService {
                 guest.changeNick(guestModifyDTO.getNick());
                 check = 1;
             }
-            if (!guest.getPw().equals(guestModifyDTO.getPw())) {
-                guest.changePw(guestModifyDTO.getPw());
-                check = 1;
-            }
+
             if (!guest.getEmail().equals(guestModifyDTO.getEmail())) {
                 guest.changeEmail(guestModifyDTO.getEmail());
                 check = 1;
             }
             if (check == 1) {
                 guestRepository.save(guest);
-            } else {
-                log.info("guest 수정사항 없음");
             }
         }catch (IllegalArgumentException exception){
             exception.printStackTrace();
@@ -133,17 +127,17 @@ public class GuestService {
         return check;
     }
 
-    public Integer changePw(String pw, String guestNick){
-        int check = 0;
-        try {
-            Guest guest = guestRepository.findByNick(guestNick);
-            guest.changePw(pw);
-            guestRepository.save(guest);
-            check = 1;
-        }catch (IllegalArgumentException e){
-            e.printStackTrace();
+    public ResponseEntity<?> changePw(ChangePwDTO changePwDTO){
+
+        Guest guest = guestRepository.findByGno(changePwDTO.getGno());
+        if(guest == null){
+            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
-        return check;
+        guest.changePw(changePwDTO.getPw());
+        guestRepository.save(guest);
+
+        return response.success("비밀번호 변경에 성공했습니다");
+
     }
 
     public ResponseEntity<?> login(LoginDTO loginDTO) {
@@ -153,17 +147,13 @@ public class GuestService {
         }
 
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                loginDTO.toAuthentication();
+        UsernamePasswordAuthenticationToken authenticationToken = loginDTO.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
 
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
                         tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
-
-
-
 
         return response.success(tokenInfo, "로그인에 성공했습니다", HttpStatus.OK);
 

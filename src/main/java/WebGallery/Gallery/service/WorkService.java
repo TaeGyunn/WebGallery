@@ -6,9 +6,12 @@ import WebGallery.Gallery.dto.PageWorkDTO;
 import WebGallery.Gallery.entity.*;
 import WebGallery.Gallery.repository.*;
 import WebGallery.Gallery.util.AwsService;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +35,7 @@ public class WorkService {
     private final GuestRepository guestRepository;
     private final LikeRepository likeRepository;
     private final AwsService awsService;
+    private final Response response;
 
     public Integer InsertWork(InsertWorkDTO insertWorkDTO, MultipartFile photos){
 
@@ -182,10 +186,16 @@ public class WorkService {
     }
 
 
-    public void likeWork(Long gno, Long wno){
+    public ResponseEntity<?> likeWork(Long gno, Long wno){
 
         Guest guest = guestRepository.findByGno(gno);
+        if(guest == null){
+            return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+        }
         Work work = workRepository.findByWno(wno);
+        if(work == null){
+            return response.fail("해당하는 작품이 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+        }
         boolean check = likeRepository.existsByGuestAndWork(guest, work);
 
         if(check){
@@ -195,11 +205,15 @@ public class WorkService {
             work.changeLike(work.getLikes()-1);
             workRepository.save(work);
 
+            return response.success("아이템 좋아요 취소 성공");
+
         }else{
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
             work.changeLike(work.getLikes() + 1);
             workRepository.save(work);
+            return response.success("아이템 좋아요 성공");
+
         }
 
     }
