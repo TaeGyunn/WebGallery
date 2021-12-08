@@ -1,8 +1,10 @@
 package WebGallery.Gallery.util;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -17,16 +19,22 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private static final String BEARER_TYPE = "Bearer";
 
     private final JwTokenProvider2 jwTokenProvider2;
+    private final RedisTemplate redisTemplate;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException{
 
-        // 헤더에서 JWT를 받아옵니다.
         String token = resolveToken((HttpServletRequest) request);
+
         if(token != null && jwTokenProvider2.validateToken(token)){
-            Authentication authentication = jwTokenProvider2.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String isLogout = (String)redisTemplate.opsForValue().get(token);
+            if(ObjectUtils.isEmpty(isLogout)){
+
+                Authentication authentication = jwTokenProvider2.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         chain.doFilter(request, response);
     }
