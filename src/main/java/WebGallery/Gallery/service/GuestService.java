@@ -211,16 +211,13 @@ public class GuestService {
         }
 
         // 2. Access Token 에서 User email 을 가져옵니다.
-        log.info("==============test1================");
         Authentication authentication = jwTokenProvider2.getAuthentication(logout.getAccessToken());
 
-        log.info("==============test2================");
         // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             // Refresh Token 삭제
             redisTemplate.delete("RT:" + authentication.getName());
         }
-        log.info("==============test3================");
         // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
         Long expiration = jwTokenProvider2.getExpiration(logout.getAccessToken());
         redisTemplate.opsForValue()

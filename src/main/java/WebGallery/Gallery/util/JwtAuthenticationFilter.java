@@ -26,11 +26,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException{
-        log.info("======================CHECK =====================");
+
         String token = resolveToken((HttpServletRequest) request);
+        if(token != null){
+            log.info("==============check token============");
+        }
 
         if(token != null && jwTokenProvider2.validateToken(token)){
-            log.info("==================check2======================");
             String isLogout = (String)redisTemplate.opsForValue().get(token);
             if(ObjectUtils.isEmpty(isLogout)){
 
