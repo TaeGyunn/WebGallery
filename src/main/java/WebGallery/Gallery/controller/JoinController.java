@@ -28,28 +28,43 @@ public class JoinController {
 
     // 아이디 중복 확인
     @GetMapping("/guest-id/{id}/exists")
-    public ResponseEntity<Map<String, Boolean>> checkIdDuplication(@PathVariable String id){
+    public ResponseEntity<?> checkIdDuplication(@PathVariable String id){
 
-        Map<String, Boolean> map = new HashMap<>();
         //true면 중복 false면 중복x
-        map.put("duplicate", guestService.checkIdDuplication(id));
-        return ResponseEntity.ok(map);
+        boolean check = guestService.checkIdDuplication(id);
+
+        if(check == true){
+            return response.success("아이디가 중복입니다.");
+        }else{
+            return response.success("아이디 사용 가능합니다.");
+        }
+
     }
 
     // 이메일 중복 확인
     @GetMapping("/guest-emails/{email}/exists")
-    public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@PathVariable String email){
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("duplicate", guestService.checkEmailDuplication(email));
-        return ResponseEntity.ok(map);
+    public ResponseEntity<?> checkEmailDuplication(@PathVariable String email){
+
+        boolean check = guestService.checkEmailDuplication(email);
+
+        if(check == true){
+            return response.success("이메일이 중복입니다.");
+        }else{
+            return response.success("이메일 사용 가능합니다.");
+        }
     }
 
     // 닉네임 중복 확인
     @GetMapping("/guest-nick/{nick}/exists")
-    public ResponseEntity<Map<String, Boolean>> checkNickDuplication(@PathVariable String nick){
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("duplicate", guestService.checkNickDuplication(nick));
-        return ResponseEntity.ok(map);
+    public ResponseEntity<?> checkNickDuplication(@PathVariable String nick){
+        boolean check = guestService.checkNickDuplication(nick);
+
+        if(check == true){
+            return response.success("닉네임 중복입니다.");
+        }else{
+            return response.success("닉네임 사용 가능합니다.");
+
+        }
     }
 
     //이메일 이름 일치 확인
