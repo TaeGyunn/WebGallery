@@ -46,7 +46,6 @@ public class JwTokenProvider2 {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        log.info("==============token check 2==================");
         //Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
@@ -55,7 +54,6 @@ public class JwTokenProvider2 {
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-        log.info("==============token check 3==================");
 
 
         //Refresh Token 생성
@@ -63,7 +61,6 @@ public class JwTokenProvider2 {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-        log.info("==============token check 4==================");
 
         return UserResponseDTO.TokenInfo.builder()
                 .grantType(BEARER_TYPE)
