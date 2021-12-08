@@ -19,7 +19,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private static final String BEARER_TYPE = "Bearer";
 
     private final JwTokenProvider2 jwTokenProvider2;
-    private final RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
