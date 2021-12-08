@@ -80,14 +80,6 @@ public class JoinController {
         return json;
     }
 
-    @GetMapping("/info")    //새로고침 시 요청이 들어오는 경로 토큰 유효시 정보 꺼내서 주고 아니면 null
-    public GuestInfoDTO getInfo(){
-        Object details = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(details != null && !(details instanceof String)) return new GuestInfoDTO(details);
-        return null;
-    }
-
-
     //비번 찾기 메일
     @PostMapping("/check/findpw/sendmail")
     public ResponseEntity<Map<String, String>> sendMail(@RequestBody FindPwDTO findPwDTO){
@@ -129,7 +121,7 @@ public class JoinController {
     }
 
     // 로그아웃
-    @PostMapping("/logout")
+    @PostMapping("/logout2")
     public ResponseEntity<?> logout(@Validated @RequestBody  LogoutDTO logout, Errors errors) {
         // validation check
         if (errors.hasErrors()) {
