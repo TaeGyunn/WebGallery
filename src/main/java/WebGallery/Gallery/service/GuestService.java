@@ -166,7 +166,6 @@ public class GuestService {
         UsernamePasswordAuthenticationToken authenticationToken =
                 loginDTO.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        log.info("===================check2====================");
         UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
         log.info("===================check3====================");
 
