@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_TYPE = "Bearer";
 
-    private JwTokenProvider2 jwTokenProvider2;
+    private final JwTokenProvider2 jwTokenProvider2;
     private RedisTemplate redisTemplate;
 
     @Override
