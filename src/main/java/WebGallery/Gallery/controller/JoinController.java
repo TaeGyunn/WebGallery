@@ -99,8 +99,6 @@ public class JoinController {
     public ResponseEntity<?> id_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
 
-        log.info("email : "+ email);
-        log.info("name : "+ name);
 
         Map<String, String> map = new HashMap<>();
         String id = guestService.findGuestId(email, name);

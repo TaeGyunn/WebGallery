@@ -81,7 +81,10 @@ public class GuestService {
     @Transactional(readOnly = true)
     public String findGuestId(String email, String name){
         Guest guest = guestRepository.findByEmail(email);
+        log.info("========"+guest.getName());
+        log.info("========"+name);
         if(guest.getName().equals(name)){
+            log.info("========"+"check1");
             return guest.getId();
         }else{
             log.info("정보를 다시 입력해주십시오");
