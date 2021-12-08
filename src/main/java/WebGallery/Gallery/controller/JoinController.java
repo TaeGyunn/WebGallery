@@ -1,7 +1,6 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.*;
-import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.MailService;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -118,26 +116,6 @@ public class JoinController {
         return ResponseEntity.ok(map);
     }
 
-    // 로그인
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO,
-//                                                     HttpServletResponse response){
-//
-//        Guest guest = guestRepository.findById(loginDTO.getId()).
-//                orElseThrow(() -> new IllegalArgumentException("가입되지 않은 id 입니다."));
-//
-//        if(!passwordEncoder.matches(loginDTO.getPw(), guest.getPassword())){
-//            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-//        }
-//        String token = jwtTokenProvider.createToken(guest.getNick(), guest.getRole());
-//        response.setHeader("X-AUTH-TOKEN", token);
-//
-//
-//
-//        GuestInfoDTO guestInfoDTO = new GuestInfoDTO(guest.getNick(), guest.getGno(),guest.getRole());
-//
-//        return ResponseEntity.ok(guestInfoDTO);
-//    }
 
     // 로그인
     @PostMapping("/login")
