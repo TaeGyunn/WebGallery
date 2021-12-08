@@ -79,7 +79,8 @@ public class GuestService {
 
     public String findGuestId(String email, String name){
         Guest guest = guestRepository.findByEmail(email);
-        if(guest.getName().equals(name)){
+
+        if(guest != null && guest.getName().equals(name)){
             return guest.getId();
         }else{
             log.info("정보를 다시 입력해주십시오");
