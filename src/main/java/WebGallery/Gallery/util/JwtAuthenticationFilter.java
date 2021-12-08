@@ -28,10 +28,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             throws IOException, ServletException{
         log.info("======================CHECK =====================");
         String token = resolveToken((HttpServletRequest) request);
-        logger.info("============"+token.toString()+"===============");
 
         if(token != null && jwTokenProvider2.validateToken(token)){
-
+            log.info("==================check2======================");
             String isLogout = (String)redisTemplate.opsForValue().get(token);
             if(ObjectUtils.isEmpty(isLogout)){
 
