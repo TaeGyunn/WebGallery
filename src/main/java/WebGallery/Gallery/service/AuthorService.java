@@ -40,7 +40,7 @@ public class AuthorService {
 
     // 작가 삭제
     public ResponseEntity<?> authorDelete(Long gno){
-
+        log.info("=========check=============");
         Map<String, String> map = new HashMap<>();
 
         try {
