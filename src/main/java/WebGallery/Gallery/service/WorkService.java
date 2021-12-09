@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,25 +81,34 @@ public class WorkService {
         return check;
     }
 
-    public void deleteWork(Long workNo){
+    public ResponseEntity<?> deleteWork(Long workNo){
 
-        // Photo delete -> Work_tag delete -> work delete
-        Work work = workRepository.getById(workNo);
+        Map<String ,String > map = new HashMap<>();
 
-        //Photo 제거
-        Photo photo = photoRepository.getById(work.getPhoto().getPno());
-        photoRepository.delete(photo);
+        try {
+            // Photo delete -> Work_tag delete -> work delete
+            Work work = workRepository.getById(workNo);
 
-        //Work_tag 제거
-        List<Work_tag> work_tags = new ArrayList<>();
-        work_tags = work_tagRepository.findByWork(work);
-        for(int i=0; i<work_tags.size(); i++){
-            work_tagRepository.delete(work_tags.get(i));
+            //Photo 제거
+            Photo photo = photoRepository.getById(work.getPhoto().getPno());
+            photoRepository.delete(photo);
+
+            //Work_tag 제거
+            List<Work_tag> work_tags = new ArrayList<>();
+            work_tags = work_tagRepository.findByWork(work);
+            for (int i = 0; i < work_tags.size(); i++) {
+                work_tagRepository.delete(work_tags.get(i));
+            }
+
+            //work 제거
+            workRepository.delete(work);
+            map.put("delete", "success");
+            return response.success(map, "work delete success", HttpStatus.OK);
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
         }
-
-        //work 제거
-        workRepository.delete(work);
-
+        map.put("delete", "fail");
+        return response.fail(map, "work delete fail", HttpStatus.BAD_REQUEST);
     }
 
     public Integer modifyWork(ModifyWorkDTO modifyWorkDTO, MultipartFile photos){
