@@ -1,6 +1,7 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.*;
+import WebGallery.Gallery.service.AuthorService;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.WorkService;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class GuestController {
 
     private final GuestService guestService;
+    private final AuthorService authorService;
     private final WorkService workService;
     private final Response response;
 
@@ -87,6 +89,13 @@ public class GuestController {
 
 
         return guestService.authorJoin(authorJoinDTO, thumb);
+    }
+
+    //작가 삭제
+    @DeleteMapping("/authorDelete/{gno}")
+    public ResponseEntity<?> authorDelete(@PathVariable(value = "gno") Long gno){
+
+        return authorService.authorDelete(gno);
     }
 
 }

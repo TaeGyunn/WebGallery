@@ -30,9 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/guest/**").hasRole("GUEST") // USER, ADMIN만 접근 가능
-                .antMatchers("/author/**").hasRole("AUTHOR")
-                .antMatchers("/admin/**").hasRole("ADMIN") // ADMIN만 접근 가능
+                .antMatchers("/guest/**").hasRole("GUEST")
+                .antMatchers("/author/**", "/guest/**").hasRole("AUTHOR")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2,redisTemplate),

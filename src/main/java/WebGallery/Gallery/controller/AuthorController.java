@@ -48,13 +48,7 @@ public class AuthorController {
         map.put("modify", "success");
         return response.success(map, "작가 수정 성공", HttpStatus.OK);
     }
-    
-    //작가 삭제
-    @DeleteMapping("/authorDelete/{gno}")
-    public ResponseEntity<?> authorDelete(@PathVariable(value = "gno") Long gno){
 
-        return authorService.authorDelete(gno);
-    }
 
 
 }
