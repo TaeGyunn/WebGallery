@@ -213,7 +213,7 @@ public class WorkService {
             Likes likes = likeRepository.findByGuestAndWork(guest,work);
             likeRepository.delete(likes);
             Work work2 = workRepository.findByWno(wno);
-            work2.changeLike(work.getLikes()-1);
+            work2.changeLike(work2.getLikes()-1);
             workRepository.save(work2);
 
             return response.success("아이템 좋아요 취소 성공");
@@ -222,7 +222,7 @@ public class WorkService {
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
             Work work2 = workRepository.findByWno(wno);
-            work2.changeLike(work.getLikes() + 1);
+            work2.changeLike(work2.getLikes() + 1);
             workRepository.save(work2);
             return response.success("아이템 좋아요 성공");
 
