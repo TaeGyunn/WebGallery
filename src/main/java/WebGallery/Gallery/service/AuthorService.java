@@ -38,7 +38,7 @@ public class AuthorService {
     private final A_TumbRepository a_tumbRepository;
     private final Response response;
 
-
+    // 작가 삭제
     public ResponseEntity<?> authorDelete(Long gno){
 
         Map<String, String> map = new HashMap<>();
@@ -62,7 +62,8 @@ public class AuthorService {
         return response.fail(map,"작가 삭제 실패", HttpStatus.BAD_REQUEST);
 
     }
-
+    
+    // 작가 수정 
     public Integer authorModify(AuthorModifyDTO authorModifyDTO, MultipartFile thumbs){
 
         Author author = authorRepository.findByGno(authorModifyDTO.getGno());
@@ -106,7 +107,8 @@ public class AuthorService {
 
         return check;
     }
-
+    
+    //작가 작품 보여주기
     public List<PageAuthorDTO> showWork(String nick, int page){
 
         Pageable pageable = PageRequest.of(page -1, 5, Sort.Direction.DESC, "guest");

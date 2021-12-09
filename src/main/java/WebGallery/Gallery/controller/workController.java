@@ -3,7 +3,9 @@ package WebGallery.Gallery.controller;
 import WebGallery.Gallery.dto.InsertWorkDTO;
 import WebGallery.Gallery.dto.ModifyWorkDTO;
 import WebGallery.Gallery.dto.PageWorkDTO;
+import WebGallery.Gallery.service.AuthorService;
 import WebGallery.Gallery.service.WorkService;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class workController {
 
     private final WorkService workService;
+    private final AuthorService authorService;
+    private final Response response;
+
+    //작가 닉네임 검색
+    @GetMapping("/author_work/{page}/{nick}")
+    public ResponseEntity<?> showWork(@PathVariable(value = "page") int page,
+                                      @PathVariable(value = "nick") String nick){
+
+        return response.success(authorService.showWork(nick,page),"작가 닉네임 검색",HttpStatus.OK);
+    }
 
     //작업물 전체 페이징
     @GetMapping("/workPage/{page}/{size}")

@@ -31,14 +31,6 @@ public class AuthorController {
     private final AuthorService authorService;
     private final Response response;
 
-    //작가 닉네임 검색
-    @GetMapping("/author_work/{page}/{nick}")
-    public ResponseEntity<?> showWork(@PathVariable(value = "page") int page,
-                                                        @PathVariable(value = "nick") String nick){
-
-        return response.success(authorService.showWork(nick,page),"작가 닉네임 검색",HttpStatus.OK);
-    }
-
     
     //작가수정
     @PutMapping("/authorModify")
