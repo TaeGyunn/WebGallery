@@ -1,13 +1,12 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.ChangePwDTO;
+import WebGallery.Gallery.dto.DeleteGuestDTO;
 import WebGallery.Gallery.dto.GuestModifyDTO;
-import WebGallery.Gallery.entity.A_thumb;
+import WebGallery.Gallery.dto.LogoutDTO;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
-import WebGallery.Gallery.service.MailService;
 import WebGallery.Gallery.service.WorkService;
-import WebGallery.Gallery.util.AwsService;
 import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +51,9 @@ public class GuestController {
         int check = guestService.modifyGuest(guestModifyDTO);
         if(check == 0){
           return response.success("수정 사항 없음");
+        }else if(check == 2){
+            return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+
         }
         map.put("modify","success");
         return response.success(map, "수정 완료", HttpStatus.OK);
@@ -73,10 +71,15 @@ public class GuestController {
     }
     
     //게스트 삭제
-    @DeleteMapping("/deleteGuest/{gno}")
-    public ResponseEntity<?> deleteGuest(@PathVariable(value = "gno") Long gno){
+    @PostMapping("/deleteGuest")
+    public ResponseEntity<?> deleteGuest(@Validated @RequestBody DeleteGuestDTO deleteGuestDTO, Errors errors){
 
-         return guestService.deleteGuest(gno);
+        if(errors.hasErrors()){
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        LogoutDTO logoutDTO = new LogoutDTO(deleteGuestDTO);
+        guestService.logout(logoutDTO);
+        return guestService.deleteGuest(deleteGuestDTO);
     }
 
 }

@@ -15,4 +15,9 @@ public class LogoutDTO {
     @NotEmpty(message = "잘못된 요청입니다")
     private String refreshToken;
 
+    public LogoutDTO(DeleteGuestDTO deleteGuestDTO){
+        this.accessToken = deleteGuestDTO.getAccessToken();
+        this.refreshToken = deleteGuestDTO.getRefreshToken();
+    }
+
 }

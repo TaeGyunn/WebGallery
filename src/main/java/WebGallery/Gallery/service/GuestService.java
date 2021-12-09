@@ -92,9 +92,9 @@ public class GuestService {
         }
     }
 
-    public ResponseEntity<?> deleteGuest(Long gno){
+    public ResponseEntity<?> deleteGuest(DeleteGuestDTO deleteGuestDTO){
 
-            Guest guest = guestRepository.findByGno(gno);
+            Guest guest = guestRepository.findById(deleteGuestDTO.getId()).orElse(null);
             if(guest == null){
                 return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
             }
@@ -108,6 +108,9 @@ public class GuestService {
         int check = 0;
         try {
             Guest guest = guestRepository.findByGno(guestModifyDTO.getGno());
+            if(guest == null){
+                check = 2;
+            }
 
             if (!guest.getNick().equals(guestModifyDTO.getNick())) {
                 guest.changeNick(guestModifyDTO.getNick());
@@ -190,10 +193,10 @@ public class GuestService {
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        // 2. Access Token 에서 User email 을 가져옵니다.
+        // 2. Access Token 에서 User 을 가져옵니다.
         Authentication authentication = jwTokenProvider2.getAuthentication(logout.getAccessToken());
 
-        // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
+        // 3. Redis 에서 해당 User 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             // Refresh Token 삭제
             redisTemplate.delete("RT:" + authentication.getName());
