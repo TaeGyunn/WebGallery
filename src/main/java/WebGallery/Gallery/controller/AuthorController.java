@@ -51,9 +51,9 @@ public class AuthorController {
     }
 
     //작가 삭제
-    @PostMapping("/authorDelete2")
+    @PostMapping("/authorDelete")
     public ResponseEntity<?> authorDelete(@RequestBody DeleteAuthorDTO deleteAuthorDTO){
-
+        log.info(" check"+deleteAuthorDTO.getGno());
         return authorService.authorDelete(deleteAuthorDTO.getGno());
     }
 
