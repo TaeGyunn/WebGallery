@@ -204,7 +204,7 @@ public class WorkService {
             return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
         }
         Work work = workRepository.findByWno(wno);
-        int n  = workRepository.getByWno(wno).getLikes();
+        Integer n = work.getLikes();
 
         if(work == null){
             return response.fail("해당하는 작품이 존재하지 않습니다", HttpStatus.BAD_REQUEST);
