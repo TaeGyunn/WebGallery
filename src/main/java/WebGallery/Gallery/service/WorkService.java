@@ -212,17 +212,18 @@ public class WorkService {
         if(check){
             Likes likes = likeRepository.findByGuestAndWork(guest,work);
             likeRepository.delete(likes);
-
-            work.changeLike(work.getLikes()-1);
-            workRepository.save(work);
+            Work work2 = workRepository.findByWno(wno);
+            work2.changeLike(work.getLikes()-1);
+            workRepository.save(work2);
 
             return response.success("아이템 좋아요 취소 성공");
 
         }else{
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
-            work.changeLike(work.getLikes() + 1);
-            workRepository.save(work);
+            Work work2 = workRepository.findByWno(wno);
+            work2.changeLike(work.getLikes() + 1);
+            workRepository.save(work2);
             return response.success("아이템 좋아요 성공");
 
         }
