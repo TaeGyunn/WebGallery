@@ -91,4 +91,11 @@ public class GuestController {
         return guestService.authorJoin(authorJoinDTO, thumb);
     }
 
+    //작가 삭제
+    @PostMapping("/authorDelete")
+    public ResponseEntity<?> authorDelete(@RequestBody DeleteAuthorDTO deleteAuthorDTO){
+
+        return authorService.authorDelete(deleteAuthorDTO.getGno());
+    }
+
 }
