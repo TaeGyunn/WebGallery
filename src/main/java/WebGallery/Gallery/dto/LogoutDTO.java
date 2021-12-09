@@ -20,4 +20,9 @@ public class LogoutDTO {
         this.refreshToken = deleteGuestDTO.getRefreshToken();
     }
 
+    public LogoutDTO(String accessToken, String refreshToken){
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
 }
