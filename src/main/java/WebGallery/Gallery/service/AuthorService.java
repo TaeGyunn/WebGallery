@@ -46,14 +46,8 @@ public class AuthorService {
         try {
             Author author = authorRepository.findByGno(gno);
             if(author == null) return response.fail("작가가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
-            Guest guest = guestRepository.findByGno(gno);
-            if(guest == null) return response.fail("게스트가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
             authorRepository.delete(author);
-            log.info("author delete success");
-            guest.changeRole(Role.GUEST);
-            guestRepository.save(guest);
-            log.info("Role Change");
             map.put("delete", "success");
             return response.success(map, "작가 삭제 성공", HttpStatus.OK);
 
