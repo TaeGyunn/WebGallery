@@ -1,8 +1,13 @@
 package WebGallery.Gallery.service;
 
 import WebGallery.Gallery.dto.*;
+import WebGallery.Gallery.entity.A_thumb;
+import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.entity.Guest;
+import WebGallery.Gallery.repository.A_TumbRepository;
+import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.repository.GuestRepository;
+import WebGallery.Gallery.util.AwsService;
 import WebGallery.Gallery.util.JwTokenProvider2;
 import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +21,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +40,9 @@ public class GuestService {
     private final RedisTemplate redisTemplate;
     private final Response response;
     private final JwTokenProvider2 jwTokenProvider2;
+    private final AwsService awsService;
+    private final AuthorRepository authorRepository;
+    private final A_TumbRepository a_tumbRepository;
 
 
     @Transactional(readOnly = true)
@@ -210,5 +220,44 @@ public class GuestService {
                 .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
 
         return response.success("로그아웃 되었습니다.");
+    }
+
+    public ResponseEntity<?> authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
+
+
+        Map<String, String> map = new HashMap<>();
+        try {
+            Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
+            if(guest == null){
+                map.put("join","fail");
+                return response.fail(map,"회원정보가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            }
+
+            A_thumb a_thumb = awsService.uploadFileToA_thumb(thumb);
+            String stodName = a_thumb.getStodname();
+
+            Author author = new Author(
+                    guest,
+                    authorJoinDTO.getSns(),
+                    authorJoinDTO.getComment(),
+                    stodName
+            );
+
+            Author save = authorRepository.save(author);
+
+            if(save != null){
+                a_thumb.saveAuthor(author);
+                a_tumbRepository.save(a_thumb);
+                guest.changeRole(Role.AUTHOR);
+                guestRepository.save(guest);
+                map.put("join","success");
+                return response.success(map,"작가 가입 성공",HttpStatus.OK);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        map.put("join","fail");
+        return response.fail(map, "작가 가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
     }
 }

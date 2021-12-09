@@ -1,9 +1,6 @@
 package WebGallery.Gallery.controller;
 
-import WebGallery.Gallery.dto.ChangePwDTO;
-import WebGallery.Gallery.dto.DeleteGuestDTO;
-import WebGallery.Gallery.dto.GuestModifyDTO;
-import WebGallery.Gallery.dto.LogoutDTO;
+import WebGallery.Gallery.dto.*;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.WorkService;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +78,15 @@ public class GuestController {
         LogoutDTO logoutDTO = new LogoutDTO(deleteGuestDTO);
         guestService.logout(logoutDTO);
         return guestService.deleteGuest(deleteGuestDTO);
+    }
+
+    //작가 가입
+    @PostMapping("/authorJoin")
+    public ResponseEntity<?> authorJoin(@RequestPart("join") AuthorJoinDTO authorJoinDTO,
+                                        @RequestPart("thumb") MultipartFile thumb){
+
+
+        return guestService.authorJoin(authorJoinDTO, thumb);
     }
 
 }

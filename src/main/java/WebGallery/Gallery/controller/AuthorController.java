@@ -38,15 +38,7 @@ public class AuthorController {
 
         return response.success(authorService.showWork(nick,page),"작가 닉네임 검색",HttpStatus.OK);
     }
-    
-    //작가 가입
-    @PostMapping("/authorJoin")
-    public ResponseEntity<?> authorJoin(@RequestPart("join") AuthorJoinDTO authorJoinDTO,
-                                        @RequestPart("thumb") MultipartFile thumb){
 
-
-        return authorService.authorJoin(authorJoinDTO, thumb);
-    }
     
     //작가수정
     @PutMapping("/authorModify")
@@ -71,10 +63,6 @@ public class AuthorController {
 
         return authorService.authorDelete(gno);
     }
-
-
-
-
 
 
 }

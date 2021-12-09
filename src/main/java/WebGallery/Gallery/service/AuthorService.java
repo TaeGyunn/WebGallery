@@ -38,44 +38,6 @@ public class AuthorService {
     private final A_TumbRepository a_tumbRepository;
     private final Response response;
 
-    public ResponseEntity<?> authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
-
-
-        Map<String, String> map = new HashMap<>();
-        try {
-            Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
-            if(guest == null){
-                map.put("join","fail");
-                return response.fail(map,"회원정보가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
-            }
-
-            A_thumb a_thumb = awsService.uploadFileToA_thumb(thumb);
-            String stodName = a_thumb.getStodname();
-
-            Author author = new Author(
-                    guest,
-                    authorJoinDTO.getSns(),
-                    authorJoinDTO.getComment(),
-                    stodName
-            );
-
-            Author save = authorRepository.save(author);
-
-            if(save != null){
-                a_thumb.saveAuthor(author);
-                a_tumbRepository.save(a_thumb);
-                guest.changeRole(Role.AUTHOR);
-                guestRepository.save(guest);
-                map.put("join","success");
-               return response.success(map,"작가 가입 성공",HttpStatus.OK);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        map.put("join","fail");
-        return response.fail(map, "작가 가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
-    }
 
     public ResponseEntity<?> authorDelete(Long gno){
 
