@@ -73,6 +73,7 @@ public class Guest implements UserDetails{
     public void changeRole(Role role){
         this.role = role;
     }
+    
     public void changeNick(String nick){
         this.nick = nick;
     }
