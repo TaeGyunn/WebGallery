@@ -204,13 +204,14 @@ public class WorkService {
             return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
         }
         Work work = workRepository.findByWno(wno);
+        int n = work.getLikes();
+
         if(work == null){
             return response.fail("해당하는 작품이 존재하지 않습니다", HttpStatus.BAD_REQUEST);
         }
         boolean check = likeRepository.existsByGuestAndWork(guest, work);
 
         if(check){
-            int n = work.getLikes();
             work.changeLike(n-1);
             workRepository.save(work);
             Likes likes = likeRepository.findByGuestAndWork(guest,work);
@@ -218,7 +219,6 @@ public class WorkService {
             return response.success("아이템 좋아요 취소 성공");
 
         }else{
-            int n = work.getLikes();
             work.changeLike(n+1);
             workRepository.save(work);
             Likes likes = new Likes(work, guest);
