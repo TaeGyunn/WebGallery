@@ -8,17 +8,22 @@ import WebGallery.Gallery.repository.A_TumbRepository;
 import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.util.AwsService;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +36,18 @@ public class AuthorService {
     private final GuestRepository guestRepository;
     private final AwsService awsService;
     private final A_TumbRepository a_tumbRepository;
+    private final Response response;
 
-    public Integer authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
+    public ResponseEntity<?> authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
 
-        int check = 0;
 
+        Map<String, String> map = new HashMap<>();
         try {
             Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
+            if(guest == null){
+                map.put("join","fail");
+                return response.fail(map,"회원정보가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            }
 
             A_thumb a_thumb = awsService.uploadFileToA_thumb(thumb);
             String stodName = a_thumb.getStodname();
@@ -56,31 +66,38 @@ public class AuthorService {
                 a_tumbRepository.save(a_thumb);
                 guest.changeRole(Role.AUTHOR);
                 guestRepository.save(guest);
-                check = 1;
-                log.info("Author Save Success");
+                map.put("join","success");
+               return response.success(map,"작가 가입 성공",HttpStatus.OK);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return check;
+        map.put("join","fail");
+        return response.fail(map, "작가 가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
     }
 
-    public Integer authorDelete(Long gno){
-        int check = 0;
+    public ResponseEntity<?> authorDelete(Long gno){
+
+        Map<String, String> map = new HashMap<>();
+
         try {
             Author author = authorRepository.findByGno(gno);
+            if(author == null) return response.fail("작가가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+
             authorRepository.delete(author);
             log.info("author delete success");
             Guest guest = guestRepository.findByGno(gno);
             guest.changeRole(Role.GUEST);
             guestRepository.save(guest);
             log.info("Role Change");
-            check = 1;
+            map.put("delete", "success");
+            return response.success(map,"작가 삭제 성공", HttpStatus.OK);
         } catch (IllegalArgumentException exception){
             exception.printStackTrace();
         }
-        return check;
+        map.put("delete", "fail");
+        return response.fail(map,"작가 삭제 실패", HttpStatus.BAD_REQUEST);
 
     }
 
