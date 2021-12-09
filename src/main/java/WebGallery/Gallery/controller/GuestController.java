@@ -1,6 +1,7 @@
 package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.*;
+import WebGallery.Gallery.repository.WorkRepository;
 import WebGallery.Gallery.service.AuthorService;
 import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class GuestController {
 
     private final GuestService guestService;
+    private final WorkRepository workRepository;
     private final AuthorService authorService;
     private final WorkService workService;
     private final Response response;
@@ -35,7 +37,9 @@ public class GuestController {
     public ResponseEntity<?> likeWork(@PathVariable("gno") Long gno,
                                    @PathVariable("wno") Long wno){
 
-        return workService.likeWork(gno, wno);
+        int n = workRepository.findByWno(wno).getLikes();
+
+        return workService.likeWork(gno, wno,n);
 
     }
     
