@@ -212,14 +212,14 @@ public class WorkService {
         boolean check = likeRepository.existsByGuestAndWork(guest, work);
 
         if(check){
-            work.changeLike(n-1);
+            work.changeLike((Integer)n-1);
             workRepository.save(work);
             Likes likes = likeRepository.findByGuestAndWork(guest,work);
             likeRepository.delete(likes);
             return response.success("아이템 좋아요 취소 성공");
 
         }else{
-            work.changeLike(n+1);
+            work.changeLike((Integer) n+1);
             workRepository.save(work);
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
