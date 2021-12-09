@@ -37,9 +37,8 @@ public class GuestController {
     public ResponseEntity<?> likeWork(@PathVariable("gno") Long gno,
                                    @PathVariable("wno") Long wno){
 
-        int n = workRepository.findByWno(wno).getLikes();
 
-        return workService.likeWork(gno, wno,n);
+        return workService.likeWork(gno, wno);
 
     }
     
