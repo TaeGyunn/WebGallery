@@ -91,11 +91,4 @@ public class GuestController {
         return guestService.authorJoin(authorJoinDTO, thumb);
     }
 
-    //작가 삭제
-    @DeleteMapping("/authorDelete/{gno}")
-    public ResponseEntity<?> authorDelete(@PathVariable(value = "gno") Long gno){
-        log.info("gno : "+gno);
-        return authorService.authorDelete(gno);
-    }
-
 }
