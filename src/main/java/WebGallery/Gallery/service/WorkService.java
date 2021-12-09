@@ -210,18 +210,17 @@ public class WorkService {
         boolean check = likeRepository.existsByGuestAndWork(guest, work);
 
         if(check){
-            Likes likes = likeRepository.findByGuestAndWork(guest,work);
-            likeRepository.delete(likes);
             work.changeLike(work.getLikes()-1);
             workRepository.save(work);
-
+            Likes likes = likeRepository.findByGuestAndWork(guest,work);
+            likeRepository.delete(likes);
             return response.success("아이템 좋아요 취소 성공");
 
         }else{
+            work.changeLike(work.getLikes()+1);
+            workRepository.save(work);
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
-//            work.changeLike(work.getLikes() + 1);
-//            workRepository.save(work);
             return response.success("아이템 좋아요 성공");
 
         }
