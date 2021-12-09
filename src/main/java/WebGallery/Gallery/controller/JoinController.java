@@ -131,7 +131,7 @@ public class JoinController {
         if(errors.hasErrors()){
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        log.info(guestJoinDTO.toString());
+
         Long gno = guestService.join(guestJoinDTO);
         Map<String, String> map = new HashMap<>();
 

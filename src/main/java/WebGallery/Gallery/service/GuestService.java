@@ -70,6 +70,7 @@ public class GuestService {
                 guestJoinDTO.getNick(),
                 guestJoinDTO.getEmail(),
                 Role.GUEST);
+
         guestRepository.save(guest);
         return guest.getGno();
     }
@@ -136,7 +137,9 @@ public class GuestService {
         if(guest == null){
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
-        guest.changePw(changePwDTO.getPw());
+        String encodedPassword = passwordEncoder.encode(changePwDTO.getPw());
+
+        guest.changePw(encodedPassword);
         guestRepository.save(guest);
 
         return response.success("비밀번호 변경에 성공했습니다");
