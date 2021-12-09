@@ -2,6 +2,7 @@ package WebGallery.Gallery.controller;
 
 import WebGallery.Gallery.dto.AuthorJoinDTO;
 import WebGallery.Gallery.dto.AuthorModifyDTO;
+import WebGallery.Gallery.dto.DeleteAuthorDTO;
 import WebGallery.Gallery.dto.PageAuthorDTO;
 import WebGallery.Gallery.entity.Author;
 import WebGallery.Gallery.repository.AuthorRepository;
@@ -51,8 +52,8 @@ public class AuthorController {
 
     //작가 삭제
     @PostMapping("/authorDelete")
-    public ResponseEntity<?> authorDelete(@RequestBody Long gno){
-        return authorService.authorDelete(gno);
+    public ResponseEntity<?> authorDelete(@RequestBody DeleteAuthorDTO deleteAuthorDTO){
+        return authorService.authorDelete(deleteAuthorDTO.getGno());
     }
 
 
