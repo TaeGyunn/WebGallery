@@ -11,7 +11,7 @@ import java.util.List;
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     @Query("select count(a.ano) > 0 " +
-            "from Album a" +
+            "from Album a " +
             "where a.name = :name and a.gno = :gno")
     boolean existsByName(@Param(value="name") String name, @Param(value="gno")Long gno);
 
