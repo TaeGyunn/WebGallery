@@ -55,7 +55,7 @@ public class AlbumService {
 
         Map<String, String > map = new HashMap<>();
         Guest guest = guestRepository.findByGno(createAlbum.getGno());
-        if(!albumRepository.existsByName(createAlbum.getName(), createAlbum.getGno())){
+        if(!albumRepository.exists(createAlbum.getName(), createAlbum.getGno())){
             Album album = new Album(createAlbum.getName(), guest);
             albumRepository.save(album);
             map.put("albumCreate", "success");
