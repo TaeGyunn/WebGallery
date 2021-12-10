@@ -4,12 +4,16 @@ import WebGallery.Gallery.entity.Album;
 import WebGallery.Gallery.entity.Guest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
-    boolean existsByName(String name);
+    @Query("select count(a.ano) > 0 " +
+            "from Album a" +
+            "where a.name = :name and a.gno = :gno")
+    boolean existsByName(@Param(value="name") String name, @Param(value="gno")Long gno);
 
     Album findByAno(Long ano);
 

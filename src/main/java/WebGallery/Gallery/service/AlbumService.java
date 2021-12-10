@@ -13,12 +13,17 @@ import WebGallery.Gallery.repository.AlbumRepository;
 import WebGallery.Gallery.repository.GuestRepository;
 import WebGallery.Gallery.repository.WorkRepository;
 import WebGallery.Gallery.util.AwsService;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +37,7 @@ public class AlbumService {
     private final A_workRepository a_workRepository;
     private final WorkRepository workRepository;
     private final AwsService awsService;
+    private final Response response;
 
     //앨범리스트 가져오기
     public List<PageAlbumDTO> showAlbumList(Long gno){
@@ -45,19 +51,19 @@ public class AlbumService {
     }
     
     //앨범 생성
-    public Integer createAlbum(CreateAlbumDTO createAlbum){
+    public ResponseEntity<?> createAlbum(CreateAlbumDTO createAlbum){
 
-        int check = 0;
+        Map<String, String > map = new HashMap<>();
         Guest guest = guestRepository.findByGno(createAlbum.getGno());
-        if(!albumRepository.existsByName(createAlbum.getName())){
+        if(!albumRepository.existsByName(createAlbum.getName(), createAlbum.getGno())){
             Album album = new Album(createAlbum.getName(), guest);
             albumRepository.save(album);
-            check = 1;
-            return check;
+            map.put("albumCreate", "success");
+            return response.success(map, "앨범 생성 성공", HttpStatus.OK);
         }else{
-            log.info("Album Name Exist");
+            map.put("albumCreate", "fail");
+            return response.fail(map, "이미 있는 앨범 아이디 입니다.", HttpStatus.BAD_REQUEST);
         }
-        return check;
     }
     
     //앨범에 작업물 추가

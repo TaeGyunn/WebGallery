@@ -37,16 +37,8 @@ public class AlbumController {
     @PostMapping("/guest/createAlbum")
     public ResponseEntity<?> createAlbum(@RequestBody  CreateAlbumDTO createAlbumDTO){
 
-        int check = 0;
-        check = albumService.createAlbum(createAlbumDTO);
-        Map<String, String > map = new HashMap<>();
-        if(check == 0){
-            map.put("albumCreate", "fail");
-            return response.fail(map, "앨범 생성 실패", HttpStatus.BAD_REQUEST);
-        }
-        map.put("albumCreate","success");
 
-        return response.success(map, "앨범 생성 성공", HttpStatus.OK);
+        return albumService.createAlbum(createAlbumDTO);
     }
     
     //앨범에 작업물 추가
