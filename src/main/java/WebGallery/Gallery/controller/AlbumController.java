@@ -6,6 +6,7 @@ import WebGallery.Gallery.dto.PageAlbumDTO;
 import WebGallery.Gallery.dto.PageAuthorDTO;
 import WebGallery.Gallery.entity.Album;
 import WebGallery.Gallery.service.AlbumService;
+import WebGallery.Gallery.util.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,64 +24,64 @@ import java.util.Map;
 public class AlbumController {
 
     private final AlbumService albumService;
+    private final Response response;
 
     //앨범리스트 가져오기
     @GetMapping("/guest/showAlbumList/{gno}")
-    public ResponseEntity<List<PageAlbumDTO>> showAlbumList(@PathVariable(name = "gno") Long gno){
+    public ResponseEntity<?> showAlbumList(@PathVariable(name = "gno") Long gno){
         List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
-        return ResponseEntity.ok(albumList);
+        return response.fail(albumList, "앨범리스트", HttpStatus.OK);
     }
 
     // 앨범 생성
     @PostMapping("/guest/createAlbum")
-    public ResponseEntity<Map<String, String>> createAlbum(@RequestBody  CreateAlbumDTO createAlbumDTO){
+    public ResponseEntity<?> createAlbum(@RequestBody  CreateAlbumDTO createAlbumDTO){
 
         int check = 0;
         check = albumService.createAlbum(createAlbumDTO);
         Map<String, String > map = new HashMap<>();
         if(check == 0){
-            log.info("앨범 생성 실패");
-            map.put("앨범생성", "실패");
-            return ResponseEntity.ok(map);
+            map.put("albumCreate", "fail");
+            return response.fail(map, "앨범 생성 실패", HttpStatus.BAD_REQUEST);
         }
-        map.put("앨범생성","성공");
-        return ResponseEntity.ok(map);
+        map.put("albumCreate","success");
+
+        return response.success(map, "앨범 생성 성공", HttpStatus.OK);
     }
     
     //앨범에 작업물 추가
     @PostMapping("/addWorkToAlbum")
-    public ResponseEntity<Map<String, String>> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
+    public ResponseEntity<?> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
         Map<String, String > map = new HashMap<>();
         check = albumService.addWorkToAlbum(addWorkToAlbumDTO);
         if(check == 0){
-            log.info("addWorkToAlbumForm");
-            map.put("앨범_작업물생성", "실패");
-            return ResponseEntity.ok(map);
+            map.put("workToalbum", "fail");
+            return response.fail(map, "작업물 추가 실패", HttpStatus.BAD_REQUEST);
         }
-        map.put("앨범_작업물생성", "성공");
-        return ResponseEntity.ok(map);
+        map.put("workToalbum", "success");
+        return response.success(map, "작업물 추가 성공", HttpStatus.OK);
     }
 
     // 앨범 삭제
     @DeleteMapping("/guest/deleteAlbum/{ano}")
-    public ResponseEntity<Map<String, String>> deleteAlbum(@PathVariable(value = "ano") Long ano){
+    public ResponseEntity<?> deleteAlbum(@PathVariable(value = "ano") Long ano){
 
         albumService.deleteAlbum(ano);
         Map<String, String> map = new HashMap<>();
-        map.put("album", "delete");
-        return ResponseEntity.ok(map);
+        map.put("album_delete", "success");
+        return response.success(map, "앨범 삭제 완료",HttpStatus.OK);
     }
 
     //앨범에 작업물 삭제
     @DeleteMapping("/guest/deleteWorkToAlbum/{ano}/{wno}")
-    public ResponseEntity<Map<String, String>> deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
+    public ResponseEntity<?> deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
                                             @PathVariable(value="wno") Long wno){
 
         albumService.deleteWorkToAlbum(ano, wno);
         Map<String, String> map = new HashMap<>();
-        map.put("album_work", "delete");
-        return ResponseEntity.ok(map);
+        map.put("album_work_delete", "success");
+        return response.success(map, "작업물 삭제 완료", HttpStatus.OK);
     }
 
 

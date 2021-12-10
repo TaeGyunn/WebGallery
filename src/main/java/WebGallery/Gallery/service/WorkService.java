@@ -104,6 +104,7 @@ public class WorkService {
 
             map.put("delete", "success");
             return response.success(map, "work delete success", HttpStatus.OK);
+
         }catch(IllegalArgumentException e){
             e.printStackTrace();
         }
