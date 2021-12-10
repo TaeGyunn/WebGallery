@@ -46,7 +46,7 @@ public class AlbumService {
 
         for(int i=0; i<albums.size(); i++){
             String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
-            albums.get(i).getA_works().get(i).getPageWorkDTO().setUrl(url);
+            albums.get(i).getA_works().get(0).getPageWorkDTO().setUrl(url);
         }
         return albums;
     }
