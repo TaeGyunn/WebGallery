@@ -87,10 +87,10 @@ public class WorkService {
 
         try {
             // Photo delete -> Work_tag delete -> work delete
-            Work work = workRepository.getById(workNo);
+            Work work = workRepository.findByWno(workNo);
 
             //Photo 제거
-            Photo photo = photoRepository.getById(work.getPhoto().getPno());
+            Photo photo = photoRepository.findByPno(work.getPhoto().getPno());
             photoRepository.delete(photo);
 
             //Work_tag 제거
