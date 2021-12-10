@@ -89,6 +89,10 @@ public class WorkService {
             // Photo delete -> Work_tag delete -> work delete
             Work work = workRepository.findByWno(workNo);
 
+            if(work.getPhoto().getPno() == null){
+                return response.fail("pno null", HttpStatus.BAD_REQUEST);
+            }
+
             //Photo 제거
             Photo photo = photoRepository.findByPno(work.getPhoto().getPno());
             photoRepository.delete(photo);
