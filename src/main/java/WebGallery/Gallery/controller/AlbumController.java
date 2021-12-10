@@ -42,7 +42,7 @@ public class AlbumController {
     }
     
     //앨범에 작업물 추가
-    @PostMapping("/addWorkToAlbum")
+    @PostMapping("/guest/addWorkToAlbum")
     public ResponseEntity<?> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
         Map<String, String > map = new HashMap<>();
