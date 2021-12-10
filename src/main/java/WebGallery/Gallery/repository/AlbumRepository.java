@@ -12,7 +12,7 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     @Query("select count(a.ano) > 0 " +
             "from Album a " +
-            "where a.name = :name and a.gno = :guest ")
+            "where a.name = :name and a.guest = :guest ")
     boolean exists(@Param(value="name") String name, @Param(value="guest") Guest guest);
 
     Album findByAno(Long ano);
