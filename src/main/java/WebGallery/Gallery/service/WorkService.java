@@ -86,7 +86,6 @@ public class WorkService {
         Map<String ,String > map = new HashMap<>();
 
         try {
-            // Photo delete -> Work_tag delete -> work delete
             Work work = workRepository.findByWno(workNo);
 
             //Work_tag 제거
