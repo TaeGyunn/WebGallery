@@ -43,8 +43,9 @@ public class AlbumService {
     public List<PageAlbumDTO> showAlbumList(Long gno){
         Guest guest = guestRepository.findByGno(gno);
         List<PageAlbumDTO> albums = albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+
         for(int i=0; i<albums.size(); i++){
-            String url = awsService.getFileUrl(albums.get(i).getA_works().get(i).getPageWorkDTO().getPhoto().getStod_name());
+            String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
             albums.get(i).getA_works().get(i).getPageWorkDTO().setUrl(url);
         }
         return albums;

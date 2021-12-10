@@ -30,7 +30,7 @@ public class AlbumController {
     @GetMapping("/guest/showAlbumList/{gno}")
     public ResponseEntity<?> showAlbumList(@PathVariable(name = "gno") Long gno){
         List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
-        return response.fail(albumList, "앨범리스트", HttpStatus.OK);
+        return response.success(albumList, "앨범리스트", HttpStatus.OK);
     }
 
     // 앨범 생성
