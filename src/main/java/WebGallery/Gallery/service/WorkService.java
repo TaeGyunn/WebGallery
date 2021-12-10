@@ -89,14 +89,6 @@ public class WorkService {
             // Photo delete -> Work_tag delete -> work delete
             Work work = workRepository.findByWno(workNo);
 
-            if(work.getPhoto().getPno() == null){
-                return response.fail("pno null", HttpStatus.BAD_REQUEST);
-            }
-
-            //Photo 제거
-            Photo photo = photoRepository.findByPno(work.getPhoto().getPno());
-            photoRepository.delete(photo);
-
             //Work_tag 제거
             List<Work_tag> work_tags = new ArrayList<>();
             work_tags = work_tagRepository.findByWork(work);
@@ -106,6 +98,11 @@ public class WorkService {
 
             //work 제거
             workRepository.delete(work);
+
+            //Photo 제거
+            Photo photo = photoRepository.findByPno(work.getPhoto().getPno());
+            photoRepository.delete(photo);
+
             map.put("delete", "success");
             return response.success(map, "work delete success", HttpStatus.OK);
         }catch(IllegalArgumentException e){
