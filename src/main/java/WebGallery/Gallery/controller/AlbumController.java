@@ -55,6 +55,7 @@ public class AlbumController {
         return response.success(map, "작업물 추가 성공", HttpStatus.OK);
     }
 
+
     // 앨범 삭제
     @DeleteMapping("/guest/deleteAlbum/{ano}")
     public ResponseEntity<?> deleteAlbum(@PathVariable(value = "ano") Long ano){
@@ -75,8 +76,6 @@ public class AlbumController {
         map.put("album_work_delete", "success");
         return response.success(map, "작업물 삭제 완료", HttpStatus.OK);
     }
-
-
 
 
 }

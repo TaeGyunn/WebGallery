@@ -15,10 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    private final CustomUserDetailsServiceImpl userDetailsServiceImpl;
     private final JwTokenProvider2 jwTokenProvider2;
     private final RedisTemplate redisTemplate;
 
@@ -36,14 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwTokenProvider2,redisTemplate),
-                        UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling().accessDeniedPage("/denied")
-        ;
+                        UsernamePasswordAuthenticationFilter.class);
     }
-//    @Autowired
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
-//    }
 
 
     @Bean
@@ -52,9 +44,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception{
-//        return super.authenticationManagerBean();
-//    }
 }

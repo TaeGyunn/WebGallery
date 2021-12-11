@@ -51,7 +51,7 @@ public class JoinController {
         boolean check = guestService.checkEmailDuplication(email);
         Map<String, String> map = new HashMap<>();
 
-        if(check == true){
+        if(check){
             map.put("duplication", "true");
             return response.success(map,"이메일이 중복입니다.",HttpStatus.OK);
         }else{
@@ -66,7 +66,7 @@ public class JoinController {
         boolean check = guestService.checkNickDuplication(nick);
         Map<String, String> map = new HashMap<>();
 
-        if(check == true){
+        if(check){
             map.put("duplication", "true");
             return response.success(map,"닉네임 중복입니다.",HttpStatus.OK);
         }else{
@@ -84,7 +84,7 @@ public class JoinController {
         boolean check = guestService.checkEmailAndId(email, id);
         Map<String, String> map = new HashMap<>();
 
-        if(check == true){
+        if(check){
             map.put("coincide", "true");
             return response.success(map,"이메일과 이름이 일치합니다.",HttpStatus.OK);
         }else{
