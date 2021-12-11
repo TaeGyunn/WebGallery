@@ -23,6 +23,7 @@
 같이 하는 프론트분 개인사정으로 12월말 작업 예정
 
 POSTMAN을 통한 기능 구현 확인
+
 https://sheer-darkness-b51.notion.site/Gallery-_-Postman_API_CHECK-d1b22eb275f7482abf29fda7b730dad3
 
 ## Function
