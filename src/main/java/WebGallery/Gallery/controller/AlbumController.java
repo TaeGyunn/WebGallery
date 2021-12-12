@@ -7,6 +7,7 @@ import WebGallery.Gallery.dto.PageAuthorDTO;
 import WebGallery.Gallery.entity.Album;
 import WebGallery.Gallery.service.AlbumService;
 import WebGallery.Gallery.util.Response;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class AlbumController {
     private final Response response;
 
     //앨범리스트 가져오기
+    @ApiOperation(value="앨범 리스트", notes = "앨범 리스트를 가져온다.")
     @GetMapping("/guest/showAlbumList/{gno}")
     public ResponseEntity<?> showAlbumList(@PathVariable(name = "gno") Long gno){
         List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
@@ -34,6 +36,7 @@ public class AlbumController {
     }
 
     // 앨범 생성
+    @ApiOperation(value="앨범 생성", notes = "앨범을 생성한다.")
     @PostMapping("/guest/createAlbum")
     public ResponseEntity<?> createAlbum(@RequestBody  CreateAlbumDTO createAlbumDTO){
 
@@ -42,6 +45,7 @@ public class AlbumController {
     }
     
     //앨범에 작업물 추가
+    @ApiOperation(value="앨범에 작업물 추가", notes = "앨범에 작업물을 추가한다.")
     @PostMapping("/guest/addWorkToAlbum")
     public ResponseEntity<?> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
@@ -57,6 +61,7 @@ public class AlbumController {
 
 
     // 앨범 삭제
+    @ApiOperation(value="앨범 삭제", notes = "앨범을 삭제한다.")
     @DeleteMapping("/guest/deleteAlbum/{ano}")
     public ResponseEntity<?> deleteAlbum(@PathVariable(value = "ano") Long ano){
 
@@ -67,6 +72,7 @@ public class AlbumController {
     }
 
     //앨범에 작업물 삭제
+    @ApiOperation(value="앨범에 작업물 삭제", notes = "앨범 안에 있는 작업물을 삭제한다.")
     @DeleteMapping("/guest/deleteWorkToAlbum/{ano}/{wno}")
     public ResponseEntity<?> deleteWorkToAlbum(@PathVariable(value = "ano") Long ano,
                                             @PathVariable(value="wno") Long wno){

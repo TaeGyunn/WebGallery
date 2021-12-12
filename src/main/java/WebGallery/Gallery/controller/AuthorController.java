@@ -9,6 +9,7 @@ import WebGallery.Gallery.repository.AuthorRepository;
 import WebGallery.Gallery.service.AuthorService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.util.Response;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ public class AuthorController {
 
     
     //작가수정
+    @ApiOperation(value="작가 정보 수정", notes = "작가 정보를 수정한다.")
     @PutMapping("/authorModify")
     public ResponseEntity<?> authorModify(@RequestPart("modify") AuthorModifyDTO authorModifyDTO,
                                                             @RequestPart("thumb") MultipartFile thumb){

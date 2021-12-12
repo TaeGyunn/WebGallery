@@ -5,6 +5,9 @@ import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.MailService;
 import WebGallery.Gallery.util.Response;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,8 @@ public class JoinController {
 
 
     // 아이디 중복 확인
+    @ApiOperation(value="아이디 중복 체크", notes = "회원가입 시 id가 이미 존재하는지 확인합니다.")
+    @ApiImplicitParam(name ="id", value = "회원가입 시 사용 id", example="testId", dataType = "String", paramType = "path")
     @GetMapping("/guest-id/{id}/exists")
     public ResponseEntity<?> checkIdDuplication(@PathVariable String id){
 
@@ -45,6 +50,8 @@ public class JoinController {
     }
 
     // 이메일 중복 확인
+    @ApiOperation(value="이메일 중복 체크", notes = "회원가입 시 email이 이미 존재하는지 확인합니다.")
+    @ApiImplicitParam(name ="email", value = "회원가입 시 사용 email", example="Test04140@naver.com", dataType = "String", paramType = "path")
     @GetMapping("/guest-emails/{email}/exists")
     public ResponseEntity<?> checkEmailDuplication(@PathVariable String email){
 
@@ -61,6 +68,8 @@ public class JoinController {
     }
 
     // 닉네임 중복 확인
+    @ApiOperation(value="닉네임 중복 체크", notes = "회원가입 시 nick이 이미 존재하는지 확인한다.")
+    @ApiImplicitParam(name ="nick", value = "회원가입 시 사용 nick", example="Test0414", dataType = "String", paramType = "path")
     @GetMapping("/guest-nick/{nick}/exists")
     public ResponseEntity<?> checkNickDuplication(@PathVariable String nick){
         boolean check = guestService.checkNickDuplication(nick);
@@ -77,6 +86,10 @@ public class JoinController {
     }
 
     //이메일 이름 일치 확인
+    @ApiOperation(value="이메일 이름 일치 확인", notes = "비밀번호 찾기 전 이메일과 이름이 일치하는지 확인한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name ="email", value = "등록했던 email", example="Test04140@naver.com", dataType = "String", paramType = "path")
+            ,@ApiImplicitParam(name="id", value = "등록했던 id", example="Test0414", dataType = "String", paramType = "path")})
     @GetMapping("/check/findpw/{email}/{id}")
     public ResponseEntity<?> pw_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "id") String id){
@@ -94,6 +107,10 @@ public class JoinController {
     }
 
     //id 찾기
+    @ApiOperation(value="아이디 중복 체크", notes = "회원가입 시 id가 이미 존재하는지 확인한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name ="email", value = "등록했던 id", example="Test04140@naver.com",dataType = "String", paramType = "path")
+            ,@ApiImplicitParam(name="name", value = "등록했던 name", example="Test0414", dataType = "String", paramType = "path")})
     @GetMapping("/check/findid/{email}/{name}")
     public ResponseEntity<?> id_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
@@ -111,6 +128,7 @@ public class JoinController {
     }
 
     //비번 찾기 메일
+    @ApiOperation(value="비밀번호 찾기 메일 전송", notes = "비밀번호 찾기 이메일 전송한다.")
     @PostMapping("/check/findpw/sendmail")
     public ResponseEntity<?> sendMail(@RequestBody FindPwDTO findPwDTO){
 
@@ -124,6 +142,7 @@ public class JoinController {
 
 
     // 회원가입
+    @ApiOperation(value="게스트 회원가입", notes = "게스트 회원가입을 한다.")
     @PostMapping("/guestJoin")
     public ResponseEntity<?> guestJoin(@Validated @RequestBody GuestJoinDTO guestJoinDTO,
                                                          Errors errors){
@@ -147,6 +166,7 @@ public class JoinController {
 
 
     // 로그인
+    @ApiOperation(value="로그인", notes = "로그인을 한다.")
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO,
                                    Errors errors){
@@ -158,6 +178,7 @@ public class JoinController {
     }
 
     // 로그아웃
+    @ApiOperation(value="로그아웃", notes = "로그아웃을 한다.")
     @PostMapping("/logout2")
     public ResponseEntity<?> logout(@Validated @RequestBody  LogoutDTO logout, Errors errors) {
         // validation check
@@ -168,6 +189,7 @@ public class JoinController {
     }
     
     // 재발급
+    @ApiOperation(value="토큰 재발급", notes = "토큰 재발급을 한다.")
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@Validated @RequestBody ReissueDTO reissue, Errors errors) {
         // validation check

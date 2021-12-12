@@ -7,6 +7,7 @@ import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.WorkService;
 import WebGallery.Gallery.util.Response;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class GuestController {
 
 
     // 작업물 좋아요
+    @ApiOperation(value="작업물 좋아요 / 취소", notes = "작업물이 좋아요 되있을시 좋아요 취소 / 좋아요가 없을시 좋아요를 한다.")
     @GetMapping("/likeWork/{gno}/{wno}")
     public ResponseEntity<?> likeWork(@PathVariable("gno") Long gno,
                                    @PathVariable("wno") Long wno){
@@ -43,6 +45,7 @@ public class GuestController {
     }
     
     //게스트 수정
+    @ApiOperation(value="게스트 수정", notes = "게스트 정보를 수정한다.")
     @PutMapping("/modifyGuest")
     public ResponseEntity<?> modifyGuest(@Validated @RequestBody GuestModifyDTO guestModifyDTO,
                                                           Errors errors){
@@ -63,6 +66,7 @@ public class GuestController {
     }
 
     //비밀번호 변경
+    @ApiOperation(value="비밀번호 변경", notes = "비밀번호를 변경한다.")
     @PostMapping("/repw")
     public ResponseEntity<?> rePw(@Validated @RequestBody ChangePwDTO changePwDTO, Errors errors){
 
@@ -74,6 +78,7 @@ public class GuestController {
     }
     
     //게스트 삭제
+    @ApiOperation(value="게스트 삭제", notes = "게스트를 삭제한다.")
     @PostMapping("/deleteGuest")
     public ResponseEntity<?> deleteGuest(@Validated @RequestBody DeleteGuestDTO deleteGuestDTO, Errors errors){
 
@@ -86,6 +91,7 @@ public class GuestController {
     }
 
     //작가 가입
+    @ApiOperation(value="작가 가입", notes = "작가 정보 입력 후 권한을 작가로 바꾼다.")
     @PostMapping("/authorJoin")
     public ResponseEntity<?> authorJoin(@RequestPart("join") AuthorJoinDTO authorJoinDTO,
                                         @RequestPart("thumb") MultipartFile thumb){
@@ -95,6 +101,7 @@ public class GuestController {
     }
 
     //작가 삭제
+    @ApiOperation(value="작가 탈퇴", notes = "탈퇴한다.")
     @PostMapping("/authorDelete")
     public ResponseEntity<?> authorDelete(@RequestBody DeleteAuthorDTO deleteAuthorDTO){
 
