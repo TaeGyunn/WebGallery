@@ -116,7 +116,15 @@ public class AuthorService {
 
         for (PageAuthorDTO pageAuthorDTO : authorPage) {
             pageAuthorDTO.setUrl(awsService.getFileUrl(pageAuthorDTO.getThumb()));
+
+            int size = pageAuthorDTO.getPageAuthorWorkDTOS().size();
+            for(int i=0; i<size; i++){
+                pageAuthorDTO.getPageAuthorWorkDTOS().get(i)
+                        .setUrl(awsService.getFileUrl(pageAuthorDTO.getPageAuthorWorkDTOS().get(i).getPhoto().getStod_name()));
+            }
         }
+
+
 
         return authorPage;
 

@@ -19,6 +19,7 @@ public class PageAuthorWorkDTO {
     private String name;
     private String comment;
     private Photo photo;
+    private String url;
 
 
     public PageAuthorWorkDTO(Work work){
@@ -28,7 +29,10 @@ public class PageAuthorWorkDTO {
         this.name = work.getName();
         this.comment = work.getComment();
         this.photo = work.getPhoto();
-
-
     }
+
+    public void setUrl(String url){
+        this.url = url;
+    }
+
 }
