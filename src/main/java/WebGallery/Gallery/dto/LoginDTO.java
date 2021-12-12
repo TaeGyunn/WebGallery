@@ -17,7 +17,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class LoginDTO {
 
-    @ApiModelProperty(required = true, value="로그인 할 id", example = "Test0414", dataType = "String")
+    @ApiModelProperty(required = true, value="로그인 할 id", example = "TG0940", dataType = "String")
     @NotBlank(message = "아이디를 입력해주세요")
     private String id;
 
