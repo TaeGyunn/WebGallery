@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 @Getter
 public enum Role {
-    ADMIN("ROLE_ADMIN"),
-    GUEST("ROLE_GUEST"),
-    AUTHOR("ROLE_AUTHOR");
+    ADMIN("ADMIN"),
+    GUEST("GUEST"),
+    AUTHOR("AUTHOR");
 
     private String value;
 
