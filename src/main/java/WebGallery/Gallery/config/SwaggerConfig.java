@@ -21,7 +21,7 @@ public class SwaggerConfig {
     @Bean
     public Docket swaggerApi() {
 
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .useDefaultResponseMessages(false)
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
