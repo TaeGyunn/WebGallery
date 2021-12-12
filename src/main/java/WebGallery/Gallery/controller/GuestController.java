@@ -7,6 +7,8 @@ import WebGallery.Gallery.service.GuestService;
 import WebGallery.Gallery.service.Helper;
 import WebGallery.Gallery.service.WorkService;
 import WebGallery.Gallery.util.Response;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ public class GuestController {
 
     // 작업물 좋아요
     @ApiOperation(value="작업물 좋아요 / 취소", notes = "작업물이 좋아요 되있을시 좋아요 취소 / 좋아요가 없을시 좋아요를 한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name ="gno", value = "게스트 번호", example="19", dataType = "Long", paramType = "path")
+            ,@ApiImplicitParam(name="wno", value = "작품 번호", example="8", dataType = "Long", paramType = "path")})
     @GetMapping("/likeWork/{gno}/{wno}")
     public ResponseEntity<?> likeWork(@PathVariable("gno") Long gno,
                                    @PathVariable("wno") Long wno){

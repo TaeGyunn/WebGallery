@@ -109,6 +109,7 @@ public class workController {
     
     //작업물 삭제
     @ApiOperation(value="작업물 삭제", notes = "작업물을 삭제한다.")
+    @ApiImplicitParam(name ="workNo", value = "작품 번호", example="8", dataType = "Long", paramType = "path")
     @DeleteMapping("/deleteWork/{workNo}")
     public ResponseEntity<?> deleteWork(@PathVariable(value = "workNo") Long workNo){
 
