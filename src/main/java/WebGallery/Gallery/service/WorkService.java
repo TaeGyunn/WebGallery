@@ -91,8 +91,8 @@ public class WorkService {
             //Work_tag 제거
             List<Work_tag> work_tags = new ArrayList<>();
             work_tags = work_tagRepository.findByWork(work);
-            for (int i = 0; i < work_tags.size(); i++) {
-                work_tagRepository.delete(work_tags.get(i));
+            for (Work_tag work_tag : work_tags) {
+                work_tagRepository.delete(work_tag);
             }
 
             //work 제거
@@ -148,8 +148,8 @@ public class WorkService {
             // 태그 비교 (태그 싹다 지우고 다시 추가)
             List<Work_tag> work_tags = new ArrayList<>();
             work_tags = work_tagRepository.findByWork(work);
-            for(int i=0; i<work_tags.size(); i++){
-                work_tagRepository.delete(work_tags.get(i));
+            for (Work_tag workTag : work_tags) {
+                work_tagRepository.delete(workTag);
             }
 
             for (int i = 0; i < modifyWorkDTO.getTags().size(); i++) {
