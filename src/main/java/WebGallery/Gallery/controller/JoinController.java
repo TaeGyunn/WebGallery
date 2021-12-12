@@ -34,7 +34,7 @@ public class JoinController {
         boolean check = guestService.checkIdDuplication(id);
         Map<String, String> map = new HashMap<>();
 
-        if(check == true){
+        if(check){
             map.put("duplication", "true");
             return response.success(map,"아이디가 중복입니다.", HttpStatus.OK);
         }else{
