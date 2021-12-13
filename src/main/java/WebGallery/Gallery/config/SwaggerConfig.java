@@ -37,7 +37,7 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo(){
         return new ApiInfoBuilder()
                 .title("WGallery API")
-                .description("WGallery API Info" +System.lineSeparator()+"Authorize 시 토큰 앞에 Bearer 추가해주세요")
+                .description("Authorize 시 토큰 앞에 Bearer 추가해주세요")
                 .contact(new Contact("TaeGyun", "https://github.com/TaeGyunn/WebGallery.git","cjstkzlxl98@gmail.com"))
                 .build();
     }
