@@ -74,7 +74,7 @@ public class workController {
     @ApiOperation(value="작업물 추가", notes = "작가가 작업물을 추가한다.")
     @PostMapping("/author/insertWork")
     public ResponseEntity<?> insertWork(@RequestPart("insert") InsertWorkDTO insertWorkDTO,
-                                     @RequestPart("photo")@ApiParam MultipartFile photo){
+                                     @RequestPart("photo") @ApiParam(type = "Multipart") MultipartFile photo){
 
         Map<String, String> map = new HashMap<>();
         if(insertWorkDTO.getTags().size() > 3){
@@ -95,7 +95,7 @@ public class workController {
     @ApiOperation(value="작업물 수정", notes = "작업물 수정을 한다.")
     @PutMapping("/author/modifyWork")
     public ResponseEntity<?> modifyWork(@RequestPart("modify") ModifyWorkDTO modifyWorkDTO,
-                                     @RequestPart("photo") MultipartFile photo){
+                                     @RequestPart("photo") @ApiParam MultipartFile photo){
 
         Map<String, String> map = new HashMap<>();
         int check = workService.modifyWork(modifyWorkDTO,photo);
