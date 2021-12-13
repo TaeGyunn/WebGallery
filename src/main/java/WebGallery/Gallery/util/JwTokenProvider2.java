@@ -62,7 +62,7 @@ public class JwTokenProvider2 {
 
         return UserResponseDTO.TokenInfo.builder()
                 .grantType(BEARER_TYPE)
-                .accessToken(accessToken)
+                .accessToken("Bearer "+accessToken)
                 .refreshToken(refreshToken)
                 .refreshTokenExpirationTime(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
