@@ -78,7 +78,7 @@ public class workController {
     
     //작업물 추가
     @ApiOperation(value="작업물 추가", notes = "작가가 작업물을 추가한다.")
-    @PostMapping(path = "/author/insertWork", consumes = "Application/json")
+    @PostMapping("/author/insertWork")
     public ResponseEntity<?> insertWork(@RequestPart("insert")  InsertWorkDTO insertWorkDTO,
                                      @RequestPart("photo")  MultipartFile photo){
 
