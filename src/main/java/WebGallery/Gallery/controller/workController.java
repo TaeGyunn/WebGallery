@@ -7,11 +7,17 @@ import WebGallery.Gallery.service.AuthorService;
 import WebGallery.Gallery.service.WorkService;
 import WebGallery.Gallery.util.Response;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jdk.jfr.ContentType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,8 +78,8 @@ public class workController {
     
     //작업물 추가
     @ApiOperation(value="작업물 추가", notes = "작가가 작업물을 추가한다.")
-    @PostMapping(path = "/author/insertWork", consumes = "application/json")
-    public ResponseEntity<?> insertWork(@RequestPart("insert") InsertWorkDTO insertWorkDTO,
+    @PostMapping(path = "/author/insertWork", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ResponseEntity<?> insertWork(@RequestPart("insert")   @Parameter(schema =@Schema(type = "string", format = "binary")) InsertWorkDTO insertWorkDTO,
                                      @RequestPart("photo")  MultipartFile photo){
 
         Map<String, String> map = new HashMap<>();
