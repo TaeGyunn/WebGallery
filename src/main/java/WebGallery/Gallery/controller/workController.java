@@ -74,7 +74,7 @@ public class workController {
     @ApiOperation(value="작업물 추가", notes = "작가가 작업물을 추가한다.")
     @PostMapping("/author/insertWork")
     public ResponseEntity<?> insertWork(@RequestPart("insert") @ApiParam(type="application/json") InsertWorkDTO insertWorkDTO,
-                                     @RequestPart("photo") @ApiParam(type = "Multipart") MultipartFile photo){
+                                     @RequestPart("photo") @ApiParam MultipartFile photo){
 
         Map<String, String> map = new HashMap<>();
         if(insertWorkDTO.getTags().size() > 3){
