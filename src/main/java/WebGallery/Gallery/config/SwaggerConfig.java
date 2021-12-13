@@ -1,5 +1,7 @@
 package WebGallery.Gallery.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -46,15 +48,16 @@ public class SwaggerConfig {
 
 
 
+
     private List<SecurityReference> defaultAuth(){
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("Bearer", authorizationScopes));
+        return Arrays.asList(new SecurityReference("Token", authorizationScopes));
     }
 
     private ApiKey apiKey(){
-        return new ApiKey("Bearer", "Authorization", "header");
+        return new ApiKey("Token", "Authorization", "header");
     }
 
 }
