@@ -20,7 +20,7 @@
 ![InkedGallery+ERD_LI](https://user-images.githubusercontent.com/84495814/140073836-1499ae05-ea6a-40d8-b256-18ab6a04c780.jpg)
 
 ## Front
-같이 하는 프론트분 개인사정으로 12월말 작업 예정
+같이 하는 프론트분 개인사정으로 12월말 작업 예정입니다.
 
 POSTMAN을 통한 기능 구현 확인
 
@@ -54,8 +54,8 @@ http://wgallery.gq/swagger-ui/index.html
 
 #### AWS
   - EC2
-  - RDS DB
-  - R3 통한 이미지 관리
+  - RDS
+  - R3
 
 
 
