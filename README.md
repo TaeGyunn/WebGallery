@@ -26,7 +26,7 @@ POSTMAN을 통한 기능 구현 확인
 
 https://sheer-darkness-b51.notion.site/Gallery-_-Postman_API_CHECK-d1b22eb275f7482abf29fda7b730dad3
 
-SWAGGER
+SWAGGER(서버끔)
 
 http://wgallery.gq/swagger-ui/index.html
 
