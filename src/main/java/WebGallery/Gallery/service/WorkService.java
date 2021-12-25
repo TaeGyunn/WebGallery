@@ -89,6 +89,10 @@ public class WorkService {
 
         try {
             Work work = workRepository.findByWno(workNo);
+            if(work == null){
+                return response.fail(map, "작업물이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+
+            }
 
             //Work_tag 제거
             List<Work_tag> work_tags = new ArrayList<>();
