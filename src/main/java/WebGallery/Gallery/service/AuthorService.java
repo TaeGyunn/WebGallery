@@ -44,7 +44,8 @@ public class AuthorService {
         Map<String, String> map = new HashMap<>();
 
         try {
-            Author author = authorRepository.findById(id);
+            Guest guest = guestRepository.findById(id).orElse(null);
+            Author author = authorRepository.findByGno(guest.getGno());
             if(author == null) return response.fail("작가가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
             authorRepository.delete(author);
@@ -62,7 +63,8 @@ public class AuthorService {
     // 작가 수정 
     public Integer authorModify(AuthorModifyDTO authorModifyDTO, MultipartFile thumbs){
 
-        Author author = authorRepository.findById(authorModifyDTO.getId());
+        Guest guest = guestRepository.findById(authorModifyDTO.getId()).orElse(null);
+        Author author = authorRepository.findByGno(guest.getGno());
         int check = 0;
         String oldStod_name = "1";
         A_thumb a_thumb = new A_thumb();

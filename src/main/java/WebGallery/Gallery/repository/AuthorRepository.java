@@ -15,9 +15,7 @@ import java.util.List;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     Author findByGno(long gno);
-
-    Author findById(String id);
-
+    
     Page<Author> findByGno(Long gno, Pageable pageable);
 
     @Query(value = "select distinct a from Author a join fetch a.works")
