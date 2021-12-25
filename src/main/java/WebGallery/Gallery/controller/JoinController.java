@@ -37,13 +37,13 @@ public class JoinController {
 
         //true면 중복 false면 중복x
         boolean check = guestService.checkIdDuplication(id);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
 
         if(check){
-            map.put("duplication", "true");
+            map.put("duplication", true);
             return response.success(map,"아이디가 중복입니다.", HttpStatus.OK);
         }else{
-            map.put("duplication", "false");
+            map.put("duplication", false);
             return response.success(map,"아이디 사용 가능합니다.",HttpStatus.OK);
         }
 
@@ -56,13 +56,13 @@ public class JoinController {
     public ResponseEntity<?> checkEmailDuplication(@PathVariable String email){
 
         boolean check = guestService.checkEmailDuplication(email);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
 
         if(check){
-            map.put("duplication", "true");
+            map.put("duplication", true);
             return response.success(map,"이메일이 중복입니다.",HttpStatus.OK);
         }else{
-            map.put("duplication", "false");
+            map.put("duplication", false);
             return response.success(map,"이메일 사용 가능합니다.",HttpStatus.OK);
         }
     }
@@ -73,13 +73,14 @@ public class JoinController {
     @GetMapping("/guest-nick/{nick}/exists")
     public ResponseEntity<?> checkNickDuplication(@PathVariable String nick){
         boolean check = guestService.checkNickDuplication(nick);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
+
 
         if(check){
-            map.put("duplication", "true");
+            map.put("duplication", true);
             return response.success(map,"닉네임 중복입니다.",HttpStatus.OK);
         }else{
-            map.put("duplication", "false");
+            map.put("duplication", false);
             return response.success(map,"닉네임 사용 가능합니다.",HttpStatus.OK);
 
         }
@@ -95,19 +96,19 @@ public class JoinController {
                                         @PathVariable(value = "id") String id){
 
         boolean check = guestService.checkEmailAndId(email, id);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
 
         if(check){
-            map.put("coincide", "true");
+            map.put("coincide", true);
             return response.success(map,"이메일과 이름이 일치합니다.",HttpStatus.OK);
         }else{
-            map.put("coincide", "false");
+            map.put("coincide", false);
             return response.success(map,"이메일과 이름이 일치하지 않습니다.",HttpStatus.OK);
         }
     }
 
     //id 찾기
-    @ApiOperation(value="아이디 중복 체크", notes = "회원가입 시 id가 이미 존재하는지 확인한다.")
+    @ApiOperation(value="비밀번호 찾기 시 아이디 체크", notes = "비밀번호 찾기 시 아이디 체크")
     @ApiImplicitParams({
             @ApiImplicitParam(name ="email", value = "등록했던 id", example="Test04140@naver.com",dataType = "String", paramType = "path")
             ,@ApiImplicitParam(name="name", value = "등록했던 name", example="Test0414", dataType = "String", paramType = "path")})
@@ -134,8 +135,8 @@ public class JoinController {
 
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
         mailService.sendMail(mailDTO);
-        Map<String, String> map = new HashMap<>();
-        map.put("mail", "success");
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("mail", true);
 
         return response.success(map,"메일 전송",HttpStatus.OK);
     }
@@ -152,13 +153,13 @@ public class JoinController {
         }
 
         Long gno = guestService.join(guestJoinDTO);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
 
         if(gno > 0){
-            map.put("join", "success");
+            map.put("join", true);
             return response.success(map, "회원가입 성공", HttpStatus.OK);
         }else{
-            map.put("join", "fail");
+            map.put("join", false);
             return response.success(map, "회원가입 실패", HttpStatus.OK);
         }
 
