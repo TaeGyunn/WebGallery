@@ -15,8 +15,8 @@ import javax.validation.constraints.NotEmpty;
 @ApiModel
 public class AuthorJoinDTO {
 
-    @ApiModelProperty(required = true, value="게스트 no", example = "19", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 아이디", dataType = "String")
+    private String id;
 
     @ApiModelProperty(required = true, value="SNS id", example = "test_gyun", dataType = "String")
     private String sns;
@@ -24,8 +24,8 @@ public class AuthorJoinDTO {
     @ApiModelProperty(required = true, value="작가 소개", example = "Hi I'm TaeGyun", dataType = "String")
     private String comment;
 
-    public AuthorJoinDTO(Long gno, String sns, String comment){
-        this.gno = gno;
+    public AuthorJoinDTO(String id, String sns, String comment){
+        this.id = id;
         this.sns = sns;
         this.comment = comment;
     }

@@ -20,6 +20,6 @@ public class ChangePwDTO {
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
     private String pw;
 
-    @ApiModelProperty(required = true, value="바꿀 게스트 넘버", example = "18", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 아이디", dataType = "String")
+    private String id;
 }

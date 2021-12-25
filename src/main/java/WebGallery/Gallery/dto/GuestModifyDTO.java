@@ -16,8 +16,8 @@ import javax.validation.constraints.Size;
 @ApiModel
 public class GuestModifyDTO {
 
-    @ApiModelProperty(required = true, value="변경할 게스트 넘버", example = "18", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 아이디", dataType = "String")
+    private String id;
 
     @ApiModelProperty(required = true, value="변경할 nick", example = "changeNick", dataType = "String")
     @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하로 입력해주세요.")
@@ -28,8 +28,8 @@ public class GuestModifyDTO {
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
-    public GuestModifyDTO(Long gno, String nick, String email) {
-        this.gno = gno;
+    public GuestModifyDTO(String id, String nick, String email) {
+        this.id = id;
         this.nick = nick;
         this.email = email;
     }

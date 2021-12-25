@@ -15,8 +15,8 @@ import javax.validation.constraints.NotEmpty;
 @ApiModel
 public class AuthorModifyDTO {
 
-    @ApiModelProperty(required = true, value="작가 no", example = "18", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 아이디", dataType = "String")
+    private String id;
 
     @ApiModelProperty(required = true, value="변경할 sns id", dataType = "String")
     private String sns;
@@ -25,8 +25,8 @@ public class AuthorModifyDTO {
     private String comment;
 
 
-    public AuthorModifyDTO(Long gno, String sns, String comment) {
-        this.gno = gno;
+    public AuthorModifyDTO(String id, String sns, String comment) {
+        this.id = id;
         this.sns = sns;
         this.comment = comment;
     }

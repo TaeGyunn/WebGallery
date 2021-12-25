@@ -75,7 +75,6 @@ public class workController {
         return response.success(works,"테마별 아이템 페이징", HttpStatus.OK);
     }
 
-    
     //작업물 추가
     @ApiOperation(value="작업물 추가", notes = "작가가 작업물을 추가한다.")
     @PostMapping("/author/insertWork")

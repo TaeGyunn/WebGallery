@@ -39,12 +39,12 @@ public class AuthorService {
     private final Response response;
 
     // 작가 삭제
-    public ResponseEntity<?> authorDelete(Long gno){
+    public ResponseEntity<?> authorDelete(String id){
 
         Map<String, String> map = new HashMap<>();
 
         try {
-            Author author = authorRepository.findByGno(gno);
+            Author author = authorRepository.findById(id);
             if(author == null) return response.fail("작가가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
             authorRepository.delete(author);
@@ -62,7 +62,7 @@ public class AuthorService {
     // 작가 수정 
     public Integer authorModify(AuthorModifyDTO authorModifyDTO, MultipartFile thumbs){
 
-        Author author = authorRepository.findByGno(authorModifyDTO.getGno());
+        Author author = authorRepository.findById(authorModifyDTO.getId());
         int check = 0;
         String oldStod_name = "1";
         A_thumb a_thumb = new A_thumb();

@@ -118,7 +118,7 @@ public class GuestService {
 
         int check = 0;
         try {
-            Guest guest = guestRepository.findByGno(guestModifyDTO.getGno());
+            Guest guest = guestRepository.findById(guestModifyDTO.getId()).orElse(null);
             if(guest == null){
                 check = 2;
             }
@@ -143,7 +143,7 @@ public class GuestService {
 
     public ResponseEntity<?> changePw(ChangePwDTO changePwDTO){
 
-        Guest guest = guestRepository.findByGno(changePwDTO.getGno());
+        Guest guest = guestRepository.findById(changePwDTO.getId()).orElse(null);
         if(guest == null){
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
@@ -227,7 +227,7 @@ public class GuestService {
 
         Map<String, String> map = new HashMap<>();
         try {
-            Guest guest = guestRepository.findByGno(authorJoinDTO.getGno());
+            Guest guest = guestRepository.findById(authorJoinDTO.getId()).orElse(null);
             if(guest == null){
                 map.put("join","fail");
                 return response.fail(map,"회원정보가 존재하지 않습니다", HttpStatus.BAD_REQUEST);

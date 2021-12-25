@@ -29,7 +29,6 @@ import java.util.Map;
 public class GuestController {
 
     private final GuestService guestService;
-    private final WorkRepository workRepository;
     private final AuthorService authorService;
     private final WorkService workService;
     private final Response response;
@@ -110,7 +109,7 @@ public class GuestController {
     @PostMapping("/authorDelete")
     public ResponseEntity<?> authorDelete(@RequestBody DeleteAuthorDTO deleteAuthorDTO){
 
-        return authorService.authorDelete(deleteAuthorDTO.getGno());
+        return authorService.authorDelete(deleteAuthorDTO.getId());
     }
 
 }

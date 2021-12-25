@@ -1,9 +1,6 @@
 package WebGallery.Gallery.service.impl;
 
-import WebGallery.Gallery.domain.UserDetailImpl;
-import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.repository.GuestRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

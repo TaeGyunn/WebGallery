@@ -10,7 +10,7 @@ import lombok.Setter;
 @ApiModel
 public class DeleteAuthorDTO {
 
-    @ApiModelProperty(required = true, value="게스트 no", example = "18", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 아이디", dataType = "String")
+    private String id;
 
 }

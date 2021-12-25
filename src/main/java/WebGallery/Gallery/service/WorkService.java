@@ -48,7 +48,7 @@ public class WorkService {
             Photo photo = awsService.uploadFileToPhoto(photos);
             photo = photoRepository.save(photo);
 
-            Author author = authorRepository.findByGno(insertWorkDTO.getGno());
+            Author author = authorRepository.findById(insertWorkDTO.getId());
 
             Work work = new Work(
                     author,
