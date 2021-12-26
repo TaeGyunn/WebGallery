@@ -73,6 +73,8 @@ public class GuestService {
     public Long join(GuestJoinDTO guestJoinDTO) {
 
         String encodedPassword = passwordEncoder.encode(guestJoinDTO.getPw());
+
+
         Guest guest = new Guest(
                 guestJoinDTO.getName(),
                 guestJoinDTO.getId(),

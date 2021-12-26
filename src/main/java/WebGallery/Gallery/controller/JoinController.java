@@ -121,7 +121,7 @@ public class JoinController {
         String id = guestService.findGuestId(email, name);
         if(id == null){
             map.put("id", "null");
-            return response.success(map,"아이디가 존재하지 않습니다",HttpStatus.OK);
+            return response.fail(map,"아이디가 존재하지 않습니다",HttpStatus.OK);
         }else{
             map.put("id",id);
             return response.success(map,"아이디는 "+id+" 입니다.",HttpStatus.OK);
@@ -152,15 +152,28 @@ public class JoinController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        Long gno = guestService.join(guestJoinDTO);
         Map<String, Boolean> map = new HashMap<>();
+
+        if(guestService.checkIdDuplication(guestJoinDTO.getId())){
+            map.put("join", false);
+            return response.fail(map,"아이디가 중복입니다.", HttpStatus.BAD_REQUEST);
+        }else if( guestService.checkEmailDuplication(guestJoinDTO.getEmail())){
+            map.put("join", false);
+            return response.fail(map,"이메일이 중복입니다.", HttpStatus.BAD_REQUEST);
+        }else if(guestService.checkNickDuplication(guestJoinDTO.getNick())){
+            map.put("join",false);
+            return response.fail(map,"닉네임이 중복입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+
+        Long gno = guestService.join(guestJoinDTO);
 
         if(gno > 0){
             map.put("join", true);
             return response.success(map, "회원가입 성공", HttpStatus.OK);
         }else{
             map.put("join", false);
-            return response.success(map, "회원가입 실패", HttpStatus.OK);
+            return response.fail(map, "회원가입 실패", HttpStatus.BAD_REQUEST);
         }
 
     }
