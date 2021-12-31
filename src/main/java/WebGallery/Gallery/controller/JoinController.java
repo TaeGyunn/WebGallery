@@ -108,7 +108,7 @@ public class JoinController {
     }
 
     //id 찾기
-    @ApiOperation(value="비밀번호 찾기 시 아이디 체크", notes = "비밀번호 찾기 시 아이디 체크")
+    @ApiOperation(value="아이디 체크", notes = "아이디 체크")
     @ApiImplicitParams({
             @ApiImplicitParam(name ="email", value = "등록했던 id", example="Test04140@naver.com",dataType = "String", paramType = "path")
             ,@ApiImplicitParam(name="name", value = "등록했던 name", example="Test0414", dataType = "String", paramType = "path")})
