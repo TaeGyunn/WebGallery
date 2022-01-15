@@ -51,13 +51,13 @@ public class AlbumController {
     @PostMapping("/guest/addWorkToAlbum")
     public ResponseEntity<?> addWorkToAlbum(@RequestBody AddWorkToAlbumDTO addWorkToAlbumDTO){
         int check = 0;
-        Map<String, String > map = new HashMap<>();
+        Map<String, Boolean > map = new HashMap<>();
         check = albumService.addWorkToAlbum(addWorkToAlbumDTO);
         if(check == 0){
-            map.put("workToalbum", "fail");
+            map.put("workToalbum", false);
             return response.fail(map, "작업물 추가 실패", HttpStatus.BAD_REQUEST);
         }
-        map.put("workToalbum", "success");
+        map.put("workToalbum", true);
         return response.success(map, "작업물 추가 성공", HttpStatus.OK);
     }
 
@@ -69,8 +69,8 @@ public class AlbumController {
     public ResponseEntity<?> deleteAlbum(@PathVariable(value = "ano") Long ano){
 
         albumService.deleteAlbum(ano);
-        Map<String, String> map = new HashMap<>();
-        map.put("album_delete", "success");
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("album_delete", true);
         return response.success(map, "앨범 삭제 완료",HttpStatus.OK);
     }
 
@@ -84,8 +84,8 @@ public class AlbumController {
                                             @PathVariable(value="wno") Long wno){
 
         albumService.deleteWorkToAlbum(ano, wno);
-        Map<String, String> map = new HashMap<>();
-        map.put("album_work_delete", "success");
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("album_work_delete", true);
         return response.success(map, "작업물 삭제 완료", HttpStatus.OK);
     }
 

@@ -112,7 +112,7 @@ public class JoinController {
     @ApiImplicitParams({
             @ApiImplicitParam(name ="email", value = "등록했던 id", example="Test04140@naver.com",dataType = "String", paramType = "path")
             ,@ApiImplicitParam(name="name", value = "등록했던 name", example="Test0414", dataType = "String", paramType = "path")})
-    @GetMapping("/check/findid/{email}/{name}")
+    @GetMapping("/check/findId/{email}/{name}")
     public ResponseEntity<?> id_find(@PathVariable(value = "email") String email,
                                         @PathVariable(value = "name") String name){
 
@@ -130,7 +130,7 @@ public class JoinController {
 
     //비번 찾기 메일
     @ApiOperation(value="비밀번호 찾기 메일 전송", notes = "비밀번호 찾기 이메일 전송한다.")
-    @PostMapping("/check/findpw/sendmail")
+    @PostMapping("/check/findPw/sendmail")
     public ResponseEntity<?> sendMail(@RequestBody FindPwDTO findPwDTO){
 
         MailDTO mailDTO = mailService.createMailAndChangePassword(findPwDTO);
@@ -193,7 +193,7 @@ public class JoinController {
 
     // 로그아웃
     @ApiOperation(value="로그아웃", notes = "로그아웃을 한다.")
-    @PostMapping("/logout2")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated @RequestBody  LogoutDTO logout, Errors errors) {
         // validation check
         if (errors.hasErrors()) {

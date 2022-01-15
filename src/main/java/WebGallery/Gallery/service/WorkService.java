@@ -207,13 +207,16 @@ public class WorkService {
     public ResponseEntity<?> likeWork(Long gno, Long wno){
 
         Guest guest = guestRepository.findByGno(gno);
+        Map<String, Boolean> map = new HashMap<>();
         if(guest == null){
-            return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            map.put("like", false);
+            return response.fail(map,"해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
         }
         Work work = workRepository.findByWno(wno);
 
         if(work == null){
-            return response.fail("해당하는 작품이 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            map.put("like", false);
+            return response.fail(map,"해당하는 작품이 존재하지 않습니다", HttpStatus.BAD_REQUEST);
         }
         boolean check = likeRepository.existsByGuestAndWork(guest, work);
 
@@ -222,6 +225,7 @@ public class WorkService {
             workRepository.save(work);
             Likes likes = likeRepository.findByGuestAndWork(guest,work);
             likeRepository.delete(likes);
+            map.put("unLike", true);
             return response.success("아이템 좋아요 취소 성공");
 
         }else{
@@ -229,6 +233,7 @@ public class WorkService {
             workRepository.save(work);
             Likes likes = new Likes(work, guest);
             likeRepository.save(likes);
+            map.put("like", true);
             return response.success("아이템 좋아요 성공");
 
         }

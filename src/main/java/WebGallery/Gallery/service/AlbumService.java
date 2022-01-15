@@ -54,15 +54,15 @@ public class AlbumService {
     //앨범 생성
     public ResponseEntity<?> createAlbum(CreateAlbumDTO createAlbum){
 
-        Map<String, String > map = new HashMap<>();
+        Map<String, Boolean > map = new HashMap<>();
         Guest guest = guestRepository.findByGno(createAlbum.getGno());
         if(!albumRepository.exists(createAlbum.getName(), guest)){
             Album album = new Album(createAlbum.getName(), guest);
             albumRepository.save(album);
-            map.put("albumCreate", "success");
+            map.put("albumCreate", true);
             return response.success(map, "앨범 생성 성공", HttpStatus.OK);
         }else{
-            map.put("albumCreate", "fail");
+            map.put("albumCreate", false);
             return response.fail(map, "이미 있는 앨범 아이디 입니다.", HttpStatus.BAD_REQUEST);
         }
     }

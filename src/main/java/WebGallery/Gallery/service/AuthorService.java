@@ -41,7 +41,7 @@ public class AuthorService {
     // 작가 삭제
     public ResponseEntity<?> authorDelete(String id){
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
 
         try {
             Guest guest = guestRepository.findById(id).orElse(null);
@@ -49,13 +49,13 @@ public class AuthorService {
             if(author == null) return response.fail("작가가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
 
             authorRepository.delete(author);
-            map.put("delete", "success");
+            map.put("delete", true);
             return response.success(map, "작가 삭제 성공", HttpStatus.OK);
 
         } catch (IllegalArgumentException exception){
             exception.printStackTrace();
         }
-        map.put("delete", "fail");
+        map.put("delete", false);
         return response.fail(map,"작가 삭제 실패", HttpStatus.BAD_REQUEST);
 
     }
@@ -125,8 +125,6 @@ public class AuthorService {
                         .setUrl(awsService.getFileUrl(pageAuthorDTO.getPageAuthorWorkDTOS().get(i).getPhoto().getStod_name()));
             }
         }
-
-
 
         return authorPage;
 

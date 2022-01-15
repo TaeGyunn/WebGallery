@@ -57,15 +57,17 @@ public class GuestController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
         int check = guestService.modifyGuest(guestModifyDTO);
         if(check == 0){
-          return response.success("수정 사항 없음");
+            map.put("modify",false);
+          return response.success(map,"수정 사항 없음",HttpStatus.OK);
         }else if(check == 2){
-            return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+            map.put("modify", false);
+            return response.fail(map,"해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
 
         }
-        map.put("modify","success");
+        map.put("modify",true);
         return response.success(map, "수정 완료", HttpStatus.OK);
     }
 

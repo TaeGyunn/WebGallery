@@ -102,12 +102,13 @@ public class workController {
     public ResponseEntity<?> modifyWork(@RequestPart("modify") ModifyWorkDTO modifyWorkDTO,
                                      @RequestPart("photo") MultipartFile photo){
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
         int check = workService.modifyWork(modifyWorkDTO,photo);
         if(check == 0){
-            map.put("modify","fail");
+            map.put("modify",false);
             response.fail(map, "작업물 수정 실패", HttpStatus.BAD_REQUEST);
         }
+        map.put("modify", true);
 
         return response.success(map, "작업물 수정 성공", HttpStatus.OK);
     }

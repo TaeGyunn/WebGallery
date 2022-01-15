@@ -100,7 +100,6 @@ public class GuestService {
         if(guest != null && guest.getName().equals(name)){
             return guest.getId();
         }else{
-            log.info("정보를 다시 입력해주십시오");
             return null;
         }
     }
@@ -146,15 +145,19 @@ public class GuestService {
     public ResponseEntity<?> changePw(ChangePwDTO changePwDTO){
 
         Guest guest = guestRepository.findById(changePwDTO.getId()).orElse(null);
+        Map<String, Boolean> map = new HashMap<>();
         if(guest == null){
-            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+            map.put("modify", false);
+            return response.fail(map,"해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
         String encodedPassword = passwordEncoder.encode(changePwDTO.getPw());
 
         guest.changePw(encodedPassword);
         guestRepository.save(guest);
 
-        return response.success("비밀번호 변경에 성공했습니다");
+        map.put("modify", true);
+
+        return response.success(map,"비밀번호 변경에 성공했습니다",HttpStatus.OK);
 
     }
 

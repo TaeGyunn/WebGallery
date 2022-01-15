@@ -41,14 +41,14 @@ public class AuthorController {
                                                             @RequestPart("thumb") MultipartFile thumb){
 
 
-        Map<String, String > map = new HashMap<>();
+        Map<String, Boolean > map = new HashMap<>();
         int check = authorService.authorModify(authorModifyDTO, thumb);
 
         if(check == 0){
-            map.put("modify", "fail");
+            map.put("modify", false);
             return response.fail(map, "작가 수정 실패", HttpStatus.BAD_REQUEST);
         }
-        map.put("modify", "success");
+        map.put("modify", true);
         return response.success(map, "작가 수정 성공", HttpStatus.OK);
     }
 }
