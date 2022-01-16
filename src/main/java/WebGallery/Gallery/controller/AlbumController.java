@@ -54,10 +54,10 @@ public class AlbumController {
         Map<String, Boolean > map = new HashMap<>();
         check = albumService.addWorkToAlbum(addWorkToAlbumDTO);
         if(check == 0){
-            map.put("workToalbum", false);
+            map.put("workToAlbum", false);
             return response.fail(map, "작업물 추가 실패", HttpStatus.BAD_REQUEST);
         }
-        map.put("workToalbum", true);
+        map.put("workToAlbum", true);
         return response.success(map, "작업물 추가 성공", HttpStatus.OK);
     }
 
@@ -88,6 +88,5 @@ public class AlbumController {
         map.put("album_work_delete", true);
         return response.success(map, "작업물 삭제 완료", HttpStatus.OK);
     }
-
 
 }

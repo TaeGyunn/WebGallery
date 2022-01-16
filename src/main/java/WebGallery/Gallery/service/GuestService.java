@@ -106,13 +106,16 @@ public class GuestService {
 
     public ResponseEntity<?> deleteGuest(DeleteGuestDTO deleteGuestDTO){
 
+            Map<String, Boolean> map = new HashMap<>();
+
             Guest guest = guestRepository.findById(deleteGuestDTO.getId()).orElse(null);
             if(guest == null){
-                return response.fail("해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
+                map.put("delete", false);
+                return response.fail(map,"해당하는 유저가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
             }
             guestRepository.delete(guest);
-
-            return response.success("게스트 삭제가 완료되었습니다");
+            map.put("delete", true);
+            return response.success(map,"게스트 삭제가 완료되었습니다", HttpStatus.OK);
     }
 
     public Integer modifyGuest(GuestModifyDTO guestModifyDTO){
@@ -230,11 +233,11 @@ public class GuestService {
     public ResponseEntity<?> authorJoin(AuthorJoinDTO authorJoinDTO, MultipartFile thumb){
 
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Boolean> map = new HashMap<>();
         try {
             Guest guest = guestRepository.findById(authorJoinDTO.getId()).orElse(null);
             if(guest == null){
-                map.put("join","fail");
+                map.put("join",false);
                 return response.fail(map,"회원정보가 존재하지 않습니다", HttpStatus.BAD_REQUEST);
             }
 
@@ -255,14 +258,14 @@ public class GuestService {
                 a_tumbRepository.save(a_thumb);
                 guest.changeRole(Role.AUTHOR);
                 guestRepository.save(guest);
-                map.put("join","success");
+                map.put("join",true);
                 return response.success(map,"작가 가입 성공",HttpStatus.OK);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        map.put("join","fail");
+        map.put("join",false);
         return response.fail(map, "작가 가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
     }
 }
