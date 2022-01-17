@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +43,15 @@ public class AlbumService {
     //앨범리스트 가져오기
     public List<PageAlbumDTO> showAlbumList(Long gno){
         Guest guest = guestRepository.findByGno(gno);
-        List<PageAlbumDTO> albums = albumRepository.findByGuest2(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+        List<PageAlbumDTO> albums = albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+        List<PageAlbumDTO> newAlbum = new ArrayList<>();
 
-        for(int i=0; i<albums.size(); i++){
+        for(int i=0; i<albums.size(); i =+ 2){
+            newAlbum.add(albums.get(i));
             String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
-            albums.get(i).getA_works().get(0).getPageWorkDTO().setUrl(url);
+            newAlbum.get(i).getA_works().get(0).getPageWorkDTO().setUrl(url);
         }
-        return albums;
+        return newAlbum;
     }
     
     //앨범 생성
