@@ -2,6 +2,7 @@ package WebGallery.Gallery.repository;
 
 import WebGallery.Gallery.entity.A_work;
 import WebGallery.Gallery.entity.Album;
+import WebGallery.Gallery.entity.Guest;
 import WebGallery.Gallery.entity.Work;
 import org.springframework.data.jpa.repository.JpaRepository;
 

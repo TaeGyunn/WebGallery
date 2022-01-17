@@ -35,5 +35,7 @@ public class PageAlbumDTO {
         }else{
             this.a_works = Collections.emptyList();
         }
+
     }
+
 }

@@ -34,7 +34,10 @@ public class AlbumController {
     @ApiImplicitParam(name ="gno", value = "게스트 no", example= "19", dataType = "Long", paramType = "path")
     @GetMapping("/guest/showAlbumList/{gno}")
     public ResponseEntity<?> showAlbumList(@PathVariable(name = "gno") Long gno){
+
         List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
+        Map<String, Integer> info = new HashMap<>();
+        info.put("size" , albumList.size());
         return response.success(albumList, "앨범리스트", HttpStatus.OK);
     }
 
