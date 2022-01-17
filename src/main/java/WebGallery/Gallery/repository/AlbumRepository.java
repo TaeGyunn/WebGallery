@@ -17,8 +17,11 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     Album findByAno(Long ano);
 
-//    @Query("select a from Album a join fetch a.a_works")
+    @Query("select a from Album a join fetch a.a_works")
     List<Album> findByGuest(Guest guest);
+
+    @Query("select a from Album a where a.gust = :guest")
+    List<Album> findByGuest2(Guest guest);
 
 
 }

@@ -42,7 +42,7 @@ public class AlbumService {
     //앨범리스트 가져오기
     public List<PageAlbumDTO> showAlbumList(Long gno){
         Guest guest = guestRepository.findByGno(gno);
-        List<PageAlbumDTO> albums = albumRepository.findByGuest(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+        List<PageAlbumDTO> albums = albumRepository.findByGuest2(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
 
         for(int i=0; i<albums.size(); i++){
             String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
