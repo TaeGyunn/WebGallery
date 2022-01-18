@@ -29,4 +29,6 @@ public class Album {
         this.name = name;
         this.guest = guest;
     }
+
+
 }

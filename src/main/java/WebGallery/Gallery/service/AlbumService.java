@@ -41,17 +41,29 @@ public class AlbumService {
     private final Response response;
 
     //앨범리스트 가져오기
-    public List<PageAlbumDTO> showAlbumList(Long gno){
-        Guest guest = guestRepository.findByGno(gno);
-        List<Album> a = albumRepository.findByGuest(guest);
-        List<PageAlbumDTO> albums = a.stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+//    public List<PageAlbumDTO> showAlbumList(Long gno){
+//        Guest guest = guestRepository.findByGno(gno);
+//        List<Album> a = albumRepository.findByGuest(guest);
+//
+//        List<PageAlbumDTO> albums = a.stream().map(PageAlbumDTO::new).collect(Collectors.toList());
+//
+//
+//        for(int i=0; i<albums.size(); i ++){
+//            String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
+//            albums.get(0).getA_works().get(0).getPageWorkDTO().setUrl(url);
+//        }
+//        return albums;
+//    }
 
-        for(int i=0; i<albums.size(); i ++){
-            String url = awsService.getFileUrl(albums.get(i).getA_works().get(0).getPageWorkDTO().getPhoto().getStod_name());
-            albums.get(0).getA_works().get(0).getPageWorkDTO().setUrl(url);
-        }
-        return albums;
+
+    public List<Album> showAlbumList(String id){
+
+        Guest guest = guestRepository.findById(id).orElse(null);
+        List<Album> albumList = albumRepository.findByGuest2(guest);
+
+        return albumList;
     }
+
     
     //앨범 생성
     public ResponseEntity<?> createAlbum(CreateAlbumDTO createAlbum){
@@ -117,5 +129,15 @@ public class AlbumService {
         }catch (IllegalArgumentException e){
             e.printStackTrace();
         }
+    }
+
+    public PageAlbumDTO showAlbum(Long ano) {
+
+        Album album = albumRepository.findByAno(ano);
+        List<A_work> a_workList = a_workRepository.findByAlbum(album);
+        PageAlbumDTO pageAlbumDTO = new PageAlbumDTO(album, a_workList);
+
+
+        return pageAlbumDTO;
     }
 }

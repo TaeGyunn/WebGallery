@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +33,28 @@ public class AlbumController {
     //앨범리스트 가져오기
     @ApiOperation(value="앨범 리스트", notes = "앨범 리스트를 가져온다.")
     @ApiImplicitParam(name ="gno", value = "게스트 no", example= "19", dataType = "Long", paramType = "path")
-    @GetMapping("/guest/showAlbumList/{gno}")
-    public ResponseEntity<?> showAlbumList(@PathVariable(name = "gno") Long gno){
+    @GetMapping("/guest/showAlbumList/{id}")
+    public ResponseEntity<?> showAlbumList(@PathVariable(name = "id") String id){
 
-        List<PageAlbumDTO> albumList= albumService.showAlbumList(gno);
+        List<Album> albumList= albumService.showAlbumList(id);
         Map<String, Integer> info = new HashMap<>();
         info.put("size" , albumList.size());
         return response.success(albumList, "앨범리스트", HttpStatus.OK);
     }
+
+    @GetMapping("/guest/showAlbum/{ano}")
+    public ResponseEntity<?> showAlbum(@PathVariable(name = "ano") Long ano){
+
+        PageAlbumDTO album = albumService.showAlbum(ano);
+        Map<String, Integer> info = new HashMap<>();
+        info.put("workSize" , album.getA_works().size() );
+        List<Object> list = new ArrayList<>();
+        list.add(album);
+        list.add(info);
+        return response.success(list, "앨범", HttpStatus.OK);
+    }
+
+
 
     // 앨범 생성
     @ApiOperation(value="앨범 생성", notes = "앨범을 생성한다.")

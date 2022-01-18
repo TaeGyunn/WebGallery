@@ -13,8 +13,6 @@ import java.util.List;
 public interface WorkRepository extends JpaRepository<Work, Long> {
 
     Work findByWno(long wno);
-    Work getByWno(long wno);
-
 
     Page<Work> findAll(Pageable pageable);
 

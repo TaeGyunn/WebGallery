@@ -35,7 +35,14 @@ public class PageAlbumDTO {
         }else{
             this.a_works = Collections.emptyList();
         }
-
     }
+
+    public PageAlbumDTO(Album album, List<A_work> a_workList){
+        this.ano = album.getAno();
+        this.gno = album.getGuest().getGno();
+        this.name =album.getName();
+        this.a_works = a_workList.stream().map(PageAlbumWorkDTO::new).collect(Collectors.toList());
+    }
+
 
 }
