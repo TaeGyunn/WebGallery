@@ -36,7 +36,7 @@ public class AlbumController {
     @GetMapping("/guest/showAlbumList/{id}")
     public ResponseEntity<?> showAlbumList(@PathVariable(name = "id") String id){
 
-        List<Album> albumList= albumService.showAlbumList(id);
+        List<PageAlbumDTO> albumList= albumService.showAlbumList(id);
         Map<String, Integer> info = new HashMap<>();
         info.put("size" , albumList.size());
         return response.success(albumList, "앨범리스트", HttpStatus.OK);

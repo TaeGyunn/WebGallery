@@ -56,10 +56,10 @@ public class AlbumService {
 //    }
 
 
-    public List<Album> showAlbumList(String id){
+    public List<PageAlbumDTO> showAlbumList(String id){
 
         Guest guest = guestRepository.findById(id).orElse(null);
-        List<Album> albumList = albumRepository.findByGuest2(guest);
+        List<PageAlbumDTO> albumList = albumRepository.findByGuest2(guest).stream().map(PageAlbumDTO::new).collect(Collectors.toList());
 
         return albumList;
     }
