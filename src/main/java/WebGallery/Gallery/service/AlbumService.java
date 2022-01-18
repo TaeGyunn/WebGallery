@@ -137,7 +137,11 @@ public class AlbumService {
         List<A_work> a_workList = a_workRepository.findByAlbum(album);
         PageAlbumDTO pageAlbumDTO = new PageAlbumDTO(album, a_workList);
 
-
+        int size = pageAlbumDTO.getA_works().size();
+        for(int i=0; i<size; i++) {
+            String url = awsService.getFileUrl(pageAlbumDTO.getA_works().get(i).getPageWorkDTO().getPhoto().getStod_name());
+            pageAlbumDTO.getA_works().get(i).getPageWorkDTO().setUrl(url);
+        }
         return pageAlbumDTO;
     }
 }
