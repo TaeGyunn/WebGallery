@@ -166,9 +166,17 @@ public class GuestService {
 
     public ResponseEntity<?> login(LoginDTO loginDTO) {
 
-        if(guestRepository.findById(loginDTO.getId()).orElse(null) == null){
-            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        Guest guest = guestRepository.findById(loginDTO.getId()).orElse(null);
+        Map<String, Boolean> map = new HashMap<>();
+        if(guest == null){
+            map.put("login", false);
+            return response.fail(map,"해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
+        if(guest.getPassword() != passwordEncoder.encode(loginDTO.getPw())){
+            map.put("login", true);
+            return response.fail(map,"비밀번호가 확인 바랍니다", HttpStatus.BAD_REQUEST);
+        }
+
 
 
         UsernamePasswordAuthenticationToken authenticationToken = loginDTO.toAuthentication();
