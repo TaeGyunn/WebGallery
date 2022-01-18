@@ -15,12 +15,12 @@ public class CreateAlbumDTO {
     @ApiModelProperty(required = true, value="생성할 앨범이름", example = "newAlbum1", dataType = "String")
     private String name;
 
-    @ApiModelProperty(required = true, value="게스트 no", example = "19", dataType = "Long")
-    private Long gno;
+    @ApiModelProperty(required = true, value="게스트 id", example = "19", dataType = "Long")
+    private String id;
 
-    public CreateAlbumDTO(String name, Long gno){
+    public CreateAlbumDTO(String name, String id){
 
         this.name = name;
-        this.gno = gno;
+        this.id = id;
     }
 }

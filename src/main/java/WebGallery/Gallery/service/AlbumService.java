@@ -69,7 +69,7 @@ public class AlbumService {
     public ResponseEntity<?> createAlbum(CreateAlbumDTO createAlbum){
 
         Map<String, Boolean > map = new HashMap<>();
-        Guest guest = guestRepository.findByGno(createAlbum.getGno());
+        Guest guest = guestRepository.findById(createAlbum.getId()).orElse(null);
         if(!albumRepository.exists(createAlbum.getName(), guest)){
             Album album = new Album(createAlbum.getName(), guest);
             albumRepository.save(album);
