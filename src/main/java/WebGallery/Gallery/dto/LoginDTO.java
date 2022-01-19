@@ -23,7 +23,7 @@ public class LoginDTO {
 
     @ApiModelProperty(required = true, value="로그인 할 pw", example = "12345678",dataType = "String")
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
+//    @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하로 입력해주세요.")
     private String pw;
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
