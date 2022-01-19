@@ -184,8 +184,6 @@ public class JoinController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginDTO loginDTO,
                                    Errors errors){
-            log.info(loginDTO.getId());
-            log.info(loginDTO.getPw());
 
             if(errors.hasErrors()){
                 return response.invalidFields(Helper.refineErrors(errors));

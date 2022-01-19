@@ -177,13 +177,11 @@ public class GuestService {
             map.put("login", false);
             return response.fail(map,"비밀번호 확인 바랍니다", HttpStatus.BAD_REQUEST);
         }
-        log.info("======= Login Front test 1 =======");
 
         UsernamePasswordAuthenticationToken authenticationToken = loginDTO.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         UserResponseDTO.TokenInfo tokenInfo = jwTokenProvider2.generateToken(authentication);
 
-        log.info("======= Login Front test 1 =======");
 
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(),
