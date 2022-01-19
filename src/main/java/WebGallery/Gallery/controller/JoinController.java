@@ -187,7 +187,8 @@ public class JoinController {
             if(errors.hasErrors()){
                 return response.invalidFields(Helper.refineErrors(errors));
             }
-            return guestService.login(loginDTO);
+        log.info("======= Login Front test 2 =======");
+        return guestService.login(loginDTO);
 
     }
 
