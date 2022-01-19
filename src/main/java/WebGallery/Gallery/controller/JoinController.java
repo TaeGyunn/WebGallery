@@ -188,6 +188,8 @@ public class JoinController {
             log.info(loginDTO.toString());
 
             if(errors.hasErrors()){
+                log.info("======== ERROR CHECK =======");
+                log.info(errors.toString());
                 return response.invalidFields(Helper.refineErrors(errors));
             }
         return guestService.login(loginDTO);
