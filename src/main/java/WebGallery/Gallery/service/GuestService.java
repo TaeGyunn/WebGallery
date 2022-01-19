@@ -172,7 +172,7 @@ public class GuestService {
             map.put("login", false);
             return response.fail(map,"해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
-        if(passwordEncoder.encode(guest.getPassword()) != passwordEncoder.encode(loginDTO.getPw())){
+        if(!guest.getPassword().equals(passwordEncoder.encode(loginDTO.getPw()))){
             map.put("login", false);
             return response.fail(map,"비밀번호 확인 바랍니다", HttpStatus.BAD_REQUEST);
         }
