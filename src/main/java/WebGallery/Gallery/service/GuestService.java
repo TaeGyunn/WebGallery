@@ -174,7 +174,7 @@ public class GuestService {
         }
         if(passwordEncoder.encode(guest.getPassword()) != passwordEncoder.encode(loginDTO.getPw())){
             map.put("login", false);
-            return response.fail(map,"비밀번호가 확인 바랍니다", HttpStatus.BAD_REQUEST);
+            return response.fail(map,"비밀번호 확인 바랍니다", HttpStatus.BAD_REQUEST);
         }
 
 
