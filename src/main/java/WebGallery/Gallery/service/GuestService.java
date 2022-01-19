@@ -177,7 +177,7 @@ public class GuestService {
             map.put("login", false);
             return response.fail(map,"비밀번호 확인 바랍니다", HttpStatus.BAD_REQUEST);
         }
-        log.info("======= Login Front test =======");
+        log.info("======= Login Front test 1 =======");
 
         UsernamePasswordAuthenticationToken authenticationToken = loginDTO.toAuthentication();
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
